@@ -9,6 +9,8 @@ export default function scaleReducer(state = [], action = {}){
       return [...state,
         Object.assign({},action.course)
       ];
+    case types.LOAD_COURSE_SUCCESS:
+      return action.courses;
     default:
       return state;
   }
