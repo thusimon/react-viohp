@@ -7,6 +7,7 @@ import {bindActionCreators} from 'redux';
 import * as courseActions from '../../actions/courseActions';
 import {connect} from 'react-redux';
 import CourseForm from './CourseForm';
+import toastr from 'toastr';
 
 class ManageCoursePage extends React.Component {
   constructor(props, context){
@@ -14,13 +15,13 @@ class ManageCoursePage extends React.Component {
 
     this.state = {
       course: Object.assign({}, this.props.course),
-      errors: {}
+      errors: {},
+      saving: false
     };
 
     this.updateCourseState = this.updateCourseState.bind(this);
     this.saveCourse = this.saveCourse.bind(this);
-    console.log("constructing manage course");
-    console.log(this.props);
+    this.redirectOnSaveSuccess = this.redirectOnSaveSuccess.bind(this);
   }
 
   componentWillReceiveProps(nextProps){
@@ -29,6 +30,7 @@ class ManageCoursePage extends React.Component {
       this.setState({course:Object.assign({}, nextProps.course)});
     }
   }
+
   updateCourseState(event){
     const field = event.target.name;
     let course = this.state.course;
@@ -38,13 +40,22 @@ class ManageCoursePage extends React.Component {
 
   saveCourse(event){
     event.preventDefault();
-    this.props.actions.saveCourse(this.state.course);
+    this.setState({saving: true});
+    this.props.actions.saveCourse(this.state.course)
+      .then(()=> this.redirectOnSaveSuccess())
+      .catch(err => {
+        toastr.error(err);
+        this.setState({saving: false});
+      });
+  }
+
+  redirectOnSaveSuccess() {
+    this.setState({saving: false});
+    toastr.success('Course Saved');
     this.props.history.push('/courses');
   }
 
   render(){
-    console.log("render manage course");
-    console.log(this.props);
     return (
       <div>
         <h1>Manage Course</h1>
@@ -54,6 +65,7 @@ class ManageCoursePage extends React.Component {
           onSave={this.saveCourse}
           course={this.state.course}
           errors={this.state.errors}
+          saving={this.state.saving}
           />
       </div>
     );
@@ -88,9 +100,6 @@ function mapStateToProps(state, ownProps){
     };
   });
 
-  console.log("mapStateToProps in manage course");
-  console.log(state);
-  console.log(ownProps);
   return {
     course: course,
     authors: authrosFormatted
@@ -98,9 +107,6 @@ function mapStateToProps(state, ownProps){
 }
 
 function mapDispatchToProps(dispatch){
-  console.log("mapDispatchToProps in manage course");
-  console.log(dispatch);
-  console.log(bindActionCreators(courseActions, dispatch));
   return {
     actions:bindActionCreators(courseActions, dispatch)
   };

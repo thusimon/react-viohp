@@ -2,8 +2,9 @@
  * Created by Lu on 8/4/2018.
  */
 import React from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import Header from './common/Header';
 import HomePage from './home/HomePage';
 import AboutPage from './about/AboutPage';
@@ -14,7 +15,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="container-fluid" >
-        <Header />
+        <Header loading={this.props.loading}/>
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/home" component={HomePage} />
@@ -28,9 +29,16 @@ class App extends React.Component {
   }
 }
 
-/*
+
 App.propTypes = {
-  children: PropTypes.object.isRequired
+  loading: PropTypes.bool.isRequired
 };
-*/
-export default App;
+
+
+function mapStateToProps(state, ownProps){
+  return {
+    loading: state.ajaxCallsInProgress > 0
+  };
+}
+
+export default withRouter(connect(mapStateToProps)(App));

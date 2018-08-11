@@ -30,9 +30,9 @@ class LoadingDots extends React.Component {
 }
 
 LoadingDots.propTypes = {
-  pattern: PropTypes.string.isRequired,
-  interval: PropTypes.number.isRequired,
-  length: PropTypes.number.isRequired
+  pattern: PropTypes.string,
+  interval: PropTypes.number,
+  length: PropTypes.number
 };
 
 LoadingDots.defaultProps = {
