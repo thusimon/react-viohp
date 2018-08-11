@@ -31,7 +31,9 @@ export function loadCourses() {
 }
 
 export function saveCourse(course){
+  console.log("save course 34 action is called");
   return function(dispatch, getState){
+    console.log("save course 36 action is called");
     return courseApi.saveCourse(course).then(savedCourse => {
       course.id ? dispatch(updateCourseSuccess(savedCourse)) :
         dispatch(createCourseSuccess(savedCourse));

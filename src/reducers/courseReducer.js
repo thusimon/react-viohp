@@ -13,10 +13,16 @@ export default function coursesReducer(state = initState.courses, action = {}){
     case types.LOAD_COURSES_SUCCESS:
       return action.courses;
     case types.CREATE_COURSE_SUCCESS:
+      console.log("create course success in course reducer");
+      console.log(state);
+      console.log(action);
       return [...state,
         Object.assign({},action.course)
       ];
     case types.UPDATE_COURSE_SUCCESS:
+      console.log("update course success in course reducer");
+      console.log(state);
+      console.log(action);
       return [...state.filter(course => course.id !== action.course.id),
         Object.assign({},action.course)
       ];

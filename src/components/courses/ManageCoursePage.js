@@ -19,6 +19,8 @@ class ManageCoursePage extends React.Component {
 
     this.updateCourseState = this.updateCourseState.bind(this);
     this.saveCourse = this.saveCourse.bind(this);
+    console.log("constructing manage course");
+    console.log(this.props);
   }
 
   componentWillReceiveProps(nextProps){
@@ -41,6 +43,8 @@ class ManageCoursePage extends React.Component {
   }
 
   render(){
+    console.log("render manage course");
+    console.log(this.props);
     return (
       <div>
         <h1>Manage Course</h1>
@@ -84,6 +88,9 @@ function mapStateToProps(state, ownProps){
     };
   });
 
+  console.log("mapStateToProps in manage course");
+  console.log(state);
+  console.log(ownProps);
   return {
     course: course,
     authors: authrosFormatted
@@ -91,6 +98,9 @@ function mapStateToProps(state, ownProps){
 }
 
 function mapDispatchToProps(dispatch){
+  console.log("mapDispatchToProps in manage course");
+  console.log(dispatch);
+  console.log(bindActionCreators(courseActions, dispatch));
   return {
     actions:bindActionCreators(courseActions, dispatch)
   };
