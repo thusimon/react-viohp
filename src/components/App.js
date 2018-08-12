@@ -9,7 +9,7 @@ import Header from './common/Header';
 import HomePage from './home/HomePage';
 import AboutPage from './about/AboutPage';
 import CoursesPage from './courses/CoursesPage';
-import ManageCoursePage from './courses/ManageCoursePage';
+import MngCoursePage from './courses/ManageCoursePage';
 
 class App extends React.Component {
   render() {
@@ -20,8 +20,8 @@ class App extends React.Component {
           <Route exact path="/" component={HomePage} />
           <Route path="/home" component={HomePage} />
           <Route path="/courses" component={CoursesPage} />
-          <Route path="/course/:id" component={ManageCoursePage} />
-          <Route path="/course" component={ManageCoursePage} />
+          <Route path="/course/:id" component={MngCoursePage} />
+          <Route path="/course" component={MngCoursePage} />
           <Route path="/about" component={AboutPage} />
         </Switch>
       </div>
