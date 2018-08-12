@@ -1,8 +1,9 @@
 /* eslint-enable no-console */
-// import 'babel-polyfill';
+/* eslint-disable import/default */
+import 'babel-polyfill';
 import React from 'react';
 import {render} from 'react-dom';
-import configureStore from './store/configureStore';
+import configureStore from './store/configureStore.dev';
 import {Provider} from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from './components/App';
