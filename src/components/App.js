@@ -10,6 +10,7 @@ import HomePage from './home/HomePage';
 import AboutPage from './about/AboutPage';
 import CoursesPage from './courses/CoursesPage';
 import MngCoursePage from './courses/ManageCoursePage';
+import MusicStaffPage from './musicStaff/MusicStaffPage';
 
 class App extends React.Component {
   render() {
@@ -22,6 +23,7 @@ class App extends React.Component {
           <Route path="/courses" component={CoursesPage} />
           <Route path="/course/:id" component={MngCoursePage} />
           <Route path="/course" component={MngCoursePage} />
+          <Route path="/musicstaff" component={MusicStaffPage} />
           <Route path="/about" component={AboutPage} />
         </Switch>
       </div>
