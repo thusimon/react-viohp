@@ -3,7 +3,7 @@
   font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #4d4d4d;
   min-width: 550px;
-  max-width: 850px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -13,4 +13,39 @@ a.active {
 
 nav {
   padding-top: 20px;
+}
+
+.note {
+  font-size: 72px;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0px 10px 0px 10px;
+}
+.noteLabel {
+  position: absolute;
+  font-size: 12px;
+  top: 55px;
+  left: 0px;
+}
+.staffLines {
+  user-select: none;
+  font-size: 14px;
+  color:#000000;
+  position:relative;
+}
+.vl {
+  border-left: 1px solid black;
+  height: 75px;
+  position:absolute;
+  left: 0px;
+  top: 10px;
+}
+.clef{
+  font-size: 100px;
+  position: absolute;
+  top:0px;
+  left: 5px;
+  height: 80px;
+  line-height: 80px;
 }

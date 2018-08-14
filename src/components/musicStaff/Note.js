@@ -1,23 +1,33 @@
 /**
  * Created by Lu on 8/12/2018.
  */
-import {fabric} from 'fabric';
-import NoteHead from './NoteHead';
-import NoteBody from './NoteBody';
+import React from 'react';
+import * as Syms from './Symbols';
+import PropTypes from 'prop-types';
 
-const Note = (props) => {
-  const {fill,cords} = props;
-  const noteHead = new NoteHead({fill});
-  const noteBody = new NoteBody({cords});
+class Note extends React.Component {
+  constructor(props, context){
+    super(props, context);
+  }
+  render(){
+    return (
+      <div className="note">
+        <span>{this.props.code}</span>
+        {this.props.showLabel && <span className="noteLabel">{this.props.label}</span>}
+      </div>
+    );
+  }
+}
 
-  const note = new fabric.Group([noteHead, noteBody]);
-  note.set('selectable', true);
-  note.set('hasRotatingPoint', true);
-  note.setControlsVisibility({
-    tl: false, tr: false, br: false, bl: false,
-    ml: false, mt: false, mr: false, mb: false,
-    mtr: true
-  });
-  return note;
+Note.propTypes = {
+  code: PropTypes.string.isRequired,
+  showLabel: PropTypes.bool,
+  label: PropTypes.string
+};
+
+Note.defaultProps  = {
+  code:'\ud834\udd5f',
+  showLabel: false,
+  label: 'E3'
 };
 export default Note;
