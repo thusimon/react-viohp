@@ -1,26 +1,23 @@
 /**
  * Created by Lu on 8/12/2018.
  */
-import fabric from 'fabric';
+import {fabric} from 'fabric';
+import NoteHead from './NoteHead';
+import NoteBody from './NoteBody';
 
-const Note = () => {
-  console.log(fabric);
-  const fabAPI = fabric.fabric;
-  const rect = new fabAPI.Rect({
-    top : 100,
-    left : 100,
-    width : 60,
-    height : 70,
-    fill : 'red'
-  });
-  rect.set('selectable', true);
-  rect.set('hasRotatingPoint', false);
-  rect.setControlsVisibility({
+const Note = (props) => {
+  const {fill,cords} = props;
+  const noteHead = new NoteHead({fill});
+  const noteBody = new NoteBody({cords});
+
+  const note = new fabric.Group([noteHead, noteBody]);
+  note.set('selectable', true);
+  note.set('hasRotatingPoint', true);
+  note.setControlsVisibility({
     tl: false, tr: false, br: false, bl: false,
     ml: false, mt: false, mr: false, mb: false,
-    mtr: false
+    mtr: true
   });
-  return rect;
+  return note;
 };
-
 export default Note;
