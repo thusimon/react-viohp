@@ -25,9 +25,10 @@ Note.propTypes = {
   label: PropTypes.string
 };
 
+// hard code the certer point, maybe an issue on other browsers
 Note.defaultProps  = {
   code:'\ud834\udd5f',
   showLabel: false,
-  label: 'E3'
+  center: [14, 70]
 };
 export default Note;

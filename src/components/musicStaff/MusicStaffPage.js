@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import Note from './Note';
-import MusicLines from './MusicLines';
+import MusicLines from './MusicStaff';
 import * as SYMS from './Symbols';
 
 class MusicStaffPage extends React.Component {
