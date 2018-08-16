@@ -3,9 +3,10 @@
  */
 import React from 'react';
 import * as Symbols from './Symbols';
+import * as Utils from './Utils';
 import Note from './Note';
 
-class MusicLines extends React.Component {
+class MusicStaff extends React.Component {
   constructor(props, context){
     super(props, context);
     this.putSymToStaff = this.putSymToStaff.bind(this);
@@ -35,8 +36,31 @@ class MusicLines extends React.Component {
 
   displaySymsOnStaff(){
     const xOffSet = 80;
-    return this.state.syms.map(curSym => {
-      const mynote = React.createElement(Note,{code:curSym.code});
+    const xStep = 40;
+    const res = [];
+    const symCenter = Note.center;
+    for (let i=0; i<this.props.syms.length; i++){
+      const curSym = this.props.syms[i];
+      //choose the first one to display
+      const curSymName = curSym.names[0];
+      const curSymYPos = curSym.pos[0];
+      const curSymXPos = xOffSet+xStep*i;
+      const symPos = curSym.pos;
+      const initOffset = [curSymXPos,curSymYPos*10]; //[x, y]
+      const finalOffset = [initOffset[0]-symCenter[0], initOffset[1]-symCenter[1]];
+      const mynote = React.createElement(Note,{code:Symbols.NOTE_QUARTER,showLabel:true, label:curSymName});
+      res.push(
+        <div key={i} style={{position:'absolute', top: finalOffset[1]+'px', left:finalOffset[0]+'px'}}>
+          {mynote}
+        </div>
+      );
+    }
+    console.log(res);
+    return res;
+    /*
+    return this.props.syms.map(curSym => {
+      console.log(curSym);
+      const mynote = React.createElement(Note,{code:Symbols.NOTE_QUARTER});
       const symCenter = mynote.props.center;
       const symPos = curSym.pos;
       const initOffset = [xOffSet + symPos[0],symPos[1]*10]; //[x, y]
@@ -47,6 +71,7 @@ class MusicLines extends React.Component {
         </div>
       );
     });
+    */
   }
   render(){
     // return table with 10 cells, 4 visible cells form five lines with a clef at left
@@ -72,4 +97,4 @@ class MusicLines extends React.Component {
   }
 }
 
-export default MusicLines;
+export default MusicStaff;

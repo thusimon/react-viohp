@@ -25,10 +25,10 @@ Note.propTypes = {
   label: PropTypes.string
 };
 
+Note.center = [14, 70];
 // hard code the certer point, maybe an issue on other browsers
 Note.defaultProps  = {
   code:'\ud834\udd5f',
-  showLabel: false,
-  center: [14, 70]
+  showLabel: false
 };
 export default Note;
