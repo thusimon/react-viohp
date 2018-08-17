@@ -2,6 +2,7 @@
  * Created by Lu on 8/13/2018.
  */
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as Symbols from './Symbols';
 import * as Utils from './Utils';
 import Note from './Note';
@@ -9,32 +10,23 @@ import Note from './Note';
 class MusicStaff extends React.Component {
   constructor(props, context){
     super(props, context);
-    this.putSymToStaff = this.putSymToStaff.bind(this);
     this.displaySymsOnStaff = this.displaySymsOnStaff.bind(this);
-    this.getStaffIndexOnLayout = this.getStaffIndexOnLayout.bind(this);
-    this.state = {syms:[
-      {code:Symbols.NOTE_WHOLE, pos: [0, 14], id: 0},
-      {code:Symbols.NOTE_HALF, pos: [40, 13], id: 1},
-      {code:Symbols.NOTE_QUARTER, pos: [80, 12], id: 2},
-      {code:Symbols.NOTE_EIGHTH, pos: [120, 11], id: 3},
-      {code:Symbols.NOTE_SIXTEENTH, pos: [160, 10], id: 4},
-      {code:Symbols.NOTE_THIRTYSECOND, pos: [200, 9], id: 5},
-      {code:Symbols.NOTE_QUARTER, pos: [280, 8], id: 6},
-      {code:Symbols.NOTE_QUARTER, pos: [320, 7], id: 7},
-      {code:Symbols.NOTE_QUARTER, pos: [360, 6], id: 8},
-      {code:Symbols.NOTE_QUARTER, pos: [400, 7], id: 9},
-      {code:Symbols.NOTE_QUARTER, pos: [440, 8], id: 10}
-    ]};
+    this.generateFullStaffIndex = this.generateFullStaffIndex.bind(this);
+
+    let staffLayout = this.generateFullStaffIndex();
+    this.staffStart = staffLayout.visibleStaffIdxStart;
   }
 
-  getStaffIndexOnLayout(staffIndex){
-
-  }
-
-  putSymToStaff(sym, pos){
-    const curSyms = this.state.syms;
-    const newSym = {sym, pos};
-    this.setState({syms: curSyms.push(newSym)});
+  generateFullStaffIndex(){
+    //generate full staff index according the props.LineLayout
+    let fullIndex = [];
+    let layout = this.props.LineLayout;
+    for (let i=0; i<layout.length; i++){
+      fullIndex = fullIndex.concat([i*2, i*2+1]);
+    }
+    let visibleStaffIdxStart = layout.indexOf(1)*2;
+    let visibleStaffIdxEnd = (layout.lastIndexOf(1)+1)*2;
+    return {fullIndex, visibleStaffIdxStart, visibleStaffIdxEnd};
   }
 
   displaySymsOnStaff(){
@@ -42,23 +34,21 @@ class MusicStaff extends React.Component {
     const xStep = 40;
     const res = [];
     const symCenter = Note.center;
+    const halfSpace = this.props.LineSpace / 2;
     for (let i=0; i<this.props.syms.length; i++){
       const curSym = this.props.syms[i];
-      //choose the first one to display
-      const curSymName = curSym.names[0];
-      const curSymYPos = curSym.pos[0];
+      const isPrimary = curSym.primary;
+      const curSymNames = curSym.names;
+      const curSymYPos = curSym.pos[0] + this.staffStart;
       const curSymXPos = xOffSet+xStep*i;
-      const symPos = curSym.pos;
-      const initOffset = [curSymXPos,curSymYPos*10]; //[x, y]
+      const initOffset = [curSymXPos,curSymYPos*halfSpace]; //[x, y]
       const finalOffset = [initOffset[0]-symCenter[0], initOffset[1]-symCenter[1]];
-      const mynote = React.createElement(Note,{code:Symbols.NOTE_QUARTER,showLabel:true, label:curSymName});
       res.push(
         <div key={i} style={{position:'absolute', top: finalOffset[1]+'px', left:finalOffset[0]+'px'}}>
-          {mynote}
+          <Note code={Symbols.NOTE_QUARTER} showLabel label={curSymNames} primary={isPrimary} />
         </div>
       );
     }
-    console.log(res);
     return res;
   }
   render(){
@@ -84,10 +74,16 @@ class MusicStaff extends React.Component {
   }
 }
 
+MusicStaff.propTypes = {
+  LineSpace: PropTypes.number,
+  LineLayout: PropTypes.array,
+  syms: PropTypes.array
+};
 //define some static properties, config of the class
 MusicStaff.defaultProps = {
   LineSpace : 20,
-  LineLayout: [0,0,0,1,1,1,1,0,0,0]
+  LineLayout: [0,0,0,1,1,1,1,0,0,0],
+  syms: []
 };
 
 export default MusicStaff;

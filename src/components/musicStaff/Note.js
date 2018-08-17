@@ -10,10 +10,12 @@ class Note extends React.Component {
     super(props, context);
   }
   render(){
+    const labels = this.props.label;
+    const labelText = this.props.primary ? labels[0] : labels[0]+'\r\n'+labels[1];
     return (
       <div className="note">
         <span>{this.props.code}</span>
-        {this.props.showLabel && <span className="noteLabel">{this.props.label}</span>}
+        {this.props.showLabel && <span className="noteLabel">{labelText}</span>}
       </div>
     );
   }
@@ -22,14 +24,17 @@ class Note extends React.Component {
 Note.propTypes = {
   code: PropTypes.string.isRequired,
   showLabel: PropTypes.bool,
-  label: PropTypes.string
+  label: PropTypes.array,
+  primary: PropTypes.bool
 };
 
 Note.center = [14, 70];
 // hard code the certer point, maybe an issue on other browsers
 Note.defaultProps  = {
   code:'\ud834\udd5f',
-  showLabel: false
+  showLabel: false,
+  primary: true,
+  label: ['C','C']
 };
 
 export default Note;

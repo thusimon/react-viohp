@@ -13,15 +13,17 @@ class MusicStaffPage extends React.Component {
     super(props, context);
     this.signatureTypes = Utils.SIGNATURES.map(signature =>
       ({value:signature.name, text:signature.name}));
-    this.scaleTypes = Utils.getAllPossibleScales();
+    this.scaleTypes = Utils.getAllScaleNames();
     this.fullScales = Utils.getExtendScales();
-    console.log(this.fullScales);
 
-    this.onSignatureChange = this.onSignatureChange.bind(this);
-    this.onScaleChange = this.onScaleChange.bind(this);
+    this.onSelectChange = this.onSelectChange.bind(this);
     this.getSetOfNoteFromSignatureAndScale = this.getSetOfNoteFromSignatureAndScale.bind(this);
+
     // init state
-    this.state = {signature:'Major', scale:'C', notes:[]};
+    const signature = 'Major';
+    const scale = 'C';
+    const notes = this.getSetOfNoteFromSignatureAndScale(signature, scale);
+    this.state = {signature, scale, notes};
   }
 
   /**
@@ -38,28 +40,19 @@ class MusicStaffPage extends React.Component {
       scaleIndex += intervals[i];
       notes.push(this.fullScales[scaleIndex]);
     }
-    console.log(signature);
-    console.log(scale);
-    console.log(notes);
-    this.setState({signature, scale, notes})
-  }
-  onSignatureChange(event){
-    //this.setState({signature: event.target.value});
-    const newSignature = event.target.value;
-    const scale = this.state.scale;
-    console.log(1);
-    this.getSetOfNoteFromSignatureAndScale(newSignature, scale);
+    return notes;
   }
 
-  onScaleChange(event){
-    //this.setState({scale: event.target.value});
-    const signature = this.state.signature;
-    const newScale = event.target.value;
-    console.log(2);
-    this.getSetOfNoteFromSignatureAndScale(signature, newScale);
+  onSelectChange(event){
+    const curStateVal = {signature: this.state.signature, scale: this.state.scale};
+    curStateVal[event.target.name] = event.target.value;
+    const signature = curStateVal.signature;
+    const scale = curStateVal.scale;
+    const notes = this.getSetOfNoteFromSignatureAndScale(signature, scale);
+    this.setState({signature, scale, notes});
   }
+
   render(){
-    console.log(this.state);
     return (
       <div>
         <div style={{display:'inline-block'}} >
@@ -77,7 +70,7 @@ class MusicStaffPage extends React.Component {
             value={this.state.signature}
             defaultOption={null}
             options={this.signatureTypes}
-            onChange={this.onSignatureChange} />
+            onChange={this.onSelectChange} />
         </div>
         <div style={{display:'inline-block'}}>
           <SelectInput
@@ -86,11 +79,11 @@ class MusicStaffPage extends React.Component {
             value={this.state.scale}
             defaultOption={null}
             options={this.scaleTypes}
-            onChange={this.onScaleChange} />
+            onChange={this.onSelectChange} />
         </div>
         <br />
         <div style={{marginTop:'30px', marginBottom: '30px'}}>
-          <MusicStaff syms={this.state.notes.reverse()} />
+          <MusicStaff syms={this.state.notes} />
         </div>
       </div>);
   }
