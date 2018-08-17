@@ -50,3 +50,20 @@ export const getAllPossibleScales = ()=>{
     return accumulator;
   }, []);
 };
+
+/**
+ * --- 8 ---
+ * --- 6 ---
+ * --- 4 ---
+ * --- 2 ---
+ * --- 0 ---
+ * @param pos, number
+ * @param lineOrSpace boolean, true: line, false: space
+ * return an integer, can be positive or negative
+ * (1, true) => 0
+ * (1, false) => 1
+ * (2, true) => 2
+ */
+export const mapToStaffIndex = (pos, lineOrSpace) => {
+  return (pos-1)*2 + !lineOrSpace;
+};

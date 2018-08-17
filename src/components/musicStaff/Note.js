@@ -31,4 +31,5 @@ Note.defaultProps  = {
   code:'\ud834\udd5f',
   showLabel: false
 };
+
 export default Note;
