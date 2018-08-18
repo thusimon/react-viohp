@@ -14,8 +14,8 @@ class MusicStaffPage extends React.Component {
     this.signatureTypes = Utils.SIGNATURES.map(signature =>
       ({value:signature.name, text:signature.name}));
     this.scaleTypes = Utils.getAllScaleNames();
+    console.log(this.scaleTypes);
     this.fullScales = Utils.getExtendScales();
-
     this.onSelectChange = this.onSelectChange.bind(this);
     this.getSetOfNoteFromSignatureAndScale = this.getSetOfNoteFromSignatureAndScale.bind(this);
 
@@ -32,15 +32,22 @@ class MusicStaffPage extends React.Component {
    */
   getSetOfNoteFromSignatureAndScale(signature, scale){
     const intervals = signature == 'Major' ? Utils.MajorInterval : Utils.MinorInterval;
-    let scaleIndex = this.fullScales.findIndex(element => {
-      return element.names.includes(scale);
+    let scaleIndex = this.fullScales.findIndex(notes => {
+      return notes.map(note => note.label).includes(scale);
     });
-    let notes=[this.fullScales[scaleIndex]];
+    let res = [];
+    let notes=this.fullScales[scaleIndex];
+    let firstNote = notes.filter(note=> note.label=scale);
+    res.push(firstNote[0]);
     for(let i=0; i<intervals.length-1; i++){
       scaleIndex += intervals[i];
-      notes.push(this.fullScales[scaleIndex]);
+      let notes=this.fullScales[scaleIndex];
+      // we should find the note whose sfIdx is different from the previous one
+      let curNoteSfIdx = res[i].sfIdx;
+      let differentSfIdxNote = notes.filter(note=> note.sfIdx!=curNoteSfIdx);
+      res.push(differentSfIdxNote[0]);
     }
-    return notes;
+    return res;
   }
 
   onSelectChange(event){

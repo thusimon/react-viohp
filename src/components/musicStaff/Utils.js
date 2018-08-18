@@ -1,7 +1,6 @@
 /**
  * Created by Lu on 8/15/2018.
  */
-
 // the scale and interval, this is fixed
 // since the notes are periodic, the position is not important
 /**
@@ -16,20 +15,41 @@
  * ----- 10 -----
  * ----- 12 -----
  */
+export const Notes = {
+  C : {label:'C',   sfIdx: 3, primary: true,  RF: 0 },
+  CR: {label:'C#',  sfIdx: 3, primary: false, RF: 1 },
+  DF: {label:'Db',  sfIdx: 2, primary: false, RF: -1},
+  D : {label:'D',   sfIdx: 2, primary: true,  RF: 0 },
+  DR: {label:'D#',  sfIdx: 2, primary: false, RF: 1 },
+  EF: {label:'Eb',  sfIdx: 1, primary: false, RF: -1},
+  E : {label:'E',   sfIdx: 1, primary: true,  RF: 0 },
+  F : {label:'F',   sfIdx: 0, primary: true,  RF: 0 },
+  FR: {label:'F#',  sfIdx: 0, primary: false, RF: 1 },
+  GF: {label:'Gb',  sfIdx:-1, primary: false, RF: -1},
+  G : {label:'G',   sfIdx:-1, primary: true,  RF: 0 },
+  GR: {label:'G#',  sfIdx:-1, primary: false, RF: 1 },
+  AF: {label:'Ab',  sfIdx:-2, primary: false, RF: -1},
+  A : {label:'A',   sfIdx:-2, primary: true,  RF: 0 },
+  AR: {label:'A#',  sfIdx:-2, primary: false, RF: 1 },
+  BF: {label:'Bb',  sfIdx:-3, primary: false, RF: -1},
+  B : {label:'B',   sfIdx:-3, primary: true,  RF: 0 },
+};
+
 export const SCALE_INTERVAL = [
-  {names:['C' , 'C' ], pos:[ 3, 3], primary: true },
-  {names:['C#', 'Db'], pos:[ 3, 2], primary: false},
-  {names:['D' , 'D' ], pos:[ 2, 2], primary: true },
-  {names:['D#', 'Eb'], pos:[ 2, 1], primary: false},
-  {names:['E' , 'E' ], pos:[ 1, 1], primary: true },
-  {names:['F' , 'F' ], pos:[ 0, 0], primary: true },
-  {names:['F#', 'Gb'], pos:[ 0,-1], primary: false},
-  {names:['G' , 'G' ], pos:[-1,-1], primary: true },
-  {names:['G#', 'Ab'], pos:[-1,-2], primary: false},
-  {names:['A' , 'A' ], pos:[-2,-2], primary: true },
-  {names:['A#', 'Bb'], pos:[-2,-3], primary: false},
-  {names:['B' , 'B' ], pos:[-3,-3], primary: true }
+  [Notes.C],
+  [Notes.CR, Notes.DF],
+  [Notes.D],
+  [Notes.DR, Notes.EF],
+  [Notes.E],
+  [Notes.F],
+  [Notes.FR, Notes.GF],
+  [Notes.G],
+  [Notes.GR, Notes.AF],
+  [Notes.A],
+  [Notes.AR, Notes.BF],
+  [Notes.B]
 ];
+export const SCALE_LEN = SCALE_INTERVAL.length;
 
 export const SIGNATURES = [
   {name:'Major'},
@@ -39,27 +59,44 @@ export const SIGNATURES = [
 export const MajorInterval = [2,2,1,2,2,2,1];
 export const MinorInterval = [2,1,2,2,1,2,2];
 
+
+export const noteShift = (note, offSet) => {
+
+};
 //return notes from lowest to highest
 export const getExtendScales = (srcScale=SCALE_INTERVAL,range=[1,0]) => {
   let result = [];
   range.forEach(idx => {
     let shiftOffSet = idx * 7;
-    let shiftedScale = srcScale.map(scale =>
-      ({names:scale.names, pos:[scale.pos[0]+shiftOffSet, scale.pos[1]+shiftOffSet], primary:scale.primary})
-    );
+    let shiftedScale = srcScale.map(scale => {
+      return scale.map(note => {
+        let newNote = Object.assign({}, note);
+        newNote.sfIdx += shiftOffSet;
+        return newNote;
+      });
+    });
     result  = result.concat(shiftedScale);
   });
   return result;
 };
 
 export const getAllScaleNames = ()=>{
-  return SCALE_INTERVAL.reduce((accumulator, curValue)=>{
-    let mappedScale = curValue.names.map(name=>({value:name, text:name}));
-    if (curValue.primary){
-      accumulator = accumulator.concat(mappedScale[0]);
-    } else {
-      accumulator = accumulator.concat(mappedScale);
-    }
-    return accumulator;
-  }, []);
+  let scaleNames = [];
+  for (let noteKey in Notes) {
+    let note = Notes[noteKey];
+    scaleNames.push({value: note.label, text:note.label});
+  }
+  return scaleNames;
+};
+
+/**
+ * when a scale of notes comes in, we can not make sure they are arranged nicely
+ * e.g
+ * @param notes
+ * @param ascending
+ */
+export const reshapeNotesInOrder = (aScale, scale="C", ascending=true) => {
+  let notesInOrder = aScale.map(notes => {
+
+  });
 };

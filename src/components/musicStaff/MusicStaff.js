@@ -38,8 +38,8 @@ class MusicStaff extends React.Component {
     for (let i=0; i<this.props.syms.length; i++){
       const curSym = this.props.syms[i];
       const isPrimary = curSym.primary;
-      const curSymNames = curSym.names;
-      const curSymYPos = curSym.pos[0] + this.staffStart;
+      const curSymNames = curSym.label;
+      const curSymYPos = curSym.sfIdx + this.staffStart;
       const curSymXPos = xOffSet+xStep*i;
       const initOffset = [curSymXPos,curSymYPos*halfSpace]; //[x, y]
       const finalOffset = [initOffset[0]-symCenter[0], initOffset[1]-symCenter[1]];
