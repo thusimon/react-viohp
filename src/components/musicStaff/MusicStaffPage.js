@@ -2,11 +2,9 @@
  * Created by Lu on 8/12/2018.
  */
 import React from 'react';
-import Note from './Note';
 import MusicStaff from './MusicStaff';
-import * as SYMS from './Symbols';
 import * as Utils from './Utils';
-import SelectInput from '../common/SelectInput';
+import TopControls from './TopControls';
 
 class MusicStaffPage extends React.Component {
   constructor(props, context){
@@ -14,40 +12,12 @@ class MusicStaffPage extends React.Component {
     this.signatureTypes = Utils.SIGNATURES.map(signature =>
       ({value:signature.name, text:signature.name}));
     this.scaleTypes = Utils.getAllScaleNames();
-    console.log(this.scaleTypes);
-    this.fullScales = Utils.getExtendScales();
     this.onSelectChange = this.onSelectChange.bind(this);
-    this.getSetOfNoteFromSignatureAndScale = this.getSetOfNoteFromSignatureAndScale.bind(this);
-
     // init state
     const signature = 'Major';
     const scale = 'C';
-    const notes = this.getSetOfNoteFromSignatureAndScale(signature, scale);
+    const notes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
     this.state = {signature, scale, notes};
-  }
-
-  /**
-   * @param signature, can only be Major or Minor
-   * @param scale
-   */
-  getSetOfNoteFromSignatureAndScale(signature, scale){
-    const intervals = signature == 'Major' ? Utils.MajorInterval : Utils.MinorInterval;
-    let scaleIndex = this.fullScales.findIndex(notes => {
-      return notes.map(note => note.label).includes(scale);
-    });
-    let res = [];
-    let notes=this.fullScales[scaleIndex];
-    let firstNote = notes.filter(note=> note.label=scale);
-    res.push(firstNote[0]);
-    for(let i=0; i<intervals.length-1; i++){
-      scaleIndex += intervals[i];
-      let notes=this.fullScales[scaleIndex];
-      // we should find the note whose sfIdx is different from the previous one
-      let curNoteSfIdx = res[i].sfIdx;
-      let differentSfIdxNote = notes.filter(note=> note.sfIdx!=curNoteSfIdx);
-      res.push(differentSfIdxNote[0]);
-    }
-    return res;
   }
 
   onSelectChange(event){
@@ -55,39 +25,14 @@ class MusicStaffPage extends React.Component {
     curStateVal[event.target.name] = event.target.value;
     const signature = curStateVal.signature;
     const scale = curStateVal.scale;
-    const notes = this.getSetOfNoteFromSignatureAndScale(signature, scale);
+    const notes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
     this.setState({signature, scale, notes});
   }
 
   render(){
     return (
       <div>
-        <div style={{display:'inline-block'}} >
-          <Note code={SYMS.NOTE_WHOLE} />
-          <Note code={SYMS.NOTE_HALF} />
-          <Note code={SYMS.NOTE_QUARTER} />
-          <Note code={SYMS.NOTE_EIGHTH} />
-          <Note code={SYMS.NOTE_SIXTEENTH} />
-          <Note code={SYMS.NOTE_THIRTYSECOND} />
-        </div>
-        <div style={{display:'inline-block'}}>
-          <SelectInput
-            name="signature"
-            label="Signature"
-            value={this.state.signature}
-            defaultOption={null}
-            options={this.signatureTypes}
-            onChange={this.onSelectChange} />
-        </div>
-        <div style={{display:'inline-block'}}>
-          <SelectInput
-            name="scale"
-            label="Scale"
-            value={this.state.scale}
-            defaultOption={null}
-            options={this.scaleTypes}
-            onChange={this.onSelectChange} />
-        </div>
+        <TopControls />
         <br />
         <div style={{marginTop:'30px', marginBottom: '30px'}}>
           <MusicStaff syms={this.state.notes} />

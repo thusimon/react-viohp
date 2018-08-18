@@ -11,8 +11,6 @@ const Header = ({loading}) => {
     <nav>
       <NavLink to="/home" activeClassName="active">Home</NavLink>
       {" | "}
-      <NavLink to="/courses" activeClassName="active">Courses</NavLink>
-      {" | "}
       <NavLink to="/musicstaff" activeClassName="active">Music Staff</NavLink>
       {" | "}
       <NavLink to="/about" activeClassName="active">About</NavLink>

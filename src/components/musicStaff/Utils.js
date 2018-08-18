@@ -49,6 +49,7 @@ export const SCALE_INTERVAL = [
   [Notes.AR, Notes.BF],
   [Notes.B]
 ];
+
 export const SCALE_LEN = SCALE_INTERVAL.length;
 
 export const SIGNATURES = [
@@ -80,6 +81,8 @@ export const getExtendScales = (srcScale=SCALE_INTERVAL,range=[1,0]) => {
   return result;
 };
 
+export const FULL_SCALE = getExtendScales();
+
 export const getAllScaleNames = ()=>{
   let scaleNames = [];
   for (let noteKey in Notes) {
@@ -90,13 +93,26 @@ export const getAllScaleNames = ()=>{
 };
 
 /**
- * when a scale of notes comes in, we can not make sure they are arranged nicely
- * e.g
- * @param notes
- * @param ascending
+ * @param signature, can only be Major or Minor
+ * @param scale
  */
-export const reshapeNotesInOrder = (aScale, scale="C", ascending=true) => {
-  let notesInOrder = aScale.map(notes => {
-
+export const getSetOfNoteFromSignatureScale = (signature, scale) => {
+  const intervals = signature == 'Major' ? MajorInterval : MinorInterval;
+  let scaleIndex = FULL_SCALE.findIndex(notes => {
+    return notes.map(note => note.label).includes(scale);
   });
+  let res = [];
+  let firstNote = FULL_SCALE[scaleIndex].filter(note => note.label==scale);
+  res.push(firstNote[0]);
+  for(let i=0; i<intervals.length-1; i++){
+    scaleIndex += intervals[i];
+    let notes=FULL_SCALE[scaleIndex];
+    // we should find the note whose sfIdx is different from the previous one
+    let curNoteSfIdx = res[i].sfIdx;
+    let differentSfIdxNote = notes.length>1 ?
+      notes.filter(note => note.sfIdx!=curNoteSfIdx) :
+      notes;
+    res.push(differentSfIdxNote[0]);
+  }
+  return res;
 };
