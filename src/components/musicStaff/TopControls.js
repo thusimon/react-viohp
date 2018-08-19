@@ -4,26 +4,53 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Note from './Note';
+import * as Constants from './Constants';
+import * as Utils from './Utils';
 import * as Symbols from './Symbols';
 import SelectInput from '../common/SelectInput';
 
 class TopControls extends React.Component {
   constructor(props, context){
     super(props, context);
+    this.onSelectChange = this.onSelectChange.bind(this);
+    this.scaleTypes = Utils.getAllScaleNames();
+    this.signatureTypes = Constants.SIGNATURES.map(signature =>
+      ({value:signature.name, text:signature.name}));
+    // init state
+    let signature = "Major";
+    let scale = "C";
+    let notes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
+    this.state = {signature, scale, notes};
+  }
+
+  onSelectChange(event){
+    const curStateVal = {signature: this.state.signature, scale: this.state.scale};
+    curStateVal[event.target.name] = event.target.value;
+    const signature = curStateVal.signature;
+    const scale = curStateVal.scale;
+    const notes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
+    this.setState({signature, scale, notes});
+  }
+
+  onButtonClick(event){
+
   }
   render(){
     return (<div className="row">
-      <div className="col-6">
-        <span className="badge badge-primary" style={{fontSize:'14px'}}>Drag the note to staff</span>
+      <div className="col-3">
+        <span className="badge badge-info" style={{fontSize:'14px'}}>Drag the note to staff</span>
         <br />
-        <Note code={Symbols.NOTE_WHOLE} />
-        <Note code={Symbols.NOTE_HALF} />
-        <Note code={Symbols.NOTE_QUARTER} />
-        <Note code={Symbols.NOTE_EIGHTH} />
-        <Note code={Symbols.NOTE_SIXTEENTH} />
-        <Note code={Symbols.NOTE_THIRTYSECOND} />
+        <div className="btn-group">
+          <Note code={Symbols.NOTE_WHOLE} />
+          <Note code={Symbols.NOTE_HALF} />
+          <Note code={Symbols.NOTE_QUARTER} />
+          <Note code={Symbols.NOTE_EIGHTH} />
+          <Note code={Symbols.NOTE_SIXTEENTH} />
+          <Note code={Symbols.NOTE_THIRTYSECOND} />
+        </div>
       </div>
       <div className="col-3">
+        <span className="badge badge-info" style={{fontSize:'14px', marginBottom:"20px"}}>Choose Signarture and Scale</span>
         <SelectInput
           name="signature"
           label="Signature"
@@ -39,7 +66,14 @@ class TopControls extends React.Component {
           options={this.scaleTypes}
           onChange={this.onSelectChange} />
       </div>
-      <div className="col-3">button</div>
+      <div className="col-3">
+        <span className="badge badge-info" style={{fontSize:'14px',marginBottom:"20px"}}>Staff Actions</span>
+        <br />
+        <div className="btn-group-vertical">
+          <button type="button" className="btn btn-primary" name="showScales" onClick={this.onButtonClick}>Show Scales</button>
+          <button type="button" className="btn btn-primary" name="clearAll" onClick={this.onButtonClick}>Clear All</button>
+        </div>
+      </div>
     </div>);
   }
 }

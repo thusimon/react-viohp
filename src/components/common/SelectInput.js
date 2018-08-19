@@ -6,9 +6,9 @@ import PropTypes from 'prop-types';
 
 const SelectInput = ({name, label, onChange, defaultOption, value, error, options}) => {
   return (
-    <div className="form-group">
-      <label htmlFor={name}>{label}</label>
-      <div className="field">
+    <div className="form-group row">
+      <label className="col-sm-4 col-form-label" htmlFor={name}>{label}</label>
+      <div className="col-sm-8">
         <select
           name={name}
           value={value}

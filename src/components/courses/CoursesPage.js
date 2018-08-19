@@ -5,7 +5,6 @@ import React from 'react';
 import {bindActionCreators} from 'redux';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-//import {browserHistory} from 'react-router-dom';
 import * as courseActions from '../../actions/courseActions';
 import CourseList from './CourseList';
 
