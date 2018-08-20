@@ -53,7 +53,7 @@ class MusicStaff extends React.Component {
   }
 
   displaySymsOnStaff(){
-    const xOffSet = 80;
+    const xOffSet = 180;
     const xStep = 40;
     const res = [];
     const symCenter = Note.center;

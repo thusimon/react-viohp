@@ -7,3 +7,11 @@ export const generateScaleHeads = (scaleHead) => {
 export const addNotes = (notes) => {
   return {type:types.ADD_NOTES, notes};
 };
+
+export const showScaleNotes = (scaleNotes) => {
+  return {type:types.SHOW_SCALE_NOTES, scaleNotes};
+};
+
+export const clearAllNotes = () => {
+  return {type:types.CLEAR_ALL_NOTES};
+};

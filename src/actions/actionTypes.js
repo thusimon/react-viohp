@@ -15,4 +15,5 @@ export const AJAX_CALL_ERROR = 'AJAX_CALL_ERROR';
 //music action types
 export const GENERATE_SCALE_HEAD = 'GENERATE_SCALE_HEAD';
 export const ADD_NOTES = 'ADD_NOTES';
+export const SHOW_SCALE_NOTES = 'SHOW_SCALE_NOTES';
 export const CLEAR_ALL_NOTES = 'CLEAR_ALL_NOTES';

@@ -16,6 +16,7 @@ class TopControls extends React.Component {
   constructor(props, context){
     super(props, context);
     this.onSelectChange = this.onSelectChange.bind(this);
+    this.onButtonClick = this.onButtonClick.bind(this);
     this.scaleTypes = Utils.getAllScaleNames();
     this.signatureTypes = Constants.SIGNATURES.map(signature =>
       ({value:signature.name, text:signature.name}));
@@ -31,19 +32,21 @@ class TopControls extends React.Component {
     curStateVal[event.target.name] = event.target.value;
     const signature = curStateVal.signature;
     const scale = curStateVal.scale;
-    const notes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
     const scaleHead = Constants.SHARPFLATIDX[signature][scale];
     this.setState({signature, scale});
     this.props.addScaleHead(scaleHead);
   }
 
   onButtonClick(event){
+    let {signature, scale} = this.state;
+    let scaleNotes;
     switch (event.target.name){
       case "showScales":
-        musicAction.showScales();
+        scaleNotes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
+        this.props.showScaleNotes(scaleNotes);
         break;
       case "clearAll":
-        musicAction.clearAll();
+        this.props.clearAllNotes();
         break;
       default:
         break;
@@ -94,7 +97,9 @@ class TopControls extends React.Component {
 
 TopControls.propTypes = {
   addNotes: PropTypes.func,
-  addScaleHead: PropTypes.func
+  addScaleHead: PropTypes.func,
+  showScaleNotes: PropTypes.func,
+  clearAllNotes: PropTypes.func
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -103,6 +108,12 @@ const mapDispatchToProps = (dispatch) => ({
   },
   addScaleHead: (scaleHead) => {
     dispatch(musicAction.generateScaleHeads(scaleHead));
+  },
+  showScaleNotes: (scaleNotes) => {
+    dispatch(musicAction.showScaleNotes(scaleNotes));
+  },
+  clearAllNotes: () => {
+    dispatch(musicAction.clearAllNotes());
   }
 });
 

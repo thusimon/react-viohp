@@ -76,7 +76,7 @@ export const SHARPFLATIDX = {
     B : [{name:'sharp', sfIdx:0},{name:'sharp', sfIdx:3},{name:'sharp', sfIdx:-1},{name:'sharp', sfIdx:2},{name:'sharp', sfIdx:5}]
   },
   Minor:{
-    C : [{name:"flat", sfIdx:4}, {name:"flat", sfIdx:1}, {type:"flat", sfIdx: 5}],
+    C : [{name:"flat", sfIdx:4}, {name:"flat", sfIdx:1}, {name:"flat", sfIdx: 5}],
     CS: [{name:'sharp', sfIdx:0},{name:'sharp', sfIdx:3},{name:'sharp', sfIdx:-1},{name:'sharp', sfIdx:2}],
     DF: [{name:'sharp', sfIdx:0},{name:'sharp', sfIdx:3},{name:'sharp', sfIdx:-1},{name:'sharp', sfIdx:2}],
     D : [{name:'flat', sfIdx:2}],

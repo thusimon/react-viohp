@@ -9,9 +9,11 @@ const musicReducer = (state=initState, action={}) => {
     case types.ADD_NOTES:
       return action.notes;
     case types.GENERATE_SCALE_HEAD:
-      return Object.assign({}, state, {scaleHead:action.scaleHead});
+      return Object.assign({}, state, {scaleHead:action.scaleHead, notes:[]});
+    case types.SHOW_SCALE_NOTES:
+      return Object.assign({}, state, {notes: action.scaleNotes});
     case types.CLEAR_ALL_NOTES:
-      return action.notes;
+      return Object.assign({}, state, {notes:[]});
     default:
       return state;
   }
