@@ -2,7 +2,7 @@
  * Created by Lu on 8/7/2018.
  */
 import * as types from '../actions/actionTypes';
-import initState from './initialState';
+import {courseInitState as initState} from './initialState';
 
 export default function coursesReducer(state = initState.courses, action = {}){
   switch (action.type){

@@ -2,12 +2,14 @@
  * Created by Lu on 8/12/2018.
  */
 import React from 'react';
+import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import MusicStaff from './MusicStaff';
 import * as Constants from './Constants';
 import * as Utils from './Utils';
 import TopControls from './TopControls';
+import * as musicActions from '../../actions/musicActions';
 
 class MusicStaffPage extends React.Component {
   constructor(props, context){
@@ -18,7 +20,7 @@ class MusicStaffPage extends React.Component {
     // init state
     const signature = 'Major';
     const scale = 'C';
-    const notes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
+    const notes = [];
     this.state = {signature, scale, notes};
   }
 
@@ -31,30 +33,19 @@ class MusicStaffPage extends React.Component {
         </div>
         <br />
         <div style={{marginTop:'30px', marginBottom: '30px'}}>
-          <MusicStaff syms={this.state.notes} />
+          <MusicStaff notes={this.props.notes} scaleHead={this.props.scaleHead}/>
         </div>
       </div>);
   }
 }
 
+MusicStaffPage.propTypes = {
+  notes: PropTypes.array,
+  scaleHead: PropTypes.array
+};
+
 function mapStateToProps(state, ownProps){
-  const courseId = ownProps.match.params.id;
-  let course = {title:"", category:"", length:""};
-  if (courseId && state.courses.length > 0){
-    course = getCourseById(state.courses, courseId);
-  }
-
-  return {
-    course: course,
-    authors: authorsFormatted(state.authors)
-  };
+  return state.music;
 }
 
-function mapDispatchToProps(dispatch){
-  return {
-    actions:bindActionCreators(courseActions, dispatch)
-  };
-}
-
-//export default MusicStaffPage;
-export default connect(mapStateToProps, mapDispatchToProps)(MusicStaffPage);
+export default connect(mapStateToProps)(MusicStaffPage);

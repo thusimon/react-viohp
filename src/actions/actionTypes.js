@@ -1,13 +1,18 @@
 /**
  * Created by Lu on 8/7/2018.
  */
+//course action types
 export const CREATE_COURSE = 'CREATE_COURSE';
 export const CREATE_COURSE_SUCCESS = 'CREATE_COURSE_SUCCESS';
 export const UPDATE_COURSE_SUCCESS = 'UPDATE_COURSE_SUCCESS';
 export const LOAD_COURSES_SUCCESS = 'LOAD_COURSES_SUCCESS';
 export const LOAD_AUTHORS_SUCCESS = 'LOAD_AUTHORS_SUCCESS';
 
+//ajax action types
 export const BEGIN_AJAX_CALL = 'BEGIN_AJAX_CALL';
 export const AJAX_CALL_ERROR = 'AJAX_CALL_ERROR';
 
-export const LOAD_NOTES = 'LOAD_NOTES';
+//music action types
+export const GENERATE_SCALE_HEAD = 'GENERATE_SCALE_HEAD';
+export const ADD_NOTES = 'ADD_NOTES';
+export const CLEAR_ALL_NOTES = 'CLEAR_ALL_NOTES';

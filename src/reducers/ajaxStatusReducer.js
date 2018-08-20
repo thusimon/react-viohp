@@ -2,7 +2,7 @@
  * Created by Lu on 8/10/2018.
  */
 import * as types from '../actions/actionTypes';
-import initState from './initialState';
+import {courseInitState as initState} from './initialState';
 
 export default function ajaxStatusReducer(state=initState.ajaxCallsInProgress, action={}){
   if(action.type == types.BEGIN_AJAX_CALL){

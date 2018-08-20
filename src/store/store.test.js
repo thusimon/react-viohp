@@ -4,7 +4,7 @@
 import expect from 'expect';
 import {createStore, applyMiddleware} from 'redux';
 import rootReducer from '../reducers';
-import initState from '../reducers/initialState';
+import {courseInitState as initState} from '../reducers/initialState';
 import * as courseActions from '../actions/courseActions';
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import thunk from 'redux-thunk';

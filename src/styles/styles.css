@@ -23,6 +23,9 @@ nav {
   margin: 0px;
   padding: 0px;
 }
+.noteKey {
+  font-size: 36px;
+}
 .noteLabel {
   position: absolute;
   font-size: 12px;

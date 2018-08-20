@@ -29,7 +29,7 @@ export const getAllScaleNames = ()=>{
   let scaleNames = [];
   for (let noteKey in Constant.Notes) {
     let note = Constant.Notes[noteKey];
-    scaleNames.push({value: note.label, text:note.label});
+    scaleNames.push({value: noteKey, text:note.label});
   }
   return scaleNames;
 };
@@ -45,10 +45,10 @@ export const getAllSignatureNames = ()=>{
 export const getSetOfNoteFromSignatureScale = (signature, scale) => {
   const intervals = signature == 'Major' ? Constant.MajorInterval : Constant.MinorInterval;
   let scaleIndex = FULL_SCALE.findIndex(notes => {
-    return notes.map(note => note.label).includes(scale);
+    return notes.map(note => note.name).includes(scale);
   });
   let res = [];
-  let firstNote = FULL_SCALE[scaleIndex].filter(note => note.label==scale);
+  let firstNote = FULL_SCALE[scaleIndex].filter(note => note.name==scale);
   res.push(firstNote[0]);
   for(let i=0; i<intervals.length-1; i++){
     scaleIndex += intervals[i];

@@ -3,11 +3,14 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import Note from './Note';
 import * as Constants from './Constants';
 import * as Utils from './Utils';
 import * as Symbols from './Symbols';
 import SelectInput from '../common/SelectInput';
+import * as musicAction from '../../actions/musicActions';
 
 class TopControls extends React.Component {
   constructor(props, context){
@@ -29,11 +32,22 @@ class TopControls extends React.Component {
     const signature = curStateVal.signature;
     const scale = curStateVal.scale;
     const notes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
-    this.setState({signature, scale, notes});
+    const scaleHead = Constants.SHARPFLATIDX[signature][scale];
+    this.setState({signature, scale});
+    this.props.addScaleHead(scaleHead);
   }
 
   onButtonClick(event){
-
+    switch (event.target.name){
+      case "showScales":
+        musicAction.showScales();
+        break;
+      case "clearAll":
+        musicAction.clearAll();
+        break;
+      default:
+        break;
+    }
   }
   render(){
     return (<div className="row">
@@ -78,4 +92,18 @@ class TopControls extends React.Component {
   }
 }
 
-export default TopControls;
+TopControls.propTypes = {
+  addNotes: PropTypes.func,
+  addScaleHead: PropTypes.func
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  addNotes: (notes) => {
+    dispatch(musicAction.addNotes(notes));
+  },
+  addScaleHead: (scaleHead) => {
+    dispatch(musicAction.generateScaleHeads(scaleHead));
+  }
+});
+
+export default connect(null, mapDispatchToProps)(TopControls);

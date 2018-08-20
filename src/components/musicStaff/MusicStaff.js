@@ -6,13 +6,14 @@ import PropTypes from 'prop-types';
 import * as Symbols from './Symbols';
 import * as Utils from './Utils';
 import Note from './Note';
+import NoteKey from './NoteKey';
 
 class MusicStaff extends React.Component {
   constructor(props, context){
     super(props, context);
     this.displaySymsOnStaff = this.displaySymsOnStaff.bind(this);
+    this.displaySymsOnStaff = this.displaySymsOnStaff.bind(this);
     this.generateFullStaffIndex = this.generateFullStaffIndex.bind(this);
-
     let staffLayout = this.generateFullStaffIndex();
     this.staffStart = staffLayout.visibleStaffIdxStart;
   }
@@ -29,14 +30,36 @@ class MusicStaff extends React.Component {
     return {fullIndex, visibleStaffIdxStart, visibleStaffIdxEnd};
   }
 
+  displayScaleHead(){
+    const xOffSet = this.props.headStart;
+    const xStep = 12;
+    const res = [];
+    const symCenter = NoteKey.center;
+    const halfSpace = this.props.LineSpace / 2;
+    for (let i=0; i<this.props.scaleHead.length; i++){
+      const curSym = this.props.scaleHead[i];
+      const curSymNames = curSym.name;
+      const curSymYPos = curSym.sfIdx + this.staffStart;
+      const curSymXPos = xOffSet+xStep*i;
+      const initOffset = [curSymXPos,curSymYPos*halfSpace]; //[x, y]
+      const finalOffset = [initOffset[0]-symCenter[0], initOffset[1]-symCenter[1]];
+      res.push(
+        <div key={i} style={{position:'absolute', top: finalOffset[1]+'px', left:finalOffset[0]+'px'}}>
+          <NoteKey name={curSymNames} />
+        </div>
+      );
+    }
+    return res;
+  }
+
   displaySymsOnStaff(){
     const xOffSet = 80;
     const xStep = 40;
     const res = [];
     const symCenter = Note.center;
     const halfSpace = this.props.LineSpace / 2;
-    for (let i=0; i<this.props.syms.length; i++){
-      const curSym = this.props.syms[i];
+    for (let i=0; i<this.props.notes.length; i++){
+      const curSym = this.props.notes[i];
       const isPrimary = curSym.primary;
       const curSymNames = curSym.label;
       const curSymYPos = curSym.sfIdx + this.staffStart;
@@ -67,6 +90,7 @@ class MusicStaff extends React.Component {
             </tbody>
           </table>
           <div className="clef">{Symbols.CLEF_G}</div>
+          {this.displayScaleHead()}
           {this.displaySymsOnStaff()}
         </div>
       </div>
@@ -77,13 +101,17 @@ class MusicStaff extends React.Component {
 MusicStaff.propTypes = {
   LineSpace: PropTypes.number,
   LineLayout: PropTypes.array,
-  syms: PropTypes.array
+  notes: PropTypes.array,
+  scaleHead: PropTypes.array,
+  headStart: PropTypes.number
 };
 //define some static properties, config of the class
 MusicStaff.defaultProps = {
   LineSpace : 20,
   LineLayout: [0,0,0,1,1,1,1,0,0,0],
-  syms: []
+  notes: [],
+  scaleHead:[],
+  headStart: 70
 };
 
 export default MusicStaff;
