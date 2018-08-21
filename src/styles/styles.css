@@ -58,6 +58,10 @@ nav {
 table {
   width: 100%;
 }
+th {
+  border: 2px solid black;
+  height: 20px;
+}
 td.show {
   border: 1px solid black;
   height: 20px;
@@ -65,4 +69,29 @@ td.show {
 td.hide {
   border: none;
   height: 20px;
+}
+.violinTr {
+  height:40px;
+}
+.violinT {
+  width: 240px;
+}
+.violinTd {
+  width: 40px;
+}
+.violinBoard{
+  background-color: #d5d5d5;
+}
+.violinBoardNote{
+  border:1px solid blue;
+  border-radius: 14px;
+  font-size: 12px;
+  position:absolute;
+  top: -12px;
+  left: 26px;
+  background-color: #b8daff;
+  height:25px;
+  width:25px;
+  line-height: 25px;
+  text-align: center;
 }

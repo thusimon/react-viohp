@@ -3,13 +3,12 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import MusicStaff from './MusicStaff';
 import * as Constants from './Constants';
 import * as Utils from './Utils';
 import TopControls from './TopControls';
-import * as musicActions from '../../actions/musicActions';
+import Violin from './Violin';
 
 class MusicStaffPage extends React.Component {
   constructor(props, context){
@@ -34,6 +33,9 @@ class MusicStaffPage extends React.Component {
         <br />
         <div style={{marginTop:'30px', marginBottom: '30px'}}>
           <MusicStaff notes={this.props.notes} scaleHead={this.props.scaleHead}/>
+        </div>
+        <div>
+          <Violin />
         </div>
       </div>);
   }

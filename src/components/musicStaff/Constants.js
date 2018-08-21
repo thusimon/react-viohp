@@ -95,3 +95,14 @@ export const SHARPFLATIDX = {
     B : [{name:'sharp', sfIdx:0},{name:'sharp', sfIdx:3}]
   }
 };
+
+export const ViolinFinger_POS1 = [
+  {finger: "0", notes: [Notes.G, Notes.D, Notes.A, Notes.E ]},
+  {finger: "1", notes: [Notes.AF,Notes.EF,Notes.BF,Notes.F ]},
+  {finger: "1", notes: [Notes.A, Notes.E, Notes.B, Notes.FS]},
+  {finger: "2", notes: [Notes.BF,Notes.F, Notes.C, Notes.G ]},
+  {finger: "2", notes: [Notes.B, Notes.FS,Notes.CS,Notes.GS]},
+  {finger: "3", notes: [Notes.C, Notes.G, Notes.D, Notes.A ]},
+  {finger:"3/4",notes: [Notes.CS,Notes.GS,Notes.EF,Notes.BF]},
+  {finger: "4", notes: [Notes.D, Notes.A, Notes.E, Notes.B]},
+];
