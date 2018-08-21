@@ -2,17 +2,19 @@
  * Created by Lu on 8/13/2018.
  */
 import React from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import * as Symbols from './Symbols';
 import * as Utils from './Utils';
 import Note from './Note';
 import NoteKey from './NoteKey';
+import * as musicActions from '../../actions/musicActions';
 
 class MusicStaff extends React.Component {
   constructor(props, context){
     super(props, context);
-    this.displaySymsOnStaff = this.displaySymsOnStaff.bind(this);
-    this.displaySymsOnStaff = this.displaySymsOnStaff.bind(this);
+    this.displayScaleHead = this.displayScaleHead.bind(this);
+    this.displayNotesOnStaff = this.displayNotesOnStaff.bind(this);
     this.generateFullStaffIndex = this.generateFullStaffIndex.bind(this);
     let staffLayout = this.generateFullStaffIndex();
     this.staffStart = staffLayout.visibleStaffIdxStart;
@@ -52,7 +54,7 @@ class MusicStaff extends React.Component {
     return res;
   }
 
-  displaySymsOnStaff(){
+  displayNotesOnStaff(){
     const xOffSet = 180;
     const xStep = 40;
     const res = [];
@@ -68,12 +70,16 @@ class MusicStaff extends React.Component {
       const finalOffset = [initOffset[0]-symCenter[0], initOffset[1]-symCenter[1]];
       res.push(
         <div key={i} style={{position:'absolute', top: finalOffset[1]+'px', left:finalOffset[0]+'px'}}>
-          <Note code={Symbols.NOTE_QUARTER} showLabel label={curSymNames} primary={isPrimary} />
+          <Note code={Symbols.NOTE_QUARTER} showLabel label={curSymNames} primary={isPrimary}
+                sfIdx={curSym.sfIdx} name={curSym.name} mark={curSym.mark}
+                onNoteClicked={this.props.onNoteClicked}
+            />
         </div>
       );
     }
     return res;
   }
+
   render(){
     // return table with 10 cells, 4 visible cells form five lines with a clef at left
     let staffLineKey = 0;
@@ -91,7 +97,7 @@ class MusicStaff extends React.Component {
           </table>
           <div className="clef">{Symbols.CLEF_G}</div>
           {this.displayScaleHead()}
-          {this.displaySymsOnStaff()}
+          {this.displayNotesOnStaff()}
         </div>
       </div>
     );
@@ -103,7 +109,8 @@ MusicStaff.propTypes = {
   LineLayout: PropTypes.array,
   notes: PropTypes.array,
   scaleHead: PropTypes.array,
-  headStart: PropTypes.number
+  headStart: PropTypes.number,
+  onNoteClicked: PropTypes.func.isRequired
 };
 //define some static properties, config of the class
 MusicStaff.defaultProps = {
@@ -114,4 +121,11 @@ MusicStaff.defaultProps = {
   headStart: 70
 };
 
-export default MusicStaff;
+function mapDispatchToProps(dispatch) {
+  return {
+    onNoteClicked: (markNote) => {
+      dispatch(musicActions.clickNote(markNote));
+    }
+  }
+}
+export default connect(null, mapDispatchToProps)(MusicStaff);

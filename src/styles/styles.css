@@ -71,27 +71,34 @@ td.hide {
   height: 20px;
 }
 .violinTr {
-  height:40px;
+  height:60px;
 }
 .violinT {
-  width: 240px;
+  width: 360px;
 }
 .violinTd {
-  width: 40px;
+  width: 60px;
 }
 .violinBoard{
   background-color: #d5d5d5;
 }
 .violinBoardNote{
   border:1px solid blue;
-  border-radius: 14px;
+  border-radius: 20px;
   font-size: 12px;
   position:absolute;
-  top: -12px;
-  left: 26px;
+  top: -19px;
+  left: 38px;
   background-color: #b8daff;
-  height:25px;
-  width:25px;
-  line-height: 25px;
+  color: #000000;
+  height:40px;
+  width:40px;
+  line-height: 40px;
   text-align: center;
+}
+.violinBoardNoteSelect{
+  background-color: #f0ad4e;
+}
+.noteSelected{
+  color:#f0ad4e;
 }

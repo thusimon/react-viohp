@@ -23,7 +23,7 @@ export const getExtendScales = (srcScale=Constant.SCALE_INTERVAL,range=[1,0]) =>
   return result;
 };
 
-export const FULL_SCALE = getExtendScales();
+export const FULL_SCALE = getExtendScales(Constant.SCALE_INTERVAL, [2,1,0,-1]);
 
 export const getAllScaleNames = ()=>{
   let scaleNames = [];
@@ -38,27 +38,62 @@ export const getAllSignatureNames = ()=>{
   return Constant.SIGNATURES.map(signature =>
     ({value:signature.name, text:signature.name}));
 };
+
+export const filterFullScale = (minSfIdx, maxSfIdx) => {
+  return FULL_SCALE.filter(notes => {
+    let sfIdxes = notes.map(note => note.sfIdx);
+    let maxsfIdx = Math.max(...sfIdxes);
+    let minsfIdx = Math.min(...sfIdxes);
+    return maxsfIdx<=maxSfIdx && minsfIdx>=minSfIdx;
+  });
+};
 /**
  * @param signature, can only be Major or Minor
  * @param scale
  */
 export const getSetOfNoteFromSignatureScale = (signature, scale) => {
   const intervals = signature == 'Major' ? Constant.MajorInterval : Constant.MinorInterval;
-  let scaleIndex = FULL_SCALE.findIndex(notes => {
+  // filter the full scale, get the notes sfIdx from -6 to 14
+  let filteredFullScale = filterFullScale(-7, 15);
+  let scaleIndex = filteredFullScale.findIndex(notes => {
     return notes.map(note => note.name).includes(scale);
   });
-  let res = [];
-  let firstNote = FULL_SCALE[scaleIndex].filter(note => note.name==scale);
+  let res = [], i=0, intervalLen = intervals.length;
+  let firstNote = filteredFullScale[scaleIndex].filter(note => note.name==scale);
   res.push(firstNote[0]);
-  for(let i=0; i<intervals.length-1; i++){
+  while (scaleIndex + intervals[i] < filteredFullScale.length){
     scaleIndex += intervals[i];
-    let notes=FULL_SCALE[scaleIndex];
+    let notes=filteredFullScale[scaleIndex];
     // we should find the note whose sfIdx is different from the previous one
     let curNoteSfIdx = res[i].sfIdx;
     let differentSfIdxNote = notes.length>1 ?
       notes.filter(note => note.sfIdx!=curNoteSfIdx) :
       notes;
     res.push(differentSfIdxNote[0]);
+    i = (++i)%intervalLen;
   }
   return res;
+};
+
+/**
+ * map the full extended scales to violin board
+ * for example position 1: lowest note 3G=>sfIdx=13, highest 5B=>sfIdx=-3
+ * TODO should extend to other positions
+ * @param range
+ * return a two dimensional array
+ */
+export const generateVirtualBoardNotes = (minSfIdx, maxSfIdx) =>{
+  let fullNotes = filterFullScale(minSfIdx, maxSfIdx);
+
+  let allStringNotes = [], startIdx = 0;
+  // each string at a position will have 8 notes
+  let stringNotesLen = 8;
+  for (let i=0; i<4; i++){
+    let stringNotes = fullNotes.slice(startIdx, startIdx+stringNotesLen);
+    allStringNotes.push(stringNotes);
+    startIdx += stringNotesLen;
+    startIdx--;
+  }
+  // the result would be 8*4 array
+  return allStringNotes;
 };

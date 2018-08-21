@@ -11,5 +11,6 @@ export const courseInitState = {
 
 export const musicInitState = {
   notes:[],
+  markNotes:[],
   scaleHead:MusicConstants.SHARPFLATIDX['Major']['C']
 };

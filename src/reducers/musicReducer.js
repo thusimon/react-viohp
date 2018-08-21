@@ -14,6 +14,18 @@ const musicReducer = (state=initState, action={}) => {
       return Object.assign({}, state, {notes: action.scaleNotes});
     case types.CLEAR_ALL_NOTES:
       return Object.assign({}, state, {notes:[]});
+    case types.NOTE_CLICK:
+      console.log("note click reducer");
+      console.log(state);
+      console.log(action);
+      var markNotes = state.markNotes;
+      var markNote = action.markNote;
+      // need to filter the markNotes, only keep the mark=true
+
+      markNotes.concat(action.markNote);
+      console.log(markNotes);
+      console.log(Object.assign({}, state, {markNotes}));
+      return Object.assign({}, state, {markNotes});
     default:
       return state;
   }

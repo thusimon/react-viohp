@@ -2,39 +2,43 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import BoardNote from './ViolinBoardNote';
 import * as Constants from './Constants';
+import * as Utils from './Utils';
 
 class Violin extends React.Component {
   constructor(props, context){
     super(props, context);
     this.rowNum = 8;
     this.colNum = 6;
+    // boardNotes should be a 8*4 array
+    this.boardNotes = Utils.generateVirtualBoardNotes(-3, 13);
+    this.stringNum = 4;
+    this.stringNoteLen = 8;
   }
   render(){
     return(
-      <table className="violinT">
+      <table className="violinT" align="center">
         <tbody>
           {[...Array(this.rowNum).keys()].map(r=> {
-            return (<tr key={"brow"+r} className="violinTr">
-              {[...Array(this.colNum).keys()].map(l=> {
-                let chartContent = "";
-                let boardClass = "";
-                if (l==0){
-                  //should show the finger position
-                  chartContent = Constants.ViolinFinger_POS1[r%8].finger;
-                } else {
-                  //should show the notes
-                  let noteLabel = Constants.ViolinFinger_POS1[r%8].notes[(l-1)%4].label;
-                  console.log(noteLabel);
-                  boardClass = (r>0 && l>0)?"violinBoard":"";
-                  if (l>0 && l<this.colNum-1){
-                    chartContent = (<div style={{textAlign:'right',position:'relative'}}>
-                      <BoardNote key={"BN"+r+l} label={noteLabel}/>
-                    </div>);
+              return (<tr key={"brow"+r} className="violinTr">
+                {[...Array(this.colNum).keys()].map(l=> {
+                  let boardClass = (r>0&&l>0) ? "violinBoard" : "";
+                  let chartContent = <div>&nbsp;</div>;
+                  if (l==0){
+                    //should show the finger position
+                    let fingerPos = Constants.ViolinFinger_POS1[r%this.stringNoteLen].finger;
+                    chartContent = <div>{fingerPos}</div>;
+                  } else if (l<5){
+                    //should show the notes
+                    const curBoardNote = this.boardNotes[(l-1)%this.stringNum][r];
+                    chartContent = (
+                      <div style={{textAlign:'right',position:'relative'}}>
+                        <BoardNote key={"BN"+r+l} note={curBoardNote}/>
+                      </div>
+                    );
                   }
-                }
-                return (<td key={"bcell" + l} className={"show violinTd "+boardClass}>{chartContent}</td>)
-              })}
-            </tr>)}
+                  return <td key={"bcell" + l} className={"show violinTd "+boardClass}>{chartContent}</td>;
+                })}
+            </tr>);}
             )}
         </tbody>
       </table>

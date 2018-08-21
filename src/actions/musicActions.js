@@ -15,3 +15,7 @@ export const showScaleNotes = (scaleNotes) => {
 export const clearAllNotes = () => {
   return {type:types.CLEAR_ALL_NOTES};
 };
+
+export const clickNote = (markNote) => {
+  return {type:types.NOTE_CLICK, markNote};
+};

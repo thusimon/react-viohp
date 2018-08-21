@@ -58,12 +58,7 @@ class TopControls extends React.Component {
         <span className="badge badge-info" style={{fontSize:'14px'}}>Drag the note to staff</span>
         <br />
         <div className="btn-group">
-          <Note code={Symbols.NOTE_WHOLE} />
-          <Note code={Symbols.NOTE_HALF} />
-          <Note code={Symbols.NOTE_QUARTER} />
-          <Note code={Symbols.NOTE_EIGHTH} />
-          <Note code={Symbols.NOTE_SIXTEENTH} />
-          <Note code={Symbols.NOTE_THIRTYSECOND} />
+          <p style={{marginTop:'30px'}}><strong>Coming soon...</strong></p>
         </div>
       </div>
       <div className="col-3">
