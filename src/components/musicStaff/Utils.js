@@ -82,7 +82,7 @@ export const getSetOfNoteFromSignatureScale = (signature, scale) => {
  * @param range
  * return a two dimensional array
  */
-export const generateVirtualBoardNotes = (minSfIdx, maxSfIdx) =>{
+export const generateVirtualBoardNotes = (minSfIdx, maxSfIdx, markNotes=[]) =>{
   let fullNotes = filterFullScale(minSfIdx, maxSfIdx);
 
   let allStringNotes = [], startIdx = 0;

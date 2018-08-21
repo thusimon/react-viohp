@@ -7,7 +7,7 @@ class AboutPage extends React.Component {
     return (
       <div>
         <h1>About</h1>
-        <p>Version:0.0.1, Only tested on Chrome 68.0+</p>
+        <p>Version:0.1.0, Only tested on Chrome 68.0+</p>
       </div>
     );
   }

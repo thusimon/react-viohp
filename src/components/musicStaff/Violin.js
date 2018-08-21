@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import BoardNote from './ViolinBoardNote';
 import * as Constants from './Constants';
@@ -10,11 +11,12 @@ class Violin extends React.Component {
     this.rowNum = 8;
     this.colNum = 6;
     // boardNotes should be a 8*4 array
-    this.boardNotes = Utils.generateVirtualBoardNotes(-3, 13);
+    this.boardNotes = Utils.generateVirtualBoardNotes(-3, 13, this.props.markNotes);
     this.stringNum = 4;
     this.stringNoteLen = 8;
   }
   render(){
+    const markNotes = this.props.markNotes;
     return(
       <table className="violinT" align="center">
         <tbody>
@@ -29,10 +31,12 @@ class Violin extends React.Component {
                     chartContent = <div>{fingerPos}</div>;
                   } else if (l<5){
                     //should show the notes
-                    const curBoardNote = this.boardNotes[(l-1)%this.stringNum][r];
+                    const curNoteRIdx = r;
+                    const curNoteCIdx = l-1;
+                    const curNote = this.boardNotes[curNoteCIdx%this.stringNum][curNoteRIdx];
                     chartContent = (
                       <div style={{textAlign:'right',position:'relative'}}>
-                        <BoardNote key={"BN"+r+l} note={curBoardNote}/>
+                        <BoardNote key={"BN"+r+l} note={curNote} markNotes={markNotes} />
                       </div>
                     );
                   }
@@ -46,4 +50,12 @@ class Violin extends React.Component {
   }
 }
 
-export default Violin;
+Violin.propTypes = {
+  markNotes: PropTypes.array
+};
+
+function mapStateToProps(state, ownProps){
+  return {markNotes: state.music.markNotes};
+}
+
+export default connect(mapStateToProps)(Violin);

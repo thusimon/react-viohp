@@ -4,6 +4,20 @@
 import * as types from '../actions/actionTypes';
 import {musicInitState as initState} from './initialState';
 
+const updateMarkNote = (currMarkNotes, markNote) => {
+  // markNote: {name:'C', sfIdx:3, mark: true}
+  if (markNote.mark){
+    // we should add this mark note to curMarkNotes array
+    currMarkNotes.push(markNote);
+  } else {
+    // we should filter those markNotes in currMarkNotes
+    currMarkNotes = currMarkNotes.filter(note => {
+      return !(note.name==markNote.name && note.sfIdx==markNote.sfIdx);
+    });
+  }
+  return currMarkNotes;
+};
+
 const musicReducer = (state=initState, action={}) => {
   switch (action.type) {
     case types.ADD_NOTES:
@@ -15,17 +29,7 @@ const musicReducer = (state=initState, action={}) => {
     case types.CLEAR_ALL_NOTES:
       return Object.assign({}, state, {notes:[]});
     case types.NOTE_CLICK:
-      console.log("note click reducer");
-      console.log(state);
-      console.log(action);
-      var markNotes = state.markNotes;
-      var markNote = action.markNote;
-      // need to filter the markNotes, only keep the mark=true
-
-      markNotes.concat(action.markNote);
-      console.log(markNotes);
-      console.log(Object.assign({}, state, {markNotes}));
-      return Object.assign({}, state, {markNotes});
+      return Object.assign({}, state, {markNotes: updateMarkNote([...state.markNotes], action.markNote)});
     default:
       return state;
   }

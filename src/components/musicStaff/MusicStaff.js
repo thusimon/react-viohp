@@ -126,6 +126,6 @@ function mapDispatchToProps(dispatch) {
     onNoteClicked: (markNote) => {
       dispatch(musicActions.clickNote(markNote));
     }
-  }
+  };
 }
 export default connect(null, mapDispatchToProps)(MusicStaff);

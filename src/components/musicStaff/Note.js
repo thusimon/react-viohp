@@ -22,7 +22,7 @@ class Note extends React.Component {
     this.props.onNoteClicked({mark,name,sfIdx});
   }
   render(){
-    const noteMarkClass = this.state.mark ? "noteSelected" : ""
+    const noteMarkClass = this.state.mark ? "noteSelected" : "";
     return (
       <div className="note">
         <span onClick={this.noteClick} className={noteMarkClass}>{this.props.code}</span>
@@ -37,6 +37,9 @@ Note.propTypes = {
   showLabel: PropTypes.bool,
   label: PropTypes.string,
   primary: PropTypes.bool,
+  mark: PropTypes.bool,
+  name: PropTypes.string,
+  sfIdx: PropTypes.number,
   onNoteClicked: PropTypes.func.isRequired
 };
 

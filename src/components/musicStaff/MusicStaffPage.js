@@ -24,7 +24,6 @@ class MusicStaffPage extends React.Component {
   }
 
   render(){
-    console.log("rendering music staff page!");
     return (
       <div>
         <div style={{marginTop:'30px'}}>
@@ -35,7 +34,7 @@ class MusicStaffPage extends React.Component {
           <MusicStaff notes={this.props.notes} scaleHead={this.props.scaleHead} />
         </div>
         <div style={{textAlign:'center', width:"400px"}}>
-          <span className="badge badge-info" style={{fontSize:'18px', marginBottom:"10px"}}>Your nice violin</span>
+          <span className="badge badge-info" style={{fontSize:'18px', marginBottom:"10px"}}>Your beautiful violin</span>
           <Violin />
         </div>
       </div>);
@@ -48,8 +47,6 @@ MusicStaffPage.propTypes = {
 };
 
 function mapStateToProps(state, ownProps){
-  console.log("FFSDDSDSFF");
-  console.log(state.music);
   return state.music;
 }
 
