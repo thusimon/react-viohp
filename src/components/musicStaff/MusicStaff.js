@@ -16,6 +16,8 @@ class MusicStaff extends React.Component {
     this.displayScaleHead = this.displayScaleHead.bind(this);
     this.displayNotesOnStaff = this.displayNotesOnStaff.bind(this);
     this.generateFullStaffIndex = this.generateFullStaffIndex.bind(this);
+    this.ondrop = this.ondrop.bind(this);
+    this.ondragover = this.ondragover.bind(this);
     let staffLayout = this.generateFullStaffIndex();
     this.staffStart = staffLayout.visibleStaffIdxStart;
   }
@@ -80,12 +82,27 @@ class MusicStaff extends React.Component {
     return res;
   }
 
+  ondrop(event){
+    console.log("music staff received drop");
+    console.log(event);
+    event.preventDefault();
+    // Get the id of the target and add the moved element to the target's DOM
+    var data = event.dataTransfer.getData("NOTE_TYPE");
+    console.log(data);
+  }
+
+  ondragover(event){
+    event.preventDefault();
+    // Set the dropEffect to move
+    event.dataTransfer.dropEffect = "move"
+  }
+
   render(){
     // return table with 10 cells, 4 visible cells form five lines with a clef at left
     let staffLineKey = 0;
     return (
       <div className="staffLines">
-        <div className="staffLinesContent">
+        <div className="staffLinesContent" onDrop={this.ondrop} onDragOver={this.ondragover}>
           <table>
             <tbody>
               {this.props.LineLayout.map(line=>{
