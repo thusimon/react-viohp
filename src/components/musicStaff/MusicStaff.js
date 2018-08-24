@@ -18,6 +18,15 @@ class MusicStaff extends React.Component {
     this.generateFullStaffIndex = this.generateFullStaffIndex.bind(this);
     this.ondrop = this.ondrop.bind(this);
     this.ondragover = this.ondragover.bind(this);
+    this.ondragenter = this.ondragenter.bind(this);
+    this.calculateSfIdxByCoordinates = this.calculateSfIdxByCoordinates.bind(this);
+    this.staffRef = React.createRef();
+    // class fixed constants
+    this.LineSpace = 20;
+    this.LineLayout = [0,0,0,1,1,1,1,0,0,0];
+    this.headStart = 70;
+    this.headEnd = 160;
+    this.staffVerticalMargin = 40;
     let staffLayout = this.generateFullStaffIndex();
     this.staffStart = staffLayout.visibleStaffIdxStart;
   }
@@ -25,7 +34,7 @@ class MusicStaff extends React.Component {
   generateFullStaffIndex(){
     //generate full staff index according the props.LineLayout
     let fullIndex = [];
-    let layout = this.props.LineLayout;
+    let layout = this.LineLayout;
     for (let i=0; i<layout.length; i++){
       fullIndex = fullIndex.concat([i*2, i*2+1]);
     }
@@ -35,11 +44,11 @@ class MusicStaff extends React.Component {
   }
 
   displayScaleHead(){
-    const xOffSet = this.props.headStart;
+    const xOffSet = this.headStart;
     const xStep = 12;
     const res = [];
     const symCenter = NoteKey.center;
-    const halfSpace = this.props.LineSpace / 2;
+    const halfSpace = this.LineSpace / 2;
     for (let i=0; i<this.props.scaleHead.length; i++){
       const curSym = this.props.scaleHead[i];
       const curSymNames = curSym.name;
@@ -56,12 +65,18 @@ class MusicStaff extends React.Component {
     return res;
   }
 
+  calculateSfIdxByCoordinates(x, y){
+    //console.log(x+', ' +y);
+    let sfIdx = Math.round(y/10)-this.staffStart;
+    return {x,sfIdx};
+  }
+
   displayNotesOnStaff(){
-    const xOffSet = 180;
+    const xOffSet = this.headEnd;
     const xStep = 40;
     const res = [];
     const symCenter = Note.center;
-    const halfSpace = this.props.LineSpace / 2;
+    const halfSpace = this.LineSpace / 2;
     for (let i=0; i<this.props.notes.length; i++){
       const curSym = this.props.notes[i];
       const isPrimary = curSym.primary;
@@ -83,30 +98,48 @@ class MusicStaff extends React.Component {
   }
 
   ondrop(event){
-    console.log("music staff received drop");
-    console.log(event);
     event.preventDefault();
-    // Get the id of the target and add the moved element to the target's DOM
-    var data = event.dataTransfer.getData("NOTE_TYPE");
-    console.log(data);
+    let staffRect = this.staffRef.current.getBoundingClientRect();
+    let dropNoteX = event.clientX-staffRect.x;
+    let dropNoteY = event.clientY-staffRect.y;
+    if (dropNoteX<this.headEnd){
+      // the note is dropped inside the scale head zone
+      return;
+    }
+    let dropData = JSON.parse(event.dataTransfer.getData("NOTE_DRAG_INIT_DATA"));
+    //console.log(dropData);
+    console.log(dropData.dragP);
+    console.log([dropNoteX, dropNoteY]);
+    let centerY = dropNoteY - dropData.dragP[1] //+ Note.center[1];
+    let centerX = dropNoteX - dropData.dragP[0] //+ Note.center[0];
+    console.log(centerY);
+    let noteCords = this.calculateSfIdxByCoordinates(dropNoteX, dropNoteY);
   }
+
 
   ondragover(event){
+    //console.log(">>>: " + event.clientX + ", " + event.clientY);
     event.preventDefault();
     // Set the dropEffect to move
-    event.dataTransfer.dropEffect = "move"
+    //event.dataTransfer.dropEffect = "copy"
   }
 
+  ondragenter(event){
+    console.log("dragenter");
+    console.log(event.clientY);
+    console.log(event.target);
+  }
   render(){
     // return table with 10 cells, 4 visible cells form five lines with a clef at left
     let staffLineKey = 0;
+    let staffWholeHeight = this.LineLayout.length * this.LineSpace + 2*this.staffVerticalMargin;
     return (
-      <div className="staffLines">
-        <div className="staffLinesContent" onDrop={this.ondrop} onDragOver={this.ondragover}>
+      <div ref={this.staffRef} className="staffLines" style={{height:staffWholeHeight+'px'}} onDrop={this.ondrop} onDragOver={this.ondragover} onDragEnter={this.ondragenter}>
+        <div className="staffLinesContent">
           <table>
             <tbody>
-              {this.props.LineLayout.map(line=>{
-                let tdClass = line >0 ? 'show':'hide';
+              {this.LineLayout.map(line=>{
+                let tdClass = line >0 ? 'show':'show';
                 staffLineKey++;
                 return (<tr key={staffLineKey}><td className={tdClass}>&nbsp;</td></tr>);
               })}
@@ -122,20 +155,14 @@ class MusicStaff extends React.Component {
 }
 
 MusicStaff.propTypes = {
-  LineSpace: PropTypes.number,
-  LineLayout: PropTypes.array,
   notes: PropTypes.array,
   scaleHead: PropTypes.array,
-  headStart: PropTypes.number,
   onNoteClicked: PropTypes.func.isRequired
 };
 //define some static properties, config of the class
 MusicStaff.defaultProps = {
-  LineSpace : 20,
-  LineLayout: [0,0,0,1,1,1,1,0,0,0],
   notes: [],
-  scaleHead:[],
-  headStart: 70
+  scaleHead:[]
 };
 
 function mapDispatchToProps(dispatch) {

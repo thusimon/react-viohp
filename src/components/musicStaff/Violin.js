@@ -16,6 +16,7 @@ class Violin extends React.Component {
     this.stringNoteLen = 8;
   }
   render(){
+    console.log("rendering violin");
     const markNotes = this.props.markNotes;
     return(
       <table className="violinT" align="center">

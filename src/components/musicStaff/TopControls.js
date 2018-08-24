@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Note from './Note';
+import NoteDragable from './NoteDragable';
 import * as Constants from './Constants';
 import * as Utils from './Utils';
 import * as Symbols from './Symbols';
@@ -58,12 +59,12 @@ class TopControls extends React.Component {
         <span className="badge badge-info" style={{fontSize:'14px'}}>Drag the note to staff</span>
         <br />
         <div className="btn-group">
-          <Note code={Symbols.NOTE_WHOLE} name={Symbols.NOTE_WHOLE_TYPE} draggable />
-          <Note code={Symbols.NOTE_HALF} name={Symbols.NOTE_HALF_TYPE} draggable />
-          <Note code={Symbols.NOTE_QUARTER} name={Symbols.NOTE_QUARTER_TYPE} draggable />
-          <Note code={Symbols.NOTE_EIGHTH} name={Symbols.NOTE_EIGHTH_TYPE} draggable />
-          <Note code={Symbols.NOTE_SIXTEENTH} name={Symbols.NOTE_SIXTEENTH_TYPE} draggable />
-          <Note code={Symbols.NOTE_THIRTYSECOND} name={Symbols.NOTE_THIRTYSECOND_TYPE} draggable />
+          <NoteDragable code={Symbols.NOTE_WHOLE} name={Symbols.NOTE_WHOLE_TYPE} />
+          <NoteDragable code={Symbols.NOTE_HALF} name={Symbols.NOTE_HALF_TYPE} />
+          <NoteDragable code={Symbols.NOTE_QUARTER} name={Symbols.NOTE_QUARTER_TYPE} />
+          <NoteDragable code={Symbols.NOTE_EIGHTH} name={Symbols.NOTE_EIGHTH_TYPE} />
+          <NoteDragable code={Symbols.NOTE_SIXTEENTH} name={Symbols.NOTE_SIXTEENTH_TYPE} />
+          <NoteDragable code={Symbols.NOTE_THIRTYSECOND} name={Symbols.NOTE_THIRTYSECOND_TYPE} />
         </div>
       </div>
       <div className="col-3">

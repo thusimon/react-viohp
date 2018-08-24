@@ -19,6 +19,8 @@ const updateMarkNote = (currMarkNotes, markNote) => {
 };
 
 const musicReducer = (state=initState, action={}) => {
+  console.log(action);
+  console.log(state);
   switch (action.type) {
     case types.ADD_NOTES:
       return action.notes;
@@ -30,6 +32,8 @@ const musicReducer = (state=initState, action={}) => {
       return Object.assign({}, state, {notes:[]});
     case types.NOTE_CLICK:
       return Object.assign({}, state, {markNotes: updateMarkNote([...state.markNotes], action.markNote)});
+    case types.NOTE_DRAG:
+      return Object.assign({}, state, {dragInfo: action.dragInfo});
     default:
       return state;
   }

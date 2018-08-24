@@ -19,3 +19,7 @@ export const clearAllNotes = () => {
 export const clickNote = (markNote) => {
   return {type:types.NOTE_CLICK, markNote};
 };
+
+export const noteDrag = (dragInfo) => {
+  return {type:types.NOTE_DRAG, dragInfo};
+};
