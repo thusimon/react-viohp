@@ -1,6 +1,7 @@
 /**
  * Created by Lu on 8/12/2018.
  */
+/*eslint import/namespace: ['error', { allowComputed: true }]*/
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
@@ -24,13 +25,13 @@ class MusicStaffPage extends React.Component {
     this.onMusicStaffPageMouseDown = this.onMusicStaffPageMouseDown.bind(this);
     // init state
     this.dragNoteRef = null;
-    //this.dragStatus = -1;
     const signature = 'Major';
     const scale = 'C';
     const notes = [];
     const dragFlag = false;
     this.state = {signature, scale, notes, dragFlag};
     this.staffPageRef = React.createRef();
+    this.staffRef = React.createRef();
   }
 
   onMusicStaffPageMouseMove(event){
@@ -39,8 +40,8 @@ class MusicStaffPage extends React.Component {
     if (dragStatus>-1){
       let staffPageRect = this.staffPageRef.current.getBoundingClientRect();
       let noteShift = [event.clientX-staffPageRect.x, event.clientY-staffPageRect.y];
-      console.log(noteShift);
-      console.log(startOffSet);
+      //console.log(noteShift);
+      //console.log(startOffSet);
       dragStatus = 1;
       this.props.dragStatusChange({dragStatus, dragNoteName, startOffSet, noteShift});
     }
@@ -49,8 +50,31 @@ class MusicStaffPage extends React.Component {
   onMusicStaffPageMouseUp(event){
     this.dragStatus = -1;
     let {dragStatus, dragNoteName, startOffSet} = this.props.dragInfo;
+    let staffRef = this.staffRef.current.getWrappedInstance();
+    console.log(staffRef);
+    let staffDom = staffRef.staffRef.current;
+    let staffDomRect = staffDom.getBoundingClientRect();
+    let noteCoordOnStaff = [event.clientX-staffDomRect.x-startOffSet[0]+10,
+      event.clientY-staffDomRect.y-startOffSet[1]+50
+    ];
+    console.log("mouseUP!!!!");
+    console.log(staffDomRect);
+    console.log(noteCoordOnStaff);
+    if (dragStatus ==1 && noteCoordOnStaff[1]>staffDomRect.top && noteCoordOnStaff[1]<staffDomRect.bottom){
+      console.log("note dropped");
+      console.log(noteCoordOnStaff);
+    }
+    /*
+    console.log(this.staffRef.current.Connect.current.getBoundingClientRect());
+    if (dragStatus == 1 && staffRef &&
+      staffRef.Connect && staffRef.Connect.current
+      && staffRef.Connect.current.props.name=="MusicStaff"){
+      console.log("You dropped note on staff");
+    }
+    */
     dragStatus = -1;
     this.props.dragStatusChange({dragStatus, dragNoteName, startOffSet});
+    //console.log(event.target);
   }
 
   onMusicStaffPageMouseDown(event){
@@ -62,17 +86,22 @@ class MusicStaffPage extends React.Component {
   }
   render(){
     let dragInfo = this.props.dragInfo;
-    let dragOffset = dragInfo.noteShift;
+    let dragNoteName = dragInfo.dragNoteName;
+    let dragNoteSymbol = Symbols[dragNoteName];
+    let noteOffset = dragInfo.noteShift || [0,0];
+    let dragNoteStartP = dragInfo.startOffSet;
+    let dragNotePos = [noteOffset[0]-dragNoteStartP[0], noteOffset[1]-dragNoteStartP[1]];
     //console.log(dragOffset);
     return (
       <div style={{position:'relative'}} ref={this.staffPageRef} onMouseDown={this.onMusicStaffPageMouseDown} onMouseMove={this.onMusicStaffPageMouseMove} onMouseUp={this.onMusicStaffPageMouseUp}>
         <div style={{marginTop:'30px'}}>
           <TopControls />
         </div>
-        {dragInfo.dragStatus==1 && <span name={Symbols.NOTE_QUARTER_TYPE} style={{position:"absolute", top:dragOffset[1]+"px", left:dragOffset[0]+"px", fontSize:"72px"}}>{Symbols.NOTE_QUARTER}</span>}
+        {dragInfo.dragStatus==1 &&
+        <span name={dragInfo.dragNoteName} style={{position:"absolute", top:dragNotePos[1]+"px", left:dragNotePos[0]+"px", fontSize:"72px"}}>{Symbols[dragInfo.dragNoteName]}</span>}
         <br />
         <div style={{marginTop:'30px', marginBottom: '30px'}}>
-          <MusicStaff notes={this.props.notes} scaleHead={this.props.scaleHead} />
+          <MusicStaff ref={this.staffRef} notes={this.props.notes} scaleHead={this.props.scaleHead} name="MusicStaff"/>
         </div>
         <div style={{textAlign:'center', width:"400px"}}>
           <span className="badge badge-info" style={{fontSize:'18px', marginBottom:"10px"}}>Your beautiful violin</span>

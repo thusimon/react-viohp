@@ -134,7 +134,7 @@ class MusicStaff extends React.Component {
     let staffLineKey = 0;
     let staffWholeHeight = this.LineLayout.length * this.LineSpace + 2*this.staffVerticalMargin;
     return (
-      <div ref={this.staffRef} className="staffLines" style={{height:staffWholeHeight+'px'}} onDrop={this.ondrop} onDragOver={this.ondragover} onDragEnter={this.ondragenter}>
+      <div ref={this.staffRef} className="staffLines" style={{height:staffWholeHeight+'px'}}>
         <div className="staffLinesContent">
           <table>
             <tbody>
@@ -172,4 +172,4 @@ function mapDispatchToProps(dispatch) {
     }
   };
 }
-export default connect(null, mapDispatchToProps)(MusicStaff);
+export default connect(null, mapDispatchToProps,null,{withRef:true})(MusicStaff);

@@ -31,7 +31,7 @@ class NoteDragable extends Note{
     let originNoteRect = this.noteRef.current.getBoundingClientRect();
     let offSets = [mouseX - originNoteRect.x, mouseY-originNoteRect.y];
     let dragInfo = {dragStatus:0, dragNoteName:this.props.name, startOffSet:offSets};
-    this.props.startDrag(dragInfo);
+    this.props.updateDragStatus(dragInfo);
   }
   onNoteMouseMove(event){
     if (this.mouseDown){
@@ -68,7 +68,7 @@ class NoteDragable extends Note{
 
 function mapDispatchToProps(dispatch){
   return ({
-    startDrag: (dragInfo) => {
+    updateDragStatus: (dragInfo) => {
       dispatch(musicActions.noteDrag(dragInfo));
     }
   });

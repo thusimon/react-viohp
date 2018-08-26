@@ -19,8 +19,8 @@ const updateMarkNote = (currMarkNotes, markNote) => {
 };
 
 const musicReducer = (state=initState, action={}) => {
-  console.log(action);
-  console.log(state);
+  //console.log(action);
+  //console.log(state);
   switch (action.type) {
     case types.ADD_NOTES:
       return action.notes;
