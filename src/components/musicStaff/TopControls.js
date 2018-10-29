@@ -35,16 +35,23 @@ class TopControls extends React.Component {
     const scale = curStateVal.scale;
     const scaleHead = Constants.SHARPFLATIDX[signature][scale];
     this.setState({signature, scale});
-    this.props.addScaleHead(scaleHead);
+    this.props.addScaleHead(scaleHead, signature, scale);
   }
 
   onButtonClick(event){
     let {signature, scale} = this.state;
-    let scaleNotes;
     switch (event.target.name){
       case "showScales":
-        scaleNotes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
-        this.props.showScaleNotes(scaleNotes);
+        let scaleNotes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
+        // prepare the notes
+        let scaleNotesMap = {};
+        for (let i=0;i<scaleNotes.length;i++){
+          let curNote = scaleNotes[i];
+          curNote.xCord = 160 + i*40;
+          curNote.type = Symbols.NOTE_QUARTER_TYPE;
+          scaleNotesMap[i] = curNote;
+        }
+        this.props.showScaleNotes(scaleNotesMap);
         break;
       case "clearAll":
         this.props.clearAllNotes();
@@ -107,8 +114,8 @@ const mapDispatchToProps = (dispatch) => ({
   addNotes: (notes) => {
     dispatch(musicAction.addNotes(notes));
   },
-  addScaleHead: (scaleHead) => {
-    dispatch(musicAction.generateScaleHeads(scaleHead));
+  addScaleHead: (scaleHead, signature, scale) => {
+    dispatch(musicAction.generateScaleHeads(scaleHead, signature, scale));
   },
   showScaleNotes: (scaleNotes) => {
     dispatch(musicAction.showScaleNotes(scaleNotes));

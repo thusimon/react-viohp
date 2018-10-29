@@ -53,7 +53,9 @@ export const SIGNATURES = [
 ];
 
 export const MajorInterval = [2,2,1,2,2,2,1];
+export const MajorIntervalR = [1,2,2,2,1,2,2];
 export const MinorInterval = [2,1,2,2,1,2,2];
+export const MinorIntervalR = [2,2,1,2,2,1,2];
 
 export const SHARPFLATIDX = {
   Major:{

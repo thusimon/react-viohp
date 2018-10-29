@@ -16,9 +16,6 @@ class MusicStaff extends React.Component {
     this.displayScaleHead = this.displayScaleHead.bind(this);
     this.displayNotesOnStaff = this.displayNotesOnStaff.bind(this);
     this.generateFullStaffIndex = this.generateFullStaffIndex.bind(this);
-    this.ondrop = this.ondrop.bind(this);
-    this.ondragover = this.ondragover.bind(this);
-    this.ondragenter = this.ondragenter.bind(this);
     this.calculateSfIdxByCoordinates = this.calculateSfIdxByCoordinates.bind(this);
     this.staffRef = React.createRef();
     // class fixed constants
@@ -72,22 +69,20 @@ class MusicStaff extends React.Component {
   }
 
   displayNotesOnStaff(){
-    const xOffSet = this.headEnd;
-    const xStep = 40;
     const res = [];
     const symCenter = Note.center;
     const halfSpace = this.LineSpace / 2;
-    for (let i=0; i<this.props.notes.length; i++){
-      const curSym = this.props.notes[i];
+    for (let keyi in this.props.notes){
+      const curSym = this.props.notes[keyi];
       const isPrimary = curSym.primary;
       const curSymNames = curSym.label;
       const curSymYPos = curSym.sfIdx + this.staffStart;
-      const curSymXPos = xOffSet+xStep*i;
+      const curSymXPos = curSym.xCord;
       const initOffset = [curSymXPos,curSymYPos*halfSpace]; //[x, y]
       const finalOffset = [initOffset[0]-symCenter[0], initOffset[1]-symCenter[1]];
       res.push(
-        <div key={i} style={{position:'absolute', top: finalOffset[1]+'px', left:finalOffset[0]+'px'}}>
-          <Note code={Symbols.NOTE_QUARTER} showLabel label={curSymNames} primary={isPrimary}
+        <div key={keyi} style={{position:'absolute', top: finalOffset[1]+'px', left:finalOffset[0]+'px'}}>
+          <Note code={Symbols[curSym.type]} showLabel label={curSymNames} primary={isPrimary}
                 sfIdx={curSym.sfIdx} name={curSym.name} mark={curSym.mark}
                 onNoteClicked={this.props.onNoteClicked}
             />
@@ -97,38 +92,6 @@ class MusicStaff extends React.Component {
     return res;
   }
 
-  ondrop(event){
-    event.preventDefault();
-    let staffRect = this.staffRef.current.getBoundingClientRect();
-    let dropNoteX = event.clientX-staffRect.x;
-    let dropNoteY = event.clientY-staffRect.y;
-    if (dropNoteX<this.headEnd){
-      // the note is dropped inside the scale head zone
-      return;
-    }
-    let dropData = JSON.parse(event.dataTransfer.getData("NOTE_DRAG_INIT_DATA"));
-    //console.log(dropData);
-    console.log(dropData.dragP);
-    console.log([dropNoteX, dropNoteY]);
-    let centerY = dropNoteY - dropData.dragP[1] //+ Note.center[1];
-    let centerX = dropNoteX - dropData.dragP[0] //+ Note.center[0];
-    console.log(centerY);
-    let noteCords = this.calculateSfIdxByCoordinates(dropNoteX, dropNoteY);
-  }
-
-
-  ondragover(event){
-    //console.log(">>>: " + event.clientX + ", " + event.clientY);
-    event.preventDefault();
-    // Set the dropEffect to move
-    //event.dataTransfer.dropEffect = "copy"
-  }
-
-  ondragenter(event){
-    console.log("dragenter");
-    console.log(event.clientY);
-    console.log(event.target);
-  }
   render(){
     // return table with 10 cells, 4 visible cells form five lines with a clef at left
     let staffLineKey = 0;
@@ -139,7 +102,7 @@ class MusicStaff extends React.Component {
           <table>
             <tbody>
               {this.LineLayout.map(line=>{
-                let tdClass = line >0 ? 'show':'show';
+                let tdClass = line >0 ? 'show':'halfshow';
                 staffLineKey++;
                 return (<tr key={staffLineKey}><td className={tdClass}>&nbsp;</td></tr>);
               })}
@@ -155,13 +118,13 @@ class MusicStaff extends React.Component {
 }
 
 MusicStaff.propTypes = {
-  notes: PropTypes.array,
+  notes: PropTypes.object,
   scaleHead: PropTypes.array,
   onNoteClicked: PropTypes.func.isRequired
 };
 //define some static properties, config of the class
 MusicStaff.defaultProps = {
-  notes: [],
+  notes: {},
   scaleHead:[]
 };
 

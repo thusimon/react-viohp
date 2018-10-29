@@ -22,86 +22,89 @@ class MusicStaffPage extends React.Component {
     this.scaleTypes = Utils.getAllScaleNames();
     this.onMusicStaffPageMouseMove = this.onMusicStaffPageMouseMove.bind(this);
     this.onMusicStaffPageMouseUp = this.onMusicStaffPageMouseUp.bind(this);
-    this.onMusicStaffPageMouseDown = this.onMusicStaffPageMouseDown.bind(this);
+    this.positionNoteOnStaff = this.positionNoteOnStaff.bind(this);
+    //hard code music staff height as 280px
+    this.staffHeight = 280;
     // init state
-    this.dragNoteRef = null;
-    const signature = 'Major';
-    const scale = 'C';
-    const notes = [];
-    const dragFlag = false;
-    this.state = {signature, scale, notes, dragFlag};
+    this.state = {
+      signature:this.props.signature,
+      scale:this.props.scale,
+      scaleHead:this.props.scaleHead,
+      notes:this.props.notes,
+      dragInfo:this.props.dragInfo
+    };
     this.staffPageRef = React.createRef();
     this.staffRef = React.createRef();
   }
 
+  componentWillReceiveProps(nextProps){
+    let {signature, scale, scaleHead, notes, dragInfo} = nextProps;
+    this.setState({signature, scale, scaleHead, notes, dragInfo});
+  }
+
+  positionNoteOnStaff(noteName, noteCords){
+    let shiftNoise = 5;
+    //staff line space is 20px, only allow Y [40-5, 240+5] = [35,245]
+    let [x, y] = noteCords;
+    if(y<35 || y>245){
+      return;
+    }
+    // calculate sfIdx
+    let sfIdx = Math.floor((y-35)/10)-6;
+    // find the note by signature and scale
+    console.log(this.state);
+    console.log(this.props);
+    let noteFound = Utils.getNoteFromPosition(this.state.signature, this.state.scale, sfIdx);
+    let newNote = {type:noteName, sfIdx:sfIdx, xCord:Math.round(x), name:noteFound.name, label:noteFound.label};
+
+    this.props.addNote(newNote);
+  }
   onMusicStaffPageMouseMove(event){
-    //console.log(event.clientX+", " + event.clientY);
-    let {dragStatus, dragNoteName, startOffSet} = this.props.dragInfo;
+    let {dragStatus, dragNoteName, startOffSet} = this.state.dragInfo;
     if (dragStatus>-1){
+      //calculate the entire staff page client rect
       let staffPageRect = this.staffPageRef.current.getBoundingClientRect();
       let noteShift = [event.clientX-staffPageRect.x, event.clientY-staffPageRect.y];
-      //console.log(noteShift);
-      //console.log(startOffSet);
-      dragStatus = 1;
+      dragStatus = 1; // during dragging
       this.props.dragStatusChange({dragStatus, dragNoteName, startOffSet, noteShift});
     }
   }
 
   onMusicStaffPageMouseUp(event){
-    this.dragStatus = -1;
-    let {dragStatus, dragNoteName, startOffSet} = this.props.dragInfo;
+    let {dragStatus, dragNoteName, startOffSet} = this.state.dragInfo;
     let staffRef = this.staffRef.current.getWrappedInstance();
-    console.log(staffRef);
     let staffDom = staffRef.staffRef.current;
+    // calculate the staff client rect
     let staffDomRect = staffDom.getBoundingClientRect();
-    let noteCoordOnStaff = [event.clientX-staffDomRect.x-startOffSet[0]+10,
-      event.clientY-staffDomRect.y-startOffSet[1]+50
+    let noteCoordOnStaff = [event.clientX-staffDomRect.x-startOffSet[0]+Note.center[0],
+      event.clientY-staffDomRect.y-startOffSet[1]+Note.center[1]
     ];
-    console.log("mouseUP!!!!");
-    console.log(staffDomRect);
-    console.log(noteCoordOnStaff);
-    if (dragStatus ==1 && noteCoordOnStaff[1]>staffDomRect.top && noteCoordOnStaff[1]<staffDomRect.bottom){
+    if (dragStatus ==1 && noteCoordOnStaff[1]>0 && noteCoordOnStaff[1]<this.staffHeight){
       console.log("note dropped");
-      console.log(noteCoordOnStaff);
+      this.positionNoteOnStaff(dragNoteName, noteCoordOnStaff);
+
     }
-    /*
-    console.log(this.staffRef.current.Connect.current.getBoundingClientRect());
-    if (dragStatus == 1 && staffRef &&
-      staffRef.Connect && staffRef.Connect.current
-      && staffRef.Connect.current.props.name=="MusicStaff"){
-      console.log("You dropped note on staff");
-    }
-    */
     dragStatus = -1;
-    this.props.dragStatusChange({dragStatus, dragNoteName, startOffSet});
-    //console.log(event.target);
+    this.props.dragStatusChange({dragStatus, dragNoteName, startOffSet:[0,0],noteShift:[0,0]});
   }
 
-  onMusicStaffPageMouseDown(event){
-    //console.log("DSDSDSD");
-    //console.log(event.target);
-    let dragTarget = event.target;
-    //console.log(event);
-    this.dragStatus = 0;
-  }
   render(){
-    let dragInfo = this.props.dragInfo;
-    let dragNoteName = dragInfo.dragNoteName;
-    let dragNoteSymbol = Symbols[dragNoteName];
-    let noteOffset = dragInfo.noteShift || [0,0];
-    let dragNoteStartP = dragInfo.startOffSet;
-    let dragNotePos = [noteOffset[0]-dragNoteStartP[0], noteOffset[1]-dragNoteStartP[1]];
-    //console.log(dragOffset);
+    let {dragStatus, dragNoteName, startOffSet, noteShift} = this.state.dragInfo;
+    let dragNotePos = [noteShift[0]-startOffSet[0], noteShift[1]-startOffSet[1]];
     return (
-      <div style={{position:'relative'}} ref={this.staffPageRef} onMouseDown={this.onMusicStaffPageMouseDown} onMouseMove={this.onMusicStaffPageMouseMove} onMouseUp={this.onMusicStaffPageMouseUp}>
+      <div style={{position:'relative'}} ref={this.staffPageRef} onMouseMove={this.onMusicStaffPageMouseMove} onMouseUp={this.onMusicStaffPageMouseUp}>
         <div style={{marginTop:'30px'}}>
           <TopControls />
         </div>
-        {dragInfo.dragStatus==1 &&
-        <span name={dragInfo.dragNoteName} style={{position:"absolute", top:dragNotePos[1]+"px", left:dragNotePos[0]+"px", fontSize:"72px"}}>{Symbols[dragInfo.dragNoteName]}</span>}
+        {
+          dragStatus == 1 &&
+          <span name={dragNoteName} style={{position:"absolute", top:dragNotePos[1]+"px", left:dragNotePos[0]+"px", fontSize:"72px"}}>
+            {Symbols[dragNoteName]}
+          </span>
+        }
         <br />
         <div style={{marginTop:'30px', marginBottom: '30px'}}>
-          <MusicStaff ref={this.staffRef} notes={this.props.notes} scaleHead={this.props.scaleHead} name="MusicStaff"/>
+          <MusicStaff ref={this.staffRef} notes={this.state.notes} scaleHead={this.state.scaleHead} name="MusicStaff"/>
         </div>
         <div style={{textAlign:'center', width:"400px"}}>
           <span className="badge badge-info" style={{fontSize:'18px', marginBottom:"10px"}}>Your beautiful violin</span>
@@ -112,7 +115,7 @@ class MusicStaffPage extends React.Component {
 }
 
 MusicStaffPage.propTypes = {
-  notes: PropTypes.array,
+  notes: PropTypes.object,
   scaleHead: PropTypes.array
 };
 
@@ -124,6 +127,9 @@ function mapDispatchToProps(dispatch){
   return {
     dragStatusChange: (dragInfo) => {
       dispatch(musicActions.noteDrag(dragInfo));
+    },
+    addNote:(note)=>{
+      dispatch(musicActions.addNote(note));
     }
   }
 }

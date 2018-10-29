@@ -66,6 +66,10 @@ td.show {
   border: 1px solid black;
   height: 20px;
 }
+td.halfshow {
+  border: 1px dashed black;
+  height: 20px;
+}
 td.hide {
   border: none;
   height: 20px;

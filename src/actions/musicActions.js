@@ -1,11 +1,11 @@
 import * as types from './actionTypes';
 
-export const generateScaleHeads = (scaleHead) => {
-  return {type:types.GENERATE_SCALE_HEAD, scaleHead};
+export const generateScaleHeads = (scaleHead, signature, scale) => {
+  return {type:types.GENERATE_SCALE_HEAD, scaleHead, signature, scale};
 };
 
-export const addNotes = (notes) => {
-  return {type:types.ADD_NOTES, notes};
+export const addNote = (note) => {
+  return {type:types.ADD_NOTE, note};
 };
 
 export const showScaleNotes = (scaleNotes) => {

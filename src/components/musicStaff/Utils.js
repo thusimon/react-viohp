@@ -53,6 +53,7 @@ export const filterFullScale = (minSfIdx, maxSfIdx) => {
  */
 export const getSetOfNoteFromSignatureScale = (signature, scale) => {
   const intervals = signature == 'Major' ? Constant.MajorInterval : Constant.MinorInterval;
+  const intervalsR = signature == 'Major' ? Constant.MajorIntervalR : Constant.MinorIntervalR;
   // filter the full scale, get the notes sfIdx from -6 to 14
   let filteredFullScale = filterFullScale(-7, 15);
   let scaleIndex = filteredFullScale.findIndex(notes => {
@@ -61,9 +62,10 @@ export const getSetOfNoteFromSignatureScale = (signature, scale) => {
   let res = [], i=0, intervalLen = intervals.length;
   let firstNote = filteredFullScale[scaleIndex].filter(note => note.name==scale);
   res.push(firstNote[0]);
-  while (scaleIndex + intervals[i] < filteredFullScale.length){
-    scaleIndex += intervals[i];
-    let notes=filteredFullScale[scaleIndex];
+  let nextIdx = scaleIndex;
+  while (nextIdx + intervals[i] < filteredFullScale.length){
+    nextIdx += intervals[i];
+    let notes=filteredFullScale[nextIdx];
     // we should find the note whose sfIdx is different from the previous one
     let curNoteSfIdx = res[i].sfIdx;
     let differentSfIdxNote = notes.length>1 ?
@@ -72,7 +74,29 @@ export const getSetOfNoteFromSignatureScale = (signature, scale) => {
     res.push(differentSfIdxNote[0]);
     i = (++i)%intervalLen;
   }
-  return res;
+  let resExtended = [res[0]];
+  i=0, nextIdx = scaleIndex;
+  for (let noteSfIdx = res[0].sfIdx+1; noteSfIdx<=15; noteSfIdx++){
+    nextIdx -= intervalsR[i];
+    let notes = filteredFullScale[nextIdx];
+    let curNoteSfIdx = resExtended[i].sfIdx;
+    let differentSfIdxNote = notes.length>1 ?
+      notes.filter(note => note.sfIdx!=curNoteSfIdx) :
+      notes;
+    resExtended.push(differentSfIdxNote[0]);
+    i = (++i)%intervalLen;
+  }
+  resExtended.reverse();
+  resExtended.pop();
+  return [...resExtended, ...res];
+};
+
+export const getNoteFromPosition = (signature, scale, sfIdx)=>{
+  let setOfNotes = getSetOfNoteFromSignatureScale(signature, scale);
+  let noteBySfIdx = setOfNotes.filter(note=>note.sfIdx == sfIdx);
+  console.log(noteBySfIdx);
+  // only use the first found
+  return noteBySfIdx[0];
 };
 
 /**

@@ -22,14 +22,18 @@ const musicReducer = (state=initState, action={}) => {
   //console.log(action);
   //console.log(state);
   switch (action.type) {
-    case types.ADD_NOTES:
-      return action.notes;
+    case types.ADD_NOTE:
+      let curNotes = Object.assign({},state.notes);
+      let noteKeys = Object.keys(curNotes);
+      let newKey = noteKeys.length;
+      curNotes[newKey] = action.note;
+      return Object.assign({}, state, {notes:curNotes});
     case types.GENERATE_SCALE_HEAD:
-      return Object.assign({}, state, {scaleHead:action.scaleHead, notes:[]});
+      return Object.assign({}, state, {scaleHead:action.scaleHead, notes:{}, signature:action.signature, scale:action.scale});
     case types.SHOW_SCALE_NOTES:
       return Object.assign({}, state, {notes: action.scaleNotes});
     case types.CLEAR_ALL_NOTES:
-      return Object.assign({}, state, {notes:[]});
+      return Object.assign({}, state, {notes:{}, markNotes:[]});
     case types.NOTE_CLICK:
       return Object.assign({}, state, {markNotes: updateMarkNote([...state.markNotes], action.markNote)});
     case types.NOTE_DRAG:
