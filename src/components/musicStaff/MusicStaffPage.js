@@ -10,6 +10,7 @@ import * as Constants from './Constants';
 import * as Utils from './Utils';
 import TopControls from './TopControls';
 import Violin from './Violin';
+import AudioAnalyzer from '../audio/AudioAnalyzer';
 import Note from './Note';
 import * as musicActions from '../../actions/musicActions';
 import * as Symbols from './Symbols';
@@ -106,9 +107,17 @@ class MusicStaffPage extends React.Component {
         <div style={{marginTop:'30px', marginBottom: '30px'}}>
           <MusicStaff ref={this.staffRef} notes={this.state.notes} scaleHead={this.state.scaleHead} name="MusicStaff"/>
         </div>
-        <div style={{textAlign:'center', width:"400px"}}>
-          <span className="badge badge-info" style={{fontSize:'18px', marginBottom:"10px"}}>Your beautiful violin</span>
-          <Violin />
+        <div style={{display:"flex", flexDirection: "row"}}>
+          <div style={{textAlign:'center', width:"400px", flex:"auto"}}>
+            <span className="badge badge-info" style={{fontSize:'18px', marginBottom:"10px"}}>Your beautiful violin</span>
+            <Violin />
+          </div>
+          <div style={{textAlign:'center', flex:"auto"}}>
+            <span className="badge badge-info" style={{fontSize:'18px', marginBottom:"10px"}}>Audio Analyse</span>
+            <div>
+              <AudioAnalyzer />
+            </div>
+          </div>
         </div>
       </div>);
   }
