@@ -40,11 +40,13 @@ class TopControls extends React.Component {
 
   onButtonClick(event){
     let {signature, scale} = this.state;
+    let scaleNotes=[];
+    let scaleNotesMap=[];
     switch (event.target.name){
       case "showScales":
-        let scaleNotes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
+        scaleNotes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
         // prepare the notes
-        let scaleNotesMap = {};
+        scaleNotesMap = {};
         for (let i=0;i<scaleNotes.length;i++){
           let curNote = scaleNotes[i];
           curNote.xCord = 160 + i*40;
@@ -112,7 +114,7 @@ TopControls.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   addNotes: (notes) => {
-    dispatch(musicAction.addNotes(notes));
+    dispatch(musicAction.addNote(notes));
   },
   addScaleHead: (scaleHead, signature, scale) => {
     dispatch(musicAction.generateScaleHeads(scaleHead, signature, scale));

@@ -4,6 +4,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import * as audioUtils from './Utils';
 
 class AudioAnalyzer extends React.Component{
   constructor(props, context){
@@ -13,16 +14,12 @@ class AudioAnalyzer extends React.Component{
     this.constraints = {audio: true, video:false};
     this.updateCanvas = this.updateCanvas.bind(this);
     this.source=null;
+    // position 1, note frequency g3=196Hz, b5=988Hz
+    this.freqRange=[180,1000];
   }
   componentDidMount(){
-
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     this.analyser = this.audioCtx.createAnalyser();
-    this.analyser.fftSize = 2048;
-    this.bufferLength = this.analyser.frequencyBinCount;
-    this.dataArray = new Uint8Array(this.bufferLength);
-    this.analyser.getByteTimeDomainData(this.dataArray);
-
     // get media
     let me = this;
     if (navigator.mediaDevices.getUserMedia) {
@@ -31,8 +28,19 @@ class AudioAnalyzer extends React.Component{
         .then(
         function(stream) {
           me.source = me.audioCtx.createMediaStreamSource(stream);
+          me.sampleRate = me.audioCtx.sampleRate;
+          me.fftSize = audioUtils.getViolinFFtSize(me.sampleRate);
+          console.log("fftSize: " + me.fftSize);
+          me.analyser.fftSize = me.fftSize;
+          me.bufferLength = me.analyser.frequencyBinCount;
+          me.dataArray = new Uint8Array(me.bufferLength);
           me.source.connect(me.analyser);
           console.log("connected to source");
+          // mostly the sample rate is 48000 by default
+          // for violin g3#-g3=12Hz
+          console.log("sample rate = " + me.sampleRate);
+          console.log("fft dataArray len" + me.dataArray.length);
+          me.timer = setInterval(me.updateCanvas, 100)
         })
         .catch( function(err) { console.log('The following gUM error occured: ' + err);})
     } else {
@@ -40,13 +48,14 @@ class AudioAnalyzer extends React.Component{
     }
 
     //create a timer
-    this.timer = setInterval(this.updateCanvas, 100)
   }
   componentWillUnmount(){
     clearInterval(this.timer);
   }
   updateCanvas(){
-    this.analyser.getByteTimeDomainData(this.dataArray);
+    this.analyser.getByteFrequencyData(this.dataArray);
+    let maxFreqRes = audioUtils.getPeakFreqInRange(this.dataArray, this.sampleRate, this.fftSize, this.freqRange);
+    console.log(maxFreqRes);
     this.setState({dataArray: this.dataArray});
   }
   render(){

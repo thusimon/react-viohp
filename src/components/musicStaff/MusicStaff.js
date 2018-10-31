@@ -74,6 +74,7 @@ class MusicStaff extends React.Component {
     const halfSpace = this.LineSpace / 2;
     for (let keyi in this.props.notes){
       const curSym = this.props.notes[keyi];
+      const curSymCode = Symbols[curSym.type];
       const isPrimary = curSym.primary;
       const curSymNames = curSym.label;
       const curSymYPos = curSym.sfIdx + this.staffStart;
@@ -82,7 +83,7 @@ class MusicStaff extends React.Component {
       const finalOffset = [initOffset[0]-symCenter[0], initOffset[1]-symCenter[1]];
       res.push(
         <div key={keyi} style={{position:'absolute', top: finalOffset[1]+'px', left:finalOffset[0]+'px'}}>
-          <Note code={Symbols[curSym.type]} showLabel label={curSymNames} primary={isPrimary}
+          <Note code={curSymCode} showLabel label={curSymNames} primary={isPrimary}
                 sfIdx={curSym.sfIdx} name={curSym.name} mark={curSym.mark}
                 onNoteClicked={this.props.onNoteClicked}
             />
