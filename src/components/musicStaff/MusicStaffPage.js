@@ -109,7 +109,7 @@ class MusicStaffPage extends React.Component {
         </div>
         <div style={{display:"flex", flexDirection: "row"}}>
           <div style={{textAlign:'center', width:"400px", flex:"auto"}}>
-            <span className="badge badge-info" style={{fontSize:'18px', marginBottom:"10px"}}>Your beautiful violin</span>
+            <span className="badge badge-info" style={{fontSize:'18px', marginBottom:"10px"}}>Violin</span>
             <Violin />
           </div>
           <div style={{textAlign:'center', flex:"auto"}}>

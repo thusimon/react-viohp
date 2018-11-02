@@ -5,6 +5,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import * as audioUtils from './Utils';
+import AudioDisplay from './AudioDisplay';
+import * as audioActions from '../../actions/audioActions';
 
 class AudioAnalyzer extends React.Component{
   constructor(props, context){
@@ -14,8 +16,9 @@ class AudioAnalyzer extends React.Component{
     this.constraints = {audio: true, video:false};
     this.updateCanvas = this.updateCanvas.bind(this);
     this.source=null;
-    // position 1, note frequency g3=196Hz, b5=988Hz
-    this.freqRange=[180,1000];
+    this.defaultInfo = {noteColor: "#00FF00", peakFreq: "0", noteName: "--", noteFreq: '--'};
+    this.state = {dataArray:[], sampleRate: 0, peakEnergy: 0,
+      noteColor: "#00FF00", peakFreq: "0", noteName: "--", noteFreq: '--'};
   }
   componentDidMount(){
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -29,7 +32,9 @@ class AudioAnalyzer extends React.Component{
         function(stream) {
           me.source = me.audioCtx.createMediaStreamSource(stream);
           me.sampleRate = me.audioCtx.sampleRate;
-          me.fftSize = audioUtils.getViolinFFtSize(me.sampleRate);
+          //me.props.displaySampleRate(me.sampleRate);
+          //me.fftSize = audioUtils.getViolinFFtSize(me.sampleRate);
+          me.fftSize = 16384;
           console.log("fftSize: " + me.fftSize);
           me.analyser.fftSize = me.fftSize;
           me.bufferLength = me.analyser.frequencyBinCount;
@@ -54,55 +59,52 @@ class AudioAnalyzer extends React.Component{
   }
   updateCanvas(){
     this.analyser.getByteFrequencyData(this.dataArray);
-    let maxFreqRes = audioUtils.getPeakFreqInRange(this.dataArray, this.sampleRate, this.fftSize, this.freqRange);
-    console.log(maxFreqRes);
-    this.setState({dataArray: this.dataArray});
+    let rangedFreqData = audioUtils.getRangedFreqData(this.dataArray, this.sampleRate, this.fftSize, this.props.freqRange);
+    let [peakEnergy, peakFreqIndex] = audioUtils.getPeakFreq(rangedFreqData, this.props.threshold);
+    let {noteColor, peakFreq,noteName, noteFreq} = this.defaultInfo;
+    if (peakEnergy>0){
+      let peakFreqRaw = audioUtils.getFreqFromIndex(peakFreqIndex, this.sampleRate, this.fftSize) + this.props.freqRange[0];
+      peakFreqRaw = peakFreqRaw.toFixed(2);
+      let freqDisplayInfo = audioUtils.getNoteByFreq(peakFreqRaw, this.props.tolerance);
+      peakFreq = freqDisplayInfo.peakFreq;
+      noteColor = freqDisplayInfo.noteColor;
+      noteName = freqDisplayInfo.noteName;
+      noteFreq = freqDisplayInfo.noteFreq;
+    }
+    this.setState({dataArray: rangedFreqData, sampleRate:this.sampleRate, peakEnergy, peakFreq, noteColor, noteName, noteFreq});
   }
   render(){
     let canvasDom = this.canvasRef.current;
     if(canvasDom) {
-      //console.log(canvasDom);
-      //console.log(this.state.dataArray);
       let canvasCtx = canvasDom.getContext("2d");
-
-      //console.log(this.dataArray);
-
-      canvasCtx.fillStyle = "rgb(200, 200, 200)";
+      canvasCtx.fillStyle = 'rgb(220, 220, 220)';
       canvasCtx.fillRect(0, 0, canvasDom.width, canvasDom.height);
-
-      canvasCtx.lineWidth = 2;
-      canvasCtx.strokeStyle = "rgb(0, 0, 0)";
-
-      canvasCtx.beginPath();
-
-      var sliceWidth = canvasDom.width * 1.0 / this.bufferLength;
+      let dataArray = this.state.dataArray;
+      let dataLen = dataArray.length;
+      var barWidth = (canvasDom.width / dataLen);
+      var barHeight;
       var x = 0;
-      for (var i = 0; i < this.bufferLength; i++) {
+      for(var i = 0; i < dataLen; i++) {
+        barHeight = dataArray[i];
 
-        var v = this.dataArray[i] / 128.0;
-        var y = v * canvasDom.height / 2;
-
-        if (i === 0) {
-          canvasCtx.moveTo(x, y);
-        } else {
-          canvasCtx.lineTo(x, y);
-        }
-
-        x += sliceWidth;
+        canvasCtx.fillStyle = 'rgb(50,' + (barHeight+100) + ',50)';
+        canvasCtx.fillRect(x,canvasDom.height-barHeight/2,barWidth,barHeight/2);
+        x += barWidth + 1;
       }
-
-      canvasCtx.lineTo(canvasDom.width, canvasDom.height / 2);
-      canvasCtx.stroke();
     }
     return (
-      <canvas id="audiocanvas" ref={this.canvasRef} width="600" height="400">
-      </canvas>)
+      <div>
+        <canvas id="audiocanvas" ref={this.canvasRef} width="600" height="400">
+        </canvas>
+        <AudioDisplay sampleRate={this.state.sampleRate} peakEnergy={this.state.peakEnergy}
+                      peakFreq={this.state.peakFreq} noteColor={this.state.noteColor}
+                      noteName={this.state.noteName} noteFreq={this.state.noteFreq} />
+      </div>
+      )
   }
 }
-
-
-AudioAnalyzer.propTypes = {
-
+function mapStateToProps(state){
+  return state.audio;
 }
 
-export default AudioAnalyzer;
+export default connect(mapStateToProps)(AudioAnalyzer);
