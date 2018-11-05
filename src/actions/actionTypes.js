@@ -23,4 +23,4 @@ export const NOTE_DRAG = 'NOTE_DRAG';
 //audio action types
 export const DISPLAY_INFO = 'DISPLAY_INFO';
 export const DISPLAY_SAMPLERATE = 'DISPLAY_SAMPLERATE';
-export const CHANGE_SETTINGS = 'CHANGE_SETTINGS';
+export const SAVE_SETTINGS = 'SAVE_SETTINGS';

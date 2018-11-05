@@ -34,19 +34,17 @@ export const getPeakFreq = (freqData, noiseThreshold)=>{
 };
 
 export const getNoteByFreq = (curFreq, tolerance)=>{
-  let res = {noteColor: "#00FF00", peakFreq: "0", noteName: "--", noteFreq: "--"};
+  let res = {noteColor: "#00FF00", peakFreq: curFreq.toString(), noteName: "--", noteFreq: "--"};
   for(let noteKey in audioSettings.POS1_NOTE_FREQ){
     let noteFreq = audioSettings.POS1_NOTE_FREQ[noteKey];
     let freqDiff = curFreq-noteFreq;
     if (freqDiff>0 && freqDiff<=tolerance){
       // curFreq is higher than noteFreq
       res.noteColor = "#FF0000";
-      res.peakFreq = curFreq.toString();
       res.noteName = noteKey;
       res.noteFreq = noteFreq.toString();
       return res;
     } else if (freqDiff>=-tolerance && freqDiff<=0){
-      res.peakFreq = curFreq.toString();
       res.noteName = noteKey;
       res.noteFreq = noteFreq.toString();
       return res;

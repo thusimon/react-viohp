@@ -13,6 +13,11 @@ export default function audioReducer(state=initState, action={}){
     }
     case types.DISPLAY_SAMPLERATE:
       return Object.assign({}, state, {sampleRate:action.sampleRate});
+    case types.SAVE_SETTINGS:
+    {
+      let {threshold, tolerance,freqRange} = action;
+      return Object.assign({}, state, {threshold, tolerance,freqRange});
+    }
     default:
       return state;
   }

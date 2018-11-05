@@ -14,6 +14,8 @@ import AudioAnalyzer from '../audio/AudioAnalyzer';
 import Note from './Note';
 import * as musicActions from '../../actions/musicActions';
 import * as Symbols from './Symbols';
+import ToggleButton from '../common/ToggleButton';
+import AudioControls from '../audio/AudioControls';
 
 class MusicStaffPage extends React.Component {
   constructor(props, context){
@@ -24,6 +26,7 @@ class MusicStaffPage extends React.Component {
     this.onMusicStaffPageMouseMove = this.onMusicStaffPageMouseMove.bind(this);
     this.onMusicStaffPageMouseUp = this.onMusicStaffPageMouseUp.bind(this);
     this.positionNoteOnStaff = this.positionNoteOnStaff.bind(this);
+    this.toggleSettings = this.toggleSettings.bind(this);
     //hard code music staff height as 280px
     this.staffHeight = 280;
     // init state
@@ -32,7 +35,8 @@ class MusicStaffPage extends React.Component {
       scale:this.props.scale,
       scaleHead:this.props.scaleHead,
       notes:this.props.notes,
-      dragInfo:this.props.dragInfo
+      dragInfo:this.props.dragInfo,
+      showSettings: false
     };
     this.staffPageRef = React.createRef();
     this.staffRef = React.createRef();
@@ -89,9 +93,16 @@ class MusicStaffPage extends React.Component {
     this.props.dragStatusChange({dragStatus, dragNoteName, startOffSet:[0,0],noteShift:[0,0]});
   }
 
+  toggleSettings(){
+    let curState = this.state.showSettings;
+    this.setState({showSettings:!curState});
+  }
+
   render(){
     let {dragStatus, dragNoteName, startOffSet, noteShift} = this.state.dragInfo;
     let dragNotePos = [noteShift[0]-startOffSet[0], noteShift[1]-startOffSet[1]];
+    let audioSettingClass = this.state.showSettings ? "scrollUp scrollUpShow" : "scrollUp";
+    console.log(this.state);
     return (
       <div style={{position:'relative'}} ref={this.staffPageRef} onMouseMove={this.onMusicStaffPageMouseMove} onMouseUp={this.onMusicStaffPageMouseUp}>
         <div style={{marginTop:'30px'}}>
@@ -114,8 +125,18 @@ class MusicStaffPage extends React.Component {
           </div>
           <div style={{textAlign:'center', flex:"auto"}}>
             <span className="badge badge-info" style={{fontSize:'18px', marginBottom:"10px"}}>Audio Analyse</span>
-            <div>
-              <AudioAnalyzer />
+            <div style={{display:"flex",flexDirection: "row"}}>
+              <div style={{marginRight:"5px"}}>
+                <AudioAnalyzer />
+              </div>
+              <div style={{verticalAlign:"top", display:"inline-block"}}>
+                <div onClick={this.toggleSettings}>
+                  <ToggleButton text="Settings" toggle={this.state.showSettings} />
+                </div>
+                <div className={audioSettingClass} style={{marginTop:"20px"}}>
+                  <AudioControls />
+                </div>
+              </div>
             </div>
           </div>
         </div>

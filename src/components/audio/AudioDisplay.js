@@ -18,13 +18,13 @@ class AudioDisplay extends React.Component{
             <tr>
               <td>
                 <div style={{display:"inline-block"}}>
-                  <label>Sample Rate</label>
+                  <label>Sample Rate(Hz)</label>
                   <h2>{this.props.sampleRate}</h2>
                 </div>
               </td>
               <td>
                 <div style={{display:"inline-block"}}>
-                  <label>Peak Freq Energy</label>
+                  <label>Peak Freq Energy(0-255)</label>
                   <h2>{this.props.peakEnergy}</h2>
                 </div>
               </td>
@@ -33,7 +33,7 @@ class AudioDisplay extends React.Component{
             <tr>
               <td>
                 <div style={{display:"inline-block"}}>
-                  <label>Current Frequency</label>
+                  <label>Current Frequency(Hz)</label>
                   <h2 style={{color:this.props.noteColor}}>{this.props.peakFreq}</h2>
                 </div>
               </td>
@@ -45,7 +45,7 @@ class AudioDisplay extends React.Component{
               </td>
               <td>
                 <div style={{display:"inline-block"}}>
-                  <label>Frequency</label>
+                  <label>Frequency(Hz)</label>
                   <h2>{this.props.noteFreq}</h2>
                 </div>
               </td>

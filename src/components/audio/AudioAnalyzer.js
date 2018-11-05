@@ -17,8 +17,7 @@ class AudioAnalyzer extends React.Component{
     this.updateCanvas = this.updateCanvas.bind(this);
     this.source=null;
     this.defaultInfo = {noteColor: "#00FF00", peakFreq: "0", noteName: "--", noteFreq: '--'};
-    this.state = {dataArray:[], sampleRate: 0, peakEnergy: 0,
-      noteColor: "#00FF00", peakFreq: "0", noteName: "--", noteFreq: '--'};
+    this.state = Object.assign({}, this.props);
   }
   componentDidMount(){
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -44,7 +43,7 @@ class AudioAnalyzer extends React.Component{
           // mostly the sample rate is 48000 by default
           // for violin g3#-g3=12Hz
           console.log("sample rate = " + me.sampleRate);
-          console.log("fft dataArray len" + me.dataArray.length);
+          console.log("fft dataArray len: " + me.dataArray.length);
           me.timer = setInterval(me.updateCanvas, 100)
         })
         .catch( function(err) { console.log('The following gUM error occured: ' + err);})
@@ -54,18 +53,22 @@ class AudioAnalyzer extends React.Component{
 
     //create a timer
   }
+  componentWillReceiveProps(nextProps){
+    let {threshold, tolerance, freqRange} = nextProps;
+    this.setState({threshold, tolerance, freqRange});
+  }
   componentWillUnmount(){
     clearInterval(this.timer);
   }
   updateCanvas(){
     this.analyser.getByteFrequencyData(this.dataArray);
-    let rangedFreqData = audioUtils.getRangedFreqData(this.dataArray, this.sampleRate, this.fftSize, this.props.freqRange);
-    let [peakEnergy, peakFreqIndex] = audioUtils.getPeakFreq(rangedFreqData, this.props.threshold);
+    let rangedFreqData = audioUtils.getRangedFreqData(this.dataArray, this.sampleRate, this.fftSize, this.state.freqRange);
+    let [peakEnergy, peakFreqIndex] = audioUtils.getPeakFreq(rangedFreqData, this.state.threshold);
     let {noteColor, peakFreq,noteName, noteFreq} = this.defaultInfo;
     if (peakEnergy>0){
-      let peakFreqRaw = audioUtils.getFreqFromIndex(peakFreqIndex, this.sampleRate, this.fftSize) + this.props.freqRange[0];
+      let peakFreqRaw = audioUtils.getFreqFromIndex(peakFreqIndex, this.sampleRate, this.fftSize) + this.state.freqRange[0];
       peakFreqRaw = peakFreqRaw.toFixed(2);
-      let freqDisplayInfo = audioUtils.getNoteByFreq(peakFreqRaw, this.props.tolerance);
+      let freqDisplayInfo = audioUtils.getNoteByFreq(peakFreqRaw, this.state.tolerance);
       peakFreq = freqDisplayInfo.peakFreq;
       noteColor = freqDisplayInfo.noteColor;
       noteName = freqDisplayInfo.noteName;
@@ -79,23 +82,62 @@ class AudioAnalyzer extends React.Component{
       let canvasCtx = canvasDom.getContext("2d");
       canvasCtx.fillStyle = 'rgb(220, 220, 220)';
       canvasCtx.fillRect(0, 0, canvasDom.width, canvasDom.height);
+      let axisW = 30;
+      let chartW = canvasDom.width-axisW-20;
+      let axisH = 30;
+      let chartH = canvasDom.height-axisH-20;
+      let chartHTo255 = chartH/255;
       let dataArray = this.state.dataArray;
       let dataLen = dataArray.length;
-      var barWidth = (canvasDom.width / dataLen);
-      var barHeight;
-      var x = 0;
+      let barWidth = (chartW / dataLen);
+      let barHeight;
+      let x = axisW;
       for(var i = 0; i < dataLen; i++) {
-        barHeight = dataArray[i];
-
-        canvasCtx.fillStyle = 'rgb(50,' + (barHeight+100) + ',50)';
-        canvasCtx.fillRect(x,canvasDom.height-barHeight/2,barWidth,barHeight/2);
-        x += barWidth + 1;
+        barHeight = dataArray[i]*chartHTo255; // [0,255]=>[0,chartH]
+        canvasCtx.fillStyle = `rgb(${dataArray[i]},${255-dataArray[i]}, 50)`;
+        canvasCtx.fillRect(x,chartH-barHeight+20,barWidth,barHeight);
+        x += barWidth;
       }
+      // plot the y axises
+      canvasCtx.strokeStyle="#000000";
+      canvasCtx.fillStyle = "rgb(0,0,0)";
+      canvasCtx.font = "12px Arial";
+      canvasCtx.beginPath();
+      canvasCtx.moveTo(axisW,20);
+      canvasCtx.lineTo(axisW,chartH+20);
+      canvasCtx.lineTo(axisW+chartW,chartH+20);
+
+      canvasCtx.moveTo(axisW-4,20);
+      canvasCtx.lineTo(axisW-0,20);
+      canvasCtx.fillText("255",4,24);
+      canvasCtx.moveTo(axisW-4,20+chartH/2);
+      canvasCtx.lineTo(axisW-0,20+chartH/2);
+      canvasCtx.fillText("127",2,24+chartH/2);
+      canvasCtx.moveTo(axisW-4,20+chartH);
+      canvasCtx.lineTo(axisW-0,20+chartH);
+      canvasCtx.fillText("0",4,24+chartH);
+
+
+      let xaxisDiv=8, xstep = chartW/xaxisDiv, xfreqStep=(this.state.freqRange[1]-this.state.freqRange[0])/xaxisDiv;
+      for (let i=0;i<=xaxisDiv;i++){
+        let curXaxis = axisW+i*xstep;
+        canvasCtx.moveTo(curXaxis,20+chartH);
+        canvasCtx.lineTo(curXaxis,24+chartH);
+        canvasCtx.fillText(Math.round(this.state.freqRange[0]+i*xfreqStep),curXaxis-12,40+chartH);
+      }
+      canvasCtx.fillStyle = "rgb(0,0,255)";
+      let thresholdH = chartH-this.state.threshold*chartHTo255;
+      canvasCtx.moveTo(axisW-4,20+thresholdH);
+      canvasCtx.lineTo(axisW-0,20+thresholdH);
+      canvasCtx.fillText(this.state.threshold,4,24+thresholdH);
+
+      canvasCtx.stroke();
     }
     return (
       <div>
-        <canvas id="audiocanvas" ref={this.canvasRef} width="600" height="400">
-        </canvas>
+        <div>
+          <canvas id="audiocanvas" ref={this.canvasRef} width="500" height="300"></canvas>
+        </div>
         <AudioDisplay sampleRate={this.state.sampleRate} peakEnergy={this.state.peakEnergy}
                       peakFreq={this.state.peakFreq} noteColor={this.state.noteColor}
                       noteName={this.state.noteName} noteFreq={this.state.noteFreq} />

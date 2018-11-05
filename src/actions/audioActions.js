@@ -10,3 +10,7 @@ export const displayInfo = (peakEnergy, peakFreq, noteColor, noteName, noteFreq)
 export const displaySampleRate = (sampleRate)=>{
   return {type:types.DISPLAY_SAMPLERATE, sampleRate}
 };
+
+export const saveSettings = (threshold, tolerance, freqRange)=>{
+  return {type:types.SAVE_SETTINGS, threshold, tolerance, freqRange};
+};

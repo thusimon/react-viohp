@@ -25,7 +25,7 @@ export const audioInitState = {
   peakFreq: "0",
   noteName: "--",
   noteFreq: "--",
-  threshold: 40, // if the spectrum power is less than threshold, consider as noise
+  threshold: 100, // if the spectrum power is less than threshold, consider as noise
   tolerance: 5, // the spectrum peak's freq is x, find the pitch between [x-5, x+5]
   freqRange: [180, 1000] //the frequency range to display the spectrum position 1, note frequency g3=196Hz, b5=988Hz
 };
