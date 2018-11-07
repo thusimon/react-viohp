@@ -7,6 +7,8 @@ import {connect} from 'react-redux';
 import * as audioUtils from './Utils';
 import AudioDisplay from './AudioDisplay';
 import * as audioActions from '../../actions/audioActions';
+import {NotesFullArr} from '../musicStaff/Constants';
+import * as musicActions from '../../actions/musicActions';
 
 class AudioAnalyzer extends React.Component{
   constructor(props, context){
@@ -73,6 +75,9 @@ class AudioAnalyzer extends React.Component{
       noteColor = freqDisplayInfo.noteColor;
       noteName = freqDisplayInfo.noteName;
       noteFreq = freqDisplayInfo.noteFreq;
+      this.props.showFreqLineOnStaff(peakFreq);
+    } else {
+      this.props.showFreqLineOnStaff(-1);
     }
     this.setState({dataArray: rangedFreqData, sampleRate:this.sampleRate, peakEnergy, peakFreq, noteColor, noteName, noteFreq});
   }
@@ -148,5 +153,11 @@ class AudioAnalyzer extends React.Component{
 function mapStateToProps(state){
   return state.audio;
 }
-
-export default connect(mapStateToProps)(AudioAnalyzer);
+function mapDispatchToProps(dispatch){
+  return {
+    showFreqLineOnStaff: (freq)=>{
+      dispatch(musicActions.showFreqLine(freq));
+    }
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(AudioAnalyzer);

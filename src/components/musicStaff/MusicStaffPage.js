@@ -102,7 +102,6 @@ class MusicStaffPage extends React.Component {
     let {dragStatus, dragNoteName, startOffSet, noteShift} = this.state.dragInfo;
     let dragNotePos = [noteShift[0]-startOffSet[0], noteShift[1]-startOffSet[1]];
     let audioSettingClass = this.state.showSettings ? "scrollUp scrollUpShow" : "scrollUp";
-    console.log(this.state);
     return (
       <div style={{position:'relative'}} ref={this.staffPageRef} onMouseMove={this.onMusicStaffPageMouseMove} onMouseUp={this.onMusicStaffPageMouseUp}>
         <div style={{marginTop:'30px'}}>

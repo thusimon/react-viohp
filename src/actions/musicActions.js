@@ -23,3 +23,7 @@ export const clickNote = (markNote) => {
 export const noteDrag = (dragInfo) => {
   return {type:types.NOTE_DRAG, dragInfo};
 };
+
+export const showFreqLine = (freqLineVal)=>{
+  return {type:types.SHOW_FREQLINE, freqLineVal}
+};

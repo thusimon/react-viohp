@@ -40,6 +40,8 @@ const musicReducer = (state=initState, action={}) => {
       return Object.assign({}, state, {markNotes: updateMarkNote([...state.markNotes], action.markNote)});
     case types.NOTE_DRAG:
       return Object.assign({}, state, {dragInfo: action.dragInfo});
+    case types.SHOW_FREQLINE:
+      return Object.assign({}, state, {freqLineVal: action.freqLineVal});
     default:
       return state;
   }

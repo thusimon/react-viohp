@@ -11,7 +11,7 @@ class Violin extends React.Component {
     this.rowNum = 8;
     this.colNum = 6;
     // boardNotes should be a 8*4 array
-    this.boardNotes = Utils.generateVirtualBoardNotes(-3, 13, this.props.markNotes);
+    this.boardNotes = Utils.generateVirtualBoardNotes(this.props.markNotes);
     this.stringNum = 4;
     this.stringNoteLen = 8;
   }

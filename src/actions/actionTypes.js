@@ -19,6 +19,7 @@ export const SHOW_SCALE_NOTES = 'SHOW_SCALE_NOTES';
 export const CLEAR_ALL_NOTES = 'CLEAR_ALL_NOTES';
 export const NOTE_CLICK = 'NOTE_CLICK';
 export const NOTE_DRAG = 'NOTE_DRAG';
+export const SHOW_FREQLINE = "SHOW_FREQLINE";
 
 //audio action types
 export const DISPLAY_INFO = 'DISPLAY_INFO';

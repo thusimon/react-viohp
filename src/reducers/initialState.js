@@ -15,7 +15,8 @@ export const musicInitState = {
   scaleHead:MusicConstants.SHARPFLATIDX['Major']['C'],
   dragInfo: {dragStatus:-1, dragNoteName:"C", startOffSet:[0,0], noteShift:[0,0]},
   signature : 'Major',
-  scale : 'C'
+  scale : 'C',
+  freqLineVal:-1
 };
 
 export const audioInitState = {

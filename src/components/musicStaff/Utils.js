@@ -24,7 +24,6 @@ export const getExtendScales = (srcScale=Constant.SCALE_INTERVAL,range=[1,0]) =>
 };
 
 export const FULL_SCALE = getExtendScales(Constant.SCALE_INTERVAL, [2,1,0,-1]);
-
 export const getAllScaleNames = ()=>{
   let scaleNames = [];
   for (let noteKey in Constant.Notes) {
@@ -51,21 +50,24 @@ export const filterFullScale = (minSfIdx, maxSfIdx) => {
  * @param signature, can only be Major or Minor
  * @param scale
  */
+
 export const getSetOfNoteFromSignatureScale = (signature, scale) => {
   const intervals = signature == 'Major' ? Constant.MajorInterval : Constant.MinorInterval;
   const intervalsR = signature == 'Major' ? Constant.MajorIntervalR : Constant.MinorIntervalR;
-  // filter the full scale, get the notes sfIdx from -6 to 14
-  let filteredFullScale = filterFullScale(-7, 15);
-  let scaleIndex = filteredFullScale.findIndex(notes => {
-    return notes.map(note => note.name).includes(scale);
-  });
+
+  // find the first note that matches the scale
+  let scaleIndex = Constant.SCALE_FULL.findIndex(notes=>{
+      return notes.map(note=>note.scale).includes(scale)
+    });
   let res = [], i=0, intervalLen = intervals.length;
-  let firstNote = filteredFullScale[scaleIndex].filter(note => note.name==scale);
+  let firstNote = Constant.SCALE_FULL[scaleIndex].filter(note=>note.scale==scale);
   res.push(firstNote[0]);
+  // traverse the Constant.NotesFullArr to get the notes that matches the signature and scale
   let nextIdx = scaleIndex;
-  while (nextIdx + intervals[i] < filteredFullScale.length){
+  let NotesFullArrLen = Constant.SCALE_FULL.length;
+  while (nextIdx+intervals[i]<NotesFullArrLen){
     nextIdx += intervals[i];
-    let notes=filteredFullScale[nextIdx];
+    let notes = Constant.SCALE_FULL[nextIdx];
     // we should find the note whose sfIdx is different from the previous one
     let curNoteSfIdx = res[i].sfIdx;
     let differentSfIdxNote = notes.length>1 ?
@@ -74,21 +76,20 @@ export const getSetOfNoteFromSignatureScale = (signature, scale) => {
     res.push(differentSfIdxNote[0]);
     i = (++i)%intervalLen;
   }
-  let resExtended = [res[0]];
-  i=0, nextIdx = scaleIndex;
-  for (let noteSfIdx = res[0].sfIdx+1; noteSfIdx<=15; noteSfIdx++){
+  // should trace back to add notes
+  nextIdx = scaleIndex, i=0;
+  while (nextIdx-intervalsR[i]>=0){
     nextIdx -= intervalsR[i];
-    let notes = filteredFullScale[nextIdx];
-    let curNoteSfIdx = resExtended[i].sfIdx;
+    let notes = Constant.SCALE_FULL[nextIdx];
+    // we should find the note whose sfIdx is different from the previous one
+    let curNoteSfIdx = res[0].sfIdx;
     let differentSfIdxNote = notes.length>1 ?
       notes.filter(note => note.sfIdx!=curNoteSfIdx) :
       notes;
-    resExtended.push(differentSfIdxNote[0]);
+    res.unshift(differentSfIdxNote[0]);
     i = (++i)%intervalLen;
   }
-  resExtended.reverse();
-  resExtended.pop();
-  return [...resExtended, ...res];
+  return res;
 };
 
 export const getNoteFromPosition = (signature, scale, sfIdx)=>{
@@ -106,8 +107,8 @@ export const getNoteFromPosition = (signature, scale, sfIdx)=>{
  * @param range
  * return a two dimensional array
  */
-export const generateVirtualBoardNotes = (minSfIdx, maxSfIdx, markNotes=[]) =>{
-  let fullNotes = filterFullScale(minSfIdx, maxSfIdx);
+export const generateVirtualBoardNotes = (markNotes=[]) =>{
+  let fullNotes = Constant.SCALE_FULL;
 
   let allStringNotes = [], startIdx = 0;
   // each string at a position will have 8 notes
@@ -120,4 +121,29 @@ export const generateVirtualBoardNotes = (minSfIdx, maxSfIdx, markNotes=[]) =>{
   }
   // the result would be 8*4 array
   return allStringNotes;
+};
+
+/**
+ * @param notesFullArr, should be an array of notes with freq in ascending order
+ * @param queryFreq
+ */
+export const getSFIdxFromFreq = (notesFullArr, queryFreq) => {
+  // find the first index that the freq is greater than the query freq
+  let smallestSFIdx = notesFullArr[0].sfIdx;
+  let noteIdx = notesFullArr.findIndex(note=>note.freq>=queryFreq);
+  if (noteIdx<=0){
+    return smallestSFIdx;
+  } else {
+    let curNote = notesFullArr[noteIdx];
+    let preNote = notesFullArr[noteIdx-1];
+    let curNSfIdx = curNote.sfIdx, curNFreq = curNote.freq;
+    let preNSfIdx = preNote.sfIdx, preNFreq = preNote.freq;
+    // liner interpolate
+    if (Math.abs(queryFreq-curNFreq)<=0.01){
+      return curNSfIdx;
+    }
+    let t = (queryFreq-preNFreq)/(curNFreq-queryFreq);
+    return (t*curNSfIdx+preNSfIdx)/(1+t);
+  }
+
 };

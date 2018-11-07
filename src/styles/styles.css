@@ -75,7 +75,7 @@ td.hide {
   height: 20px;
 }
 .violinTr {
-  height:60px;
+  height:80px;
 }
 .violinT {
   width: 360px;
@@ -88,16 +88,16 @@ td.hide {
 }
 .violinBoardNote{
   border:1px solid blue;
-  border-radius: 20px;
+  border-radius: 25px;
   font-size: 12px;
   position:absolute;
-  top: -19px;
-  left: 38px;
+  top: -24px;
+  left: 33px;
   background-color: #b8daff;
   color: #000000;
-  height:40px;
-  width:40px;
-  line-height: 40px;
+  height:50px;
+  width:50px;
+  line-height: 50px;
   text-align: center;
 }
 .violinBoardNoteSelect{

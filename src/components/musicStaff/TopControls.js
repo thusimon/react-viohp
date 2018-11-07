@@ -45,6 +45,7 @@ class TopControls extends React.Component {
     switch (event.target.name){
       case "showScales":
         scaleNotes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
+        console.log(scaleNotes);
         // prepare the notes
         scaleNotesMap = {};
         for (let i=0;i<scaleNotes.length;i++){
