@@ -12,7 +12,6 @@ export const courseInitState = {
 export const musicInitState = {
   notes:{},
   markNotes:[],
-  scaleHead:MusicConstants.SHARPFLATIDX['Major']['C'],
   dragInfo: {dragStatus:-1, dragNoteName:"C", startOffSet:[0,0], noteShift:[0,0]},
   signature : 'Major',
   scale : 'C',

@@ -10,7 +10,7 @@ import * as Utils from './Utils';
 import Note from './Note';
 import NoteKey from './NoteKey';
 import * as musicActions from '../../actions/musicActions';
-import {NotesFullArr} from './Constants';
+import {NotesFullArr, SHARPFLATIDX} from './Constants';
 
 class MusicStaff extends React.Component {
   constructor(props, context){
@@ -19,19 +19,20 @@ class MusicStaff extends React.Component {
     this.displayNotesOnStaff = this.displayNotesOnStaff.bind(this);
     this.displayFreqLine = this.displayFreqLine.bind(this);
     this.generateFullStaffIndex = this.generateFullStaffIndex.bind(this);
-    this.calculateSfIdxByCoordinates = this.calculateSfIdxByCoordinates.bind(this);
+    this.onMusicStaffMouseUp = this.onMusicStaffMouseUp.bind(this);
+    this.positionNoteOnStaff = this.positionNoteOnStaff.bind(this);
     this.staffRef = React.createRef();
     // class fixed constants
     this.LineSpace = 20;
     this.LineLayout = [0,0,0,1,1,1,1,0,0,0];
     this.headStart = 70;
-    this.headEnd = 160;
-    this.staffVerticalMargin = 40;
     let staffLayout = this.generateFullStaffIndex();
     this.staffStart = staffLayout.visibleStaffIdxStart;
-    let {scale, signature, freqLineVal} = this.props;
+    this.staffHeight = this.LineLayout.length*this.LineSpace;
+    let {scale, signature, freqLineVal, notes} = this.props;
     let fullScaleNotes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
-    this.state = {scale, signature, freqLineVal, fullScaleNotes};
+    let scaleHead = SHARPFLATIDX[signature][scale];
+    this.state = {scale, signature, freqLineVal, fullScaleNotes, notes, scaleHead};
   }
 
   generateFullStaffIndex(){
@@ -46,14 +47,48 @@ class MusicStaff extends React.Component {
     return {fullIndex, visibleStaffIdxStart, visibleStaffIdxEnd};
   }
 
+  positionNoteOnStaff(noteName, noteCords){
+    let shiftNoise = 5;
+    //staff line space is 20px, only allow Y [0, 200]
+    let [x, y] = noteCords;
+    // calculate sfIdx
+    let sfIdx = Math.floor((y+5)/10)-6;
+    // find the note by signature and scale
+    let noteFound = Utils.getNoteFromPosition(this.state.fullScaleNotes, sfIdx);
+    let newNote = {type:noteName, sfIdx:sfIdx, xCord:Math.round(x), name:noteFound.name, label:noteFound.label};
+
+    this.props.addNote(newNote, this.props.idx);
+  }
+
+  onMusicStaffMouseUp(event){
+    console.log(this.state.dragInfo);
+    let {dragStatus, dragNoteName, startOffSet} = this.state.dragInfo;
+    if (dragStatus==1){
+      //let staffRef = this.staffRef.current.getWrappedInstance();
+      let staffDom = this.staffRef.current;
+      // calculate the staff client rect
+      let staffDomRect = staffDom.getBoundingClientRect();
+      let noteCoordOnStaff = [
+        event.clientX-staffDomRect.x-startOffSet[0]+Note.center[0],
+        event.clientY-staffDomRect.y-startOffSet[1]+Note.center[1]
+      ];
+      console.log(noteCoordOnStaff);
+      if (noteCoordOnStaff[1]>0 && noteCoordOnStaff[1]<this.staffHeight){
+        console.log("note dropped");
+        //should add the note to music staff state.notes
+        this.positionNoteOnStaff(dragNoteName, noteCoordOnStaff);
+      }
+    }
+  }
+
   displayScaleHead(){
     const xOffSet = this.headStart;
     const xStep = 12;
     const res = [];
     const symCenter = NoteKey.center;
     const halfSpace = this.LineSpace / 2;
-    for (let i=0; i<this.props.scaleHead.length; i++){
-      const curSym = this.props.scaleHead[i];
+    for (let i=0; i<this.state.scaleHead.length; i++){
+      const curSym = this.state.scaleHead[i];
       const curSymNames = curSym.name;
       const curSymYPos = curSym.sfIdx + this.staffStart;
       const curSymXPos = xOffSet+xStep*i;
@@ -68,18 +103,16 @@ class MusicStaff extends React.Component {
     return res;
   }
 
-  calculateSfIdxByCoordinates(x, y){
-    //console.log(x+', ' +y);
-    let sfIdx = Math.round(y/10)-this.staffStart;
-    return {x,sfIdx};
-  }
-
   displayNotesOnStaff(){
+    let curStaffNotes = this.state.notes[this.props.idx];
     const res = [];
+    if (!curStaffNotes){
+      return res;
+    }
     const symCenter = Note.center;
     const halfSpace = this.LineSpace / 2;
-    for (let keyi in this.props.notes){
-      const curSym = this.props.notes[keyi];
+    for (let keyi in curStaffNotes){
+      const curSym = curStaffNotes[keyi];
       const curSymCode = Symbols[curSym.type];
       const isPrimary = curSym.primary;
       const curSymNames = curSym.label;
@@ -100,12 +133,13 @@ class MusicStaff extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
-    let {scale, signature, freqLineVal} = nextProps;
+    let {scale, signature, freqLineVal, dragInfo, notes} = nextProps;
     if (scale !=this.state.scale || signature!=this.state.signature){
       let fullScaleNotes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
-      this.setState({scale, signature, freqLineVal, fullScaleNotes});
+      let scaleHead = SHARPFLATIDX[signature][scale];
+      this.setState({scale, signature, freqLineVal, fullScaleNotes,scaleHead, dragInfo, notes});
     } else {
-      this.setState({freqLineVal});
+      this.setState({freqLineVal, dragInfo, notes});
     }
   }
   displayFreqLine(){
@@ -116,20 +150,22 @@ class MusicStaff extends React.Component {
     return (
       <hr style={{position:'absolute', top: freqLineYPos+'px', left:"80px", width:"90%",border:"1px solid #0000FF", margin:"0px"}} />
     )
-
   }
   render(){
     // return table with 10 cells, 4 visible cells form five lines with a clef at left
     let staffLineKey = 0;
-    let staffWholeHeight = this.LineLayout.length * this.LineSpace + 2*this.staffVerticalMargin;
+    let staffWholeHeight = this.LineLayout.length * this.LineSpace;
     let freqLine = this.state.freqLineVal>0 ? this.displayFreqLine():null;
     return (
-      <div ref={this.staffRef} className="staffLines" style={{height:staffWholeHeight+'px'}}>
+      <div ref={this.staffRef}
+           className="staffLines"
+           style={{height:staffWholeHeight+'px',width:"800px"}}
+           onMouseUp={this.onMusicStaffMouseUp}>
         <div className="staffLinesContent">
           <table>
             <tbody>
               {this.LineLayout.map(line=>{
-                let tdClass = line >0 ? 'show':'halfshow';
+                let tdClass = line >0 ? 'show':'hide';
                 staffLineKey++;
                 return (<tr key={staffLineKey}><td className={tdClass}>&nbsp;</td></tr>);
               })}
@@ -147,24 +183,35 @@ class MusicStaff extends React.Component {
 
 MusicStaff.propTypes = {
   notes: PropTypes.object,
-  scaleHead: PropTypes.array,
   onNoteClicked: PropTypes.func.isRequired
 };
 //define some static properties, config of the class
 MusicStaff.defaultProps = {
   notes: {},
-  scaleHead:[],
   freqLineVal:-1
 };
 
 function mapStateToProps(state){
-  return {freqLineVal:state.music.freqLineVal,signature:state.music.signature,scale:state.music.scale};
+  return {
+    freqLineVal:state.music.freqLineVal,
+    signature:state.music.signature,
+    scale:state.music.scale,
+    notes:state.music.notes,
+    dragInfo:state.music.dragInfo
+  };
 }
 function mapDispatchToProps(dispatch) {
   return {
     onNoteClicked: (markNote) => {
       dispatch(musicActions.clickNote(markNote));
+    },
+    dragStatusChange: (dragInfo) => {
+      dispatch(musicActions.noteDrag(dragInfo));
+    },
+    addNote:(note, idx)=>{
+      dispatch(musicActions.addNote(note,idx));
     }
   };
 }
+
 export default connect(mapStateToProps, mapDispatchToProps,null,{withRef:true})(MusicStaff);

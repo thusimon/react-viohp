@@ -92,11 +92,18 @@ export const getSetOfNoteFromSignatureScale = (signature, scale) => {
   return res;
 };
 
-export const getNoteFromPosition = (signature, scale, sfIdx)=>{
-  let setOfNotes = getSetOfNoteFromSignatureScale(signature, scale);
-  let noteBySfIdx = setOfNotes.filter(note=>note.sfIdx == sfIdx);
-  console.log(noteBySfIdx);
+export const convertNotesArrToNotesMap=(notesArr)=>{
+  let res={};
+  for(let i=0;i<notesArr.length;i++){
+    res[i]=notesArr[i];
+  }
+  return res;
+};
+
+export const getNoteFromPosition = (scaleNoteFull, sfIdx)=>{
+  let noteBySfIdx = scaleNoteFull.filter(note=>note.sfIdx == sfIdx);
   // only use the first found
+  console.log(noteBySfIdx);
   return noteBySfIdx[0];
 };
 

@@ -9,13 +9,10 @@ import MusicStaff from './MusicStaff';
 import * as Constants from './Constants';
 import * as Utils from './Utils';
 import TopControls from './TopControls';
-import Violin from './Violin';
-import AudioAnalyzer from '../audio/AudioAnalyzer';
 import Note from './Note';
 import * as musicActions from '../../actions/musicActions';
 import * as Symbols from './Symbols';
-import ToggleButton from '../common/ToggleButton';
-import AudioControls from '../audio/AudioControls';
+import MusicStaffHead from './MusicStaffHead';
 
 class MusicStaffPage extends React.Component {
   constructor(props, context){
@@ -27,24 +24,26 @@ class MusicStaffPage extends React.Component {
     this.onMusicStaffPageMouseUp = this.onMusicStaffPageMouseUp.bind(this);
     this.positionNoteOnStaff = this.positionNoteOnStaff.bind(this);
     this.toggleSettings = this.toggleSettings.bind(this);
-    //hard code music staff height as 280px
-    this.staffHeight = 280;
     // init state
     this.state = {
       signature:this.props.signature,
       scale:this.props.scale,
-      scaleHead:this.props.scaleHead,
-      notes:this.props.notes,
       dragInfo:this.props.dragInfo,
-      showSettings: false
+      activeStaff:0,
+      staffNum:4
     };
     this.staffPageRef = React.createRef();
-    this.staffRef = React.createRef();
   }
 
   componentWillReceiveProps(nextProps){
-    let {signature, scale, scaleHead, notes, dragInfo} = nextProps;
-    this.setState({signature, scale, scaleHead, notes, dragInfo});
+    let {signature, scale, dragInfo} = nextProps;
+    if (signature != this.state.signature || scale != this.state.scale){
+      // need to update the scaleHead
+      this.setState({signature, scale, dragInfo});
+    } else {
+      // signature and scale is not changed
+      this.setState({dragInfo})
+    }
   }
 
   positionNoteOnStaff(noteName, noteCords){
@@ -57,8 +56,6 @@ class MusicStaffPage extends React.Component {
     // calculate sfIdx
     let sfIdx = Math.floor((y-35)/10)-6;
     // find the note by signature and scale
-    console.log(this.state);
-    console.log(this.props);
     let noteFound = Utils.getNoteFromPosition(this.state.signature, this.state.scale, sfIdx);
     let newNote = {type:noteName, sfIdx:sfIdx, xCord:Math.round(x), name:noteFound.name, label:noteFound.label};
 
@@ -77,18 +74,6 @@ class MusicStaffPage extends React.Component {
 
   onMusicStaffPageMouseUp(event){
     let {dragStatus, dragNoteName, startOffSet} = this.state.dragInfo;
-    let staffRef = this.staffRef.current.getWrappedInstance();
-    let staffDom = staffRef.staffRef.current;
-    // calculate the staff client rect
-    let staffDomRect = staffDom.getBoundingClientRect();
-    let noteCoordOnStaff = [event.clientX-staffDomRect.x-startOffSet[0]+Note.center[0],
-      event.clientY-staffDomRect.y-startOffSet[1]+Note.center[1]
-    ];
-    if (dragStatus ==1 && noteCoordOnStaff[1]>0 && noteCoordOnStaff[1]<this.staffHeight){
-      console.log("note dropped");
-      this.positionNoteOnStaff(dragNoteName, noteCoordOnStaff);
-
-    }
     dragStatus = -1;
     this.props.dragStatusChange({dragStatus, dragNoteName, startOffSet:[0,0],noteShift:[0,0]});
   }
@@ -102,9 +87,13 @@ class MusicStaffPage extends React.Component {
     let {dragStatus, dragNoteName, startOffSet, noteShift} = this.state.dragInfo;
     let dragNotePos = [noteShift[0]-startOffSet[0], noteShift[1]-startOffSet[1]];
     let audioSettingClass = this.state.showSettings ? "scrollUp scrollUpShow" : "scrollUp";
+    let musicInfo = {title:"Black Heart", author:"TSFH"};
     return (
-      <div style={{position:'relative'}} ref={this.staffPageRef} onMouseMove={this.onMusicStaffPageMouseMove} onMouseUp={this.onMusicStaffPageMouseUp}>
-        <div style={{marginTop:'30px'}}>
+      <div style={{position:'relative', width:"820px", height:"100%"}}
+           ref={this.staffPageRef}
+           onMouseMove={this.onMusicStaffPageMouseMove}
+           onMouseUp={this.onMusicStaffPageMouseUp}>
+        <div>
           <TopControls />
         </div>
         {
@@ -113,31 +102,12 @@ class MusicStaffPage extends React.Component {
             {Symbols[dragNoteName]}
           </span>
         }
-        <br />
-        <div style={{marginTop:'30px', marginBottom: '30px'}}>
-          <MusicStaff ref={this.staffRef} notes={this.state.notes} scaleHead={this.state.scaleHead} name="MusicStaff"/>
-        </div>
-        <div style={{display:"flex", flexDirection: "row"}}>
-          <div style={{textAlign:'center', width:"400px", flex:"auto"}}>
-            <span className="badge badge-info" style={{fontSize:'18px', marginBottom:"10px"}}>Violin</span>
-            <Violin />
-          </div>
-          <div style={{textAlign:'center', flex:"auto"}}>
-            <span className="badge badge-info" style={{fontSize:'18px', marginBottom:"10px"}}>Audio Analyse</span>
-            <div style={{display:"flex",flexDirection: "row"}}>
-              <div style={{marginRight:"5px"}}>
-                <AudioAnalyzer />
-              </div>
-              <div style={{verticalAlign:"top", display:"inline-block"}}>
-                <div onClick={this.toggleSettings}>
-                  <ToggleButton text="Settings" toggle={this.state.showSettings} />
-                </div>
-                <div className={audioSettingClass} style={{marginTop:"20px"}}>
-                  <AudioControls />
-                </div>
-              </div>
-            </div>
-          </div>
+        <MusicStaffHead musicInfo={{title:"Black heart", author:"Two steps from hell"}}/>
+        <div style={{height:"900px", overflowX:"hidden", overflowY:"auto"}}>
+          {Array.from(Array(this.state.staffNum).keys()).map(n =>
+              <MusicStaff key={n.toString()} idx={n}>
+              </MusicStaff>
+          )}
         </div>
       </div>);
   }

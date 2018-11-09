@@ -38,8 +38,7 @@ nav {
   font-size: 14px;
   color:#000000;
   position:relative;
-  border-top:1px solid black;
-  border-bottom:1px solid black;
+  border: none;
   width: 100%;
 }
 .staffLinesContent{
