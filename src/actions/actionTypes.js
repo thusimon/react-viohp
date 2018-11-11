@@ -15,10 +15,13 @@ export const AJAX_CALL_ERROR = 'AJAX_CALL_ERROR';
 //music action types
 export const SET_SIGNA_SCALE = 'SET_SIGNA_SCALE';
 export const ADD_NOTE = 'ADD_NOTE';
+export const LOAD_SCORE = 'LOAD_SCORE';
 export const CLEAR_ALL_NOTES = 'CLEAR_ALL_NOTES';
 export const NOTE_CLICK = 'NOTE_CLICK';
 export const NOTE_DRAG = 'NOTE_DRAG';
 export const SHOW_FREQLINE = "SHOW_FREQLINE";
+export const SET_SCORE_NAME = 'SET_SCORE_NAME';
+export const SET_SCORE_LIST = 'SET_SCORE_LIST';
 
 //audio action types
 export const DISPLAY_INFO = 'DISPLAY_INFO';

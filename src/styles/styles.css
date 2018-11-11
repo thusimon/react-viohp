@@ -2,8 +2,8 @@
 #app {
   font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #4d4d4d;
-  min-width: 550px;
-  max-width: 1200px;
+  min-width: 800px;
+  max-width: 1600px;
   margin: 0 auto;
 }
 
@@ -57,6 +57,9 @@ nav {
 table {
   width: 100%;
 }
+table#audioControl label{
+  margin:0px;
+}
 th {
   border: 2px solid black;
   height: 20px;
@@ -74,7 +77,7 @@ td.hide {
   height: 20px;
 }
 .violinTr {
-  height:80px;
+  height:70px;
 }
 .violinT {
   width: 360px;

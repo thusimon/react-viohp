@@ -10,12 +10,14 @@ export const courseInitState = {
 };
 
 export const musicInitState = {
-  notes:{},
+  notes:[{},{},{},{}],
   markNotes:[],
   dragInfo: {dragStatus:-1, dragNoteName:"C", startOffSet:[0,0], noteShift:[0,0]},
   signature : 'Major',
   scale : 'C',
-  freqLineVal:-1
+  freqLineVal:-1,
+  musicInfo:{},
+  scoreName:""
 };
 
 export const audioInitState = {
@@ -28,4 +30,9 @@ export const audioInitState = {
   threshold: 100, // if the spectrum power is less than threshold, consider as noise
   tolerance: 5, // the spectrum peak's freq is x, find the pitch between [x-5, x+5]
   freqRange: [180, 1000] //the frequency range to display the spectrum position 1, note frequency g3=196Hz, b5=988Hz
+};
+
+export const scoreInitState = {
+  name:"",
+  scoreList:[]
 };

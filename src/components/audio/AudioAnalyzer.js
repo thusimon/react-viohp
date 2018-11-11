@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import * as audioUtils from './Utils';
 import AudioDisplay from './AudioDisplay';
+import ToggleButton from '../common/ToggleButton';
+import AudioControls from '../audio/AudioControls';
 import * as audioActions from '../../actions/audioActions';
 import {NotesFullArr} from '../musicStaff/Constants';
 import * as musicActions from '../../actions/musicActions';
@@ -17,13 +19,15 @@ class AudioAnalyzer extends React.Component{
     this.state = {dataArray:[]};
     this.constraints = {audio: true, video:false};
     this.updateCanvas = this.updateCanvas.bind(this);
+    this.toggleSettings = this.toggleSettings.bind(this);
     this.source=null;
     this.defaultInfo = {noteColor: "#00FF00", peakFreq: "0", noteName: "--", noteFreq: '--'};
-    this.state = Object.assign({}, this.props);
+    this.state = Object.assign({}, this.props, {showSettings: false});
   }
   componentDidMount(){
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     this.analyser = this.audioCtx.createAnalyser();
+    console.log("Audio analyzer did mount");
     // get media
     let me = this;
     if (navigator.mediaDevices.getUserMedia) {
@@ -61,6 +65,11 @@ class AudioAnalyzer extends React.Component{
   }
   componentWillUnmount(){
     clearInterval(this.timer);
+  }
+  toggleSettings(){
+    let curState = this.state.showSettings;
+    console.log("Toggle setting click", this.state.showSettings);
+    this.setState({showSettings:!curState});
   }
   updateCanvas(){
     this.analyser.getByteFrequencyData(this.dataArray);
@@ -138,14 +147,23 @@ class AudioAnalyzer extends React.Component{
 
       canvasCtx.stroke();
     }
+    let audioSettingClass = this.state.showSettings ? "scrollUp scrollUpShow" : "scrollUp";
     return (
-      <div>
-        <div>
+      <div style={{display: "flex"}}>
+        <div style={{flex:"auto"}}>
           <canvas id="audiocanvas" ref={this.canvasRef} width="500" height="300"></canvas>
+          <AudioDisplay sampleRate={this.state.sampleRate} peakEnergy={this.state.peakEnergy}
+                        peakFreq={this.state.peakFreq} noteColor={this.state.noteColor}
+                        noteName={this.state.noteName} noteFreq={this.state.noteFreq} />
         </div>
-        <AudioDisplay sampleRate={this.state.sampleRate} peakEnergy={this.state.peakEnergy}
-                      peakFreq={this.state.peakFreq} noteColor={this.state.noteColor}
-                      noteName={this.state.noteName} noteFreq={this.state.noteFreq} />
+        <div style={{flex:"auto"}}>
+          <div>
+            <ToggleButton text="Settings" toggle={this.state.showSettings} onclick={this.toggleSettings} />
+          </div>
+          <div className={audioSettingClass} style={{marginTop:"20px"}}>
+            <AudioControls />
+          </div>
+        </div>
       </div>
       )
   }

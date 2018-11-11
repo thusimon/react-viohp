@@ -7,15 +7,20 @@ import configureStore from './store/configureStore.dev';
 import {Provider} from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from './components/App';
-import {loadCourses} from './actions/courseActions';
-import {loadAuthors} from './actions/authorActions';
+import {setScoreList, setScore} from './actions/musicActions.js';
 import './styles/styles.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/toastr/build/toastr.min.css';
+import {getAllScoreList, getScoreByName} from './scores/Utils';
 
 const store = configureStore();
-store.dispatch(loadCourses());
-store.dispatch(loadAuthors());
+let scoreList = getAllScoreList();
+store.dispatch(setScoreList(scoreList));
+let firstScore = scoreList[0];
+if (firstScore){
+  let scoreName = firstScore.name;
+  store.dispatch(setScore(scoreName));
+}
 
 render((
     <Provider store={store}>

@@ -53,7 +53,7 @@ class TopControls extends React.Component {
       <div className="container">
         <div className="row">
           <div className="col">
-            <span className="badge badge-info" style={{fontSize:'14px'}}>Drag the note to staff</span>
+            <span className="badge badge-info" style={{fontSize:'12px'}}>Drag the note to staff</span>
             <br />
             <div className="btn-group">
               <NoteDragable code={Symbols.NOTE_WHOLE} name={Symbols.NOTE_WHOLE_TYPE} />

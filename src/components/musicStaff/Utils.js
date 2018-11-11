@@ -103,7 +103,6 @@ export const convertNotesArrToNotesMap=(notesArr)=>{
 export const getNoteFromPosition = (scaleNoteFull, sfIdx)=>{
   let noteBySfIdx = scaleNoteFull.filter(note=>note.sfIdx == sfIdx);
   // only use the first found
-  console.log(noteBySfIdx);
   return noteBySfIdx[0];
 };
 
@@ -153,4 +152,18 @@ export const getSFIdxFromFreq = (notesFullArr, queryFreq) => {
     return (t*curNSfIdx+preNSfIdx)/(1+t);
   }
 
+};
+
+export const updateMarkNote = (currMarkNotes, markNote) => {
+  // markNote: {name:'C', sfIdx:3, mark: true}
+  if (markNote.mark){
+    // we should add this mark note to curMarkNotes array
+    currMarkNotes.push(markNote);
+  } else {
+    // we should filter those markNotes in currMarkNotes
+    currMarkNotes = currMarkNotes.filter(note => {
+      return !(note.name==markNote.name && note.sfIdx==markNote.sfIdx);
+    });
+  }
+  return currMarkNotes;
 };

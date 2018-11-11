@@ -29,10 +29,10 @@ class MusicStaff extends React.Component {
     let staffLayout = this.generateFullStaffIndex();
     this.staffStart = staffLayout.visibleStaffIdxStart;
     this.staffHeight = this.LineLayout.length*this.LineSpace;
-    let {scale, signature, freqLineVal, notes} = this.props;
+    let {scale, signature, freqLineVal, notes, dragInfo} = this.props;
     let fullScaleNotes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
     let scaleHead = SHARPFLATIDX[signature][scale];
-    this.state = {scale, signature, freqLineVal, fullScaleNotes, notes, scaleHead};
+    this.state = {scale, signature, freqLineVal, fullScaleNotes, notes, scaleHead,dragInfo};
   }
 
   generateFullStaffIndex(){
@@ -55,13 +55,14 @@ class MusicStaff extends React.Component {
     let sfIdx = Math.floor((y+5)/10)-6;
     // find the note by signature and scale
     let noteFound = Utils.getNoteFromPosition(this.state.fullScaleNotes, sfIdx);
-    let newNote = {type:noteName, sfIdx:sfIdx, xCord:Math.round(x), name:noteFound.name, label:noteFound.label};
-
-    this.props.addNote(newNote, this.props.idx);
+    if(noteFound){
+      let newNote = {type:noteName, sfIdx:sfIdx, xCord:Math.round(x), name:noteFound.name, label:noteFound.label};
+      console.log(newNote);
+      this.props.addNote(newNote, this.props.idx);
+    }
   }
 
   onMusicStaffMouseUp(event){
-    console.log(this.state.dragInfo);
     let {dragStatus, dragNoteName, startOffSet} = this.state.dragInfo;
     if (dragStatus==1){
       //let staffRef = this.staffRef.current.getWrappedInstance();
@@ -72,7 +73,6 @@ class MusicStaff extends React.Component {
         event.clientX-staffDomRect.x-startOffSet[0]+Note.center[0],
         event.clientY-staffDomRect.y-startOffSet[1]+Note.center[1]
       ];
-      console.log(noteCoordOnStaff);
       if (noteCoordOnStaff[1]>0 && noteCoordOnStaff[1]<this.staffHeight){
         console.log("note dropped");
         //should add the note to music staff state.notes
@@ -148,7 +148,7 @@ class MusicStaff extends React.Component {
     const halfSpace = this.LineSpace / 2;
     const freqLineYPos = (freqLineSfIdx*halfSpace).toFixed(2);
     return (
-      <hr style={{position:'absolute', top: freqLineYPos+'px', left:"80px", width:"90%",border:"1px solid #0000FF", margin:"0px"}} />
+      <hr style={{position:'absolute', top: freqLineYPos+'px', left:"80px", width:"700px",border:"1px solid #0000FF", margin:"0px"}} />
     )
   }
   render(){
@@ -182,12 +182,12 @@ class MusicStaff extends React.Component {
 }
 
 MusicStaff.propTypes = {
-  notes: PropTypes.object,
+  notes: PropTypes.array,
   onNoteClicked: PropTypes.func.isRequired
 };
 //define some static properties, config of the class
 MusicStaff.defaultProps = {
-  notes: {},
+  notes: [],
   freqLineVal:-1
 };
 

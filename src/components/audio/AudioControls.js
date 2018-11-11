@@ -57,25 +57,31 @@ class AudioControls extends React.Component {
   }
   render(){
     return (
-      <table style={{border:"none"}}>
+      <table id="audioControl" style={{border:"none", margin:"0px"}}>
         <tbody>
-          <tr>
+          <tr style={{textAlign:"left"}}>
             <td>
               <label title="if the spectrum power is less than threshold, consider as noise">Threshold(0-255)</label>
+            </td>
+            <td >
               <input name="audioThreshold" pattern="[0-9]*" value={this.state.threshold} style={{width:"35px"}}
                      onChange={this.settingChange}></input>
             </td>
           </tr>
-          <tr>
+          <tr style={{textAlign:"left"}}>
             <td>
               <label title="the current freq is x, find the note between [x-5, x+5], for accuracy, should be less than 6">Tolerance(Hz)</label>
+            </td>
+            <td>
               <input name="audioTolerance" pattern="[0-9]*" value={this.state.tolerance} style={{width:"20px"}}
                      onChange={this.settingChange}></input>
             </td>
           </tr>
-          <tr>
+          <tr style={{textAlign:"left"}}>
             <td>
               <label title="the frequency range to display the spectrum, e.g g3=196Hz, b5=988Hz">Freq Range(Hz)</label>
+            </td>
+            <td>
               <input name="audioFreqRangeMin" pattern="[0-9]*" value={this.state.freqRangeMin} style={{width:"35px"}}
                      onChange={this.settingChange}></input>
               <span>-</span>
@@ -85,7 +91,7 @@ class AudioControls extends React.Component {
           </tr>
           <tr>
             <td>
-              <button type="button" className="btn btn-success btn-xs" onClick={this.saveBtnClick}
+              <button type="button" className="btn btn-success btn-sm" onClick={this.saveBtnClick}
                 disabled={this.state.buttonDisabled}>Save</button>
             </td>
           </tr>
