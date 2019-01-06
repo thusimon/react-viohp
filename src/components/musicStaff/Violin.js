@@ -17,6 +17,7 @@ class Violin extends React.Component {
   }
   render(){
     const markNotes = this.props.markNotes;
+    const freqNote = {noteName:this.props.noteName,noteColor:this.props.noteColor};
     return(
       <table className="violinT" align="center">
         <tbody>
@@ -36,7 +37,7 @@ class Violin extends React.Component {
                     const curNote = this.boardNotes[curNoteCIdx%this.stringNum][curNoteRIdx];
                     chartContent = (
                       <div style={{textAlign:'right',position:'relative'}}>
-                        <BoardNote key={"BN"+r+l} note={curNote} markNotes={markNotes} />
+                        <BoardNote key={"BN"+r+l} note={curNote} markNotes={markNotes} noteName={this.props.noteName} noteColor={this.props.noteColor} />
                       </div>
                     );
                   }
@@ -55,7 +56,13 @@ Violin.propTypes = {
 };
 
 function mapStateToProps(state, ownProps){
-  return {markNotes: state.music.markNotes};
+  return {
+    markNotes: state.music.markNotes,
+    peakEnergy: state.audio.peakFreq,
+    noteColor: state.audio.noteColor,
+    noteName: state.audio.noteName,
+    noteFreq: state.audio.noteFreq
+  };
 }
 
 export default connect(mapStateToProps)(Violin);

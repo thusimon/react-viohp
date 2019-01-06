@@ -58,7 +58,14 @@ class AudioDisplay extends React.Component{
 }
 
 function mapStateToProps(state){
-  return state.audio;
+  return {
+    sampleRate: state.audio.sampleRate,
+    peakEnergy: state.audio.peakEnergy,
+    noteColor: state.audio.noteColor,
+    peakFreq: state.audio.peakFreq,
+    noteName: state.audio.noteName,
+    noteFreq: state.audio.noteFreq
+  }
 }
 
 AudioDisplay.propTypes = {
@@ -70,5 +77,5 @@ AudioDisplay.propTypes = {
   noteFreq: PropTypes.string
 };
 
-//export default connect(mapStateToProps)(AudioDisplay);
-export default AudioDisplay;
+export default connect(mapStateToProps)(AudioDisplay);
+//export default AudioDisplay;

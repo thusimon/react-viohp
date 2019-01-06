@@ -39,7 +39,7 @@ class AudioAnalyzer extends React.Component{
           me.sampleRate = me.audioCtx.sampleRate;
           //me.props.displaySampleRate(me.sampleRate);
           //me.fftSize = audioUtils.getViolinFFtSize(me.sampleRate);
-          me.fftSize = 16384;
+          me.fftSize = 32768;
           console.log("fftSize: " + me.fftSize);
           me.analyser.fftSize = me.fftSize;
           me.bufferLength = me.analyser.frequencyBinCount;
@@ -50,7 +50,8 @@ class AudioAnalyzer extends React.Component{
           // for violin g3#-g3=12Hz
           console.log("sample rate = " + me.sampleRate);
           console.log("fft dataArray len: " + me.dataArray.length);
-          me.timer = setInterval(me.updateCanvas, 100)
+          me.timer = setInterval(me.updateCanvas, 100);
+          me.audioCtx.resume();
         })
         .catch( function(err) { console.log('The following gUM error occured: ' + err);})
     } else {
@@ -75,6 +76,7 @@ class AudioAnalyzer extends React.Component{
     this.analyser.getByteFrequencyData(this.dataArray);
     let rangedFreqData = audioUtils.getRangedFreqData(this.dataArray, this.sampleRate, this.fftSize, this.state.freqRange);
     let [peakEnergy, peakFreqIndex] = audioUtils.getPeakFreq(rangedFreqData, this.state.threshold);
+    //let [peakEnergy, peakFreqIndex] = audioUtils.getBasePeakFreq(rangedFreqData, this.state.threshold, 50);
     let {noteColor, peakFreq,noteName, noteFreq} = this.defaultInfo;
     if (peakEnergy>0){
       let peakFreqRaw = audioUtils.getFreqFromIndex(peakFreqIndex, this.sampleRate, this.fftSize) + this.state.freqRange[0];
@@ -88,6 +90,7 @@ class AudioAnalyzer extends React.Component{
     } else {
       this.props.showFreqLineOnStaff(-1);
     }
+    this.props.displayInfo(peakEnergy, peakFreq, noteColor, noteName, noteFreq);
     this.setState({dataArray: rangedFreqData, sampleRate:this.sampleRate, peakEnergy, peakFreq, noteColor, noteName, noteFreq});
   }
   render(){
@@ -152,9 +155,7 @@ class AudioAnalyzer extends React.Component{
       <div style={{display: "flex"}}>
         <div style={{flex:"auto"}}>
           <canvas id="audiocanvas" ref={this.canvasRef} width="500" height="300"></canvas>
-          <AudioDisplay sampleRate={this.state.sampleRate} peakEnergy={this.state.peakEnergy}
-                        peakFreq={this.state.peakFreq} noteColor={this.state.noteColor}
-                        noteName={this.state.noteName} noteFreq={this.state.noteFreq} />
+          <AudioDisplay />
         </div>
         <div style={{flex:"auto"}}>
           <div>
@@ -175,6 +176,9 @@ function mapDispatchToProps(dispatch){
   return {
     showFreqLineOnStaff: (freq)=>{
       dispatch(musicActions.showFreqLine(freq));
+    },
+    displayInfo: (peakEnergy, peakFreq, noteColor, noteName, noteFreq)=>{
+      dispatch(audioActions.displayInfo(peakEnergy, peakFreq, noteColor, noteName, noteFreq))
     }
   }
 }
