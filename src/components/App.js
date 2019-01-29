@@ -11,6 +11,10 @@ import AboutPage from './about/AboutPage';
 import CoursesPage from './courses/CoursesPage';
 import MngCoursePage from './courses/ManageCoursePage';
 import MusicAudioPage from './musicStaff/MusicAudioPage';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faSpinner)
 
 class App extends React.Component {
   render() {

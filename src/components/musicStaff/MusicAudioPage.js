@@ -14,6 +14,7 @@ import ScorePicker from '../Scores/ScorePicker';
 import Note from './Note';
 import * as musicActions from '../../actions/musicActions';
 import * as Symbols from './Symbols';
+import AudioFilter from '../audio/AudioFilter';
 
 class MusicAudioPage extends React.Component{
   constructor(props){
@@ -29,12 +30,20 @@ class MusicAudioPage extends React.Component{
         <div style={{flex:"auto"}}>
           <MusicStaffPage></MusicStaffPage>
         </div>
-        <div style={{flex:"auto", display:"flex",flexDirection:"column"}}>
+        <div style={{flex:"auto", display:"flex",flexDirection:"column", marginLeft:"8px"}}>
           <div style={{textAlign:'center',flex:"auto"}}>
             <span className="badge badge-info" style={{fontSize:'18px', marginBottom:"10px"}}>Audio Analyse</span>
             <div style={{display:"flex",flexDirection: "row"}}>
               <div style={{marginRight:"5px"}}>
                 <AudioAnalyzer />
+              </div>
+            </div>
+          </div>
+          <div style={{textAlign:'center',flex:"auto"}}>
+            <span className="badge badge-info" style={{fontSize:'18px', marginBottom:"10px"}}>Audio Filter</span>
+            <div style={{display:"flex",flexDirection: "row"}}>
+              <div style={{marginLeft:"5px"}}>
+                <AudioFilter />
               </div>
             </div>
           </div>

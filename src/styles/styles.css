@@ -14,7 +14,10 @@ a.active {
 nav {
   padding-top: 20px;
 }
-
+.centerInParent {
+  text-align: center;
+  line-height: 100%;
+}
 .note {
   font-size: 72px;
   position: relative;
@@ -139,10 +142,16 @@ td.hide {
 .scrollUp {
   max-height: 200px;
   height: 0px;
+  width:200px;
   overflow: hidden;
   transition: 0.5s;
   transition-timing-function:ease-in-out;
 }
 .scrollUpShow {
   height: 200px;
+}
+
+.audioFilter {
+  display: flex;
+  flex-direction: row;
 }

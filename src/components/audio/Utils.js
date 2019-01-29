@@ -97,10 +97,50 @@ export const getNoteByFreq = (curFreq, tolerance)=>{
 
 export const getFreqFromIndex = (freqIndex, sampleRate, fftSize) => freqIndex*sampleRate/fftSize;
 
-export const getRangedFreqData = (freqData, sampleRate, fftSize, range)=>{
+export const getFreqRange = (sampleRate, fftSize, range)=>{
   let [freqMin, freqMax] = range; // freqMin < freqMax
-  let [indexMin, indexMax] = [Math.round(freqMin*fftSize/sampleRate), Math.round(freqMax*fftSize/sampleRate)];
+  let [indexMin, indexMax] = [Math.round(freqMin*fftSize/sampleRate), Math.floor(freqMax*fftSize/sampleRate)];
   indexMin = indexMin<0 ? 0: indexMin;
-  indexMax = indexMax>freqData.length ? freqData.length:indexMax;
+  return [indexMin, indexMax];
+}
+
+export const getRangedFreqData = (freqData, sampleRate, fftSize, range)=>{
+  let [indexMin, indexMax] = getFreqRange(sampleRate, fftSize, range);
   return freqData.slice(indexMin, indexMax);
 };
+
+export const boundNumber = (num, min, max)=>{
+  if (num<max&&num>min){
+    return num;
+  } else if (num>=max){
+    return max;
+  } else {
+    return min;
+  }
+}
+
+export const generateConsecutiveFilterData = (freqDataIdxMax, filter)=>{
+  const consecutiveFilter = new Array(freqDataIdxMax+1);
+  console.log(filter);
+  const filterX = filter.map(p=>Math.round(p[0]*freqDataIdxMax));
+  const filterY = filter.map(p=>p[1]);
+  console.log(filterX, filterY);
+  for (let i=0; i<filterX.length-1; i++){
+    let x1 = boundNumber(filterX[i], 0, freqDataIdxMax);
+    let x2 = boundNumber(filterX[i+1], 0, freqDataIdxMax);
+    let y1 = boundNumber(filterY[i], 0, 1);
+    let y2 = boundNumber(filterY[i+1], 0, 1);
+    let step = (y2-y1)/(x2-x1);
+    console.log(x1,x2,y1,y2,step);
+    consecutiveFilter[x1]=y1;
+    for(let j=x1+1;j<=x2;j++){
+      consecutiveFilter[j]=consecutiveFilter[j-1] + step;
+    }
+  }
+  return consecutiveFilter;
+}
+
+export const applyFilterOnData = (freqData, filter)=>{
+  const fDataLen = freqData.length;
+
+}

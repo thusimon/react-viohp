@@ -1,7 +1,7 @@
 /**
  * Created by Lu on 11/9/2018.
  */
-import {NotesFullMap} from '../components/musicStaff/Constants';
+import {NotesFullMap} from '../../components/musicStaff/Constants';
 
 class Score {
   /**

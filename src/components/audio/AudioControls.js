@@ -5,6 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import * as audioActions from '../../actions/audioActions';
+import toastr from 'toastr';
 
 class AudioControls extends React.Component {
   constructor(props, context){
@@ -16,14 +17,22 @@ class AudioControls extends React.Component {
       buttonDisabled: false};
   }
   saveBtnClick(){
-    this.props.saveAudioSetting(this.state.threshold,this.state.tolerance,[this.state.freqRangeMin, this.state.freqRangeMax]);
+    // should check 
+    const {threshold, tolerance, freqRangeMin, freqRangeMax} = this.state;
+    const thresholdInt = Number.parseInt(threshold);
+    const toleranceInt = Number.parseInt(tolerance);
+    const freqRangeMinInt = Number.parseInt(freqRangeMin);
+    const freqRangeMaxInt = Number.parseInt(freqRangeMax);
+    if (Number.isInteger(thresholdInt) && Number.isInteger(toleranceInt) && Number.isInteger(freqRangeMinInt) && 
+      Number.isInteger(freqRangeMaxInt) && freqRangeMinInt<freqRangeMaxInt){
+        this.props.saveAudioSetting(thresholdInt,toleranceInt,[freqRangeMinInt, freqRangeMaxInt]);
+    } else {
+        toastr.error('invalid setting');
+    }
   }
   settingChange(evt){
     let tarName = evt.target.name;
-    let tarVal = parseInt(evt.target.value);
-    if (Number.isNaN(tarVal)){
-      tarVal=0;
-    }
+    let tarVal = evt.target.value;
     switch (tarName){
       case "audioThreshold":
         this.setState({threshold: tarVal});
@@ -33,22 +42,12 @@ class AudioControls extends React.Component {
         break;
       case "audioFreqRangeMin":
       {
-        let maxRange = this.state.freqRangeMax;
-        if(maxRange<tarVal){
-          this.setState({freqRangeMin: this.state.freqRangeMax});
-        } else {
-          this.setState({freqRangeMin: tarVal});
-        }
+        this.setState({freqRangeMin: tarVal});
         break;
       }
       case "audioFreqRangeMax":
       {
-        let minRange = parseInt(this.state.freqRangeMin);
-        if (minRange>tarVal){
-          this.setState({freqRangeMax: this.state.freqRangeMin});
-        } else {
-          this.setState({freqRangeMax: tarVal});
-        }
+        this.setState({freqRangeMax: tarVal});
         break;
       }
       default:
@@ -57,6 +56,7 @@ class AudioControls extends React.Component {
   }
   render(){
     return (
+      // do not use table in the future
       <table id="audioControl" style={{border:"none", margin:"0px"}}>
         <tbody>
           <tr style={{textAlign:"left"}}>
@@ -90,9 +90,9 @@ class AudioControls extends React.Component {
             </td>
           </tr>
           <tr>
-            <td>
+            <td colSpan="2">
               <button type="button" className="btn btn-success btn-sm" onClick={this.saveBtnClick}
-                disabled={this.state.buttonDisabled}>Save</button>
+                disabled={this.state.buttonDisabled}>Apply</button>
             </td>
           </tr>
         </tbody>

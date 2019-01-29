@@ -1,8 +1,8 @@
 /**
  * Created by Lu on 11/7/2018.
  */
-import {NotesFullMap as Notes} from '../components/musicStaff/Constants.js';
-import * as Syms from '../components/musicStaff/Symbols';
+import {NotesFullMap as Notes} from '../../components/musicStaff/Constants';
+import * as Syms from '../../components/musicStaff/Symbols';
 
 export const BlackHeart={
   name:"black_heart",

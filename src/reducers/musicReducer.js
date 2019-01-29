@@ -3,7 +3,7 @@
  */
 import * as types from '../actions/actionTypes';
 import {musicInitState as initState} from './initialState';
-import {getScoreByName} from '../scores/Utils';
+import {getScoreByName} from '../data/scores/Utils';
 import {updateMarkNote} from '../components/musicStaff/Utils';
 
 const musicReducer = (state=initState, action={}) => {

@@ -27,5 +27,5 @@ describe('Store test', ()=>{
       expect(actualState.courses[0].title).toEqual('new course 1');
       done();
     });
-  });
+  }).timeout(10000);
 });

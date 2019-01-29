@@ -11,12 +11,40 @@ export default function audioReducer(state=initState, action={}){
       let {peakEnergy, peakFreq, noteColor, noteName, noteFreq} = action;
       return Object.assign({}, state, {peakEnergy, peakFreq, noteColor, noteName, noteFreq});
     }
-    case types.DISPLAY_SAMPLERATE:
-      return Object.assign({}, state, {sampleRate:action.sampleRate});
+    case types.SET_AUDIO_PARAM:
+    {
+      let {sampleRate, fftSize} = action;
+      console.log("set audio param!!", sampleRate,fftSize);
+      return Object.assign({}, state, {sampleRate, fftSize});
+    }
     case types.SAVE_SETTINGS:
     {
       let {threshold, tolerance,freqRange} = action;
       return Object.assign({}, state, {threshold, tolerance,freqRange});
+    }
+    case types.ADD_FILTER_POINT:
+    {
+      let {x, y} = action;
+      let currentFilterPoints = state.filterPoints.push([x,y]);
+      return Object.assign({}, state, {filterPoints: currentFilterPoints})
+    }
+    case types.BEGIN_AJAX_CALL:
+    {
+      // audio begin ajax call
+      console.log("in audio reducer!", action);
+      return Object.assign({}, state, {filters_AJAXFlag:1}); 
+    }
+    case types.LOAD_FILTER_SUCCESS:
+    {
+      // audio filters loaded successfully
+      let filters = action.filters;
+      console.log("YOYOYO", filters);
+      // should clear the reqStatus
+      return Object.assign({}, state, {filters, filters_AJAXFlag:0});
+    }
+    case types.APPLY_FILTER: {
+      let appliedFilter = action.appliedFilter;
+      return Object.assign({}, state, {appliedFilter});
     }
     default:
       return state;

@@ -11,6 +11,7 @@ import AudioControls from '../audio/AudioControls';
 import * as audioActions from '../../actions/audioActions';
 import {NotesFullArr} from '../musicStaff/Constants';
 import * as musicActions from '../../actions/musicActions';
+import {multiplyVectors} from '../../math/basicMatrix';
 
 class AudioAnalyzer extends React.Component{
   constructor(props, context){
@@ -40,8 +41,10 @@ class AudioAnalyzer extends React.Component{
           //me.props.displaySampleRate(me.sampleRate);
           //me.fftSize = audioUtils.getViolinFFtSize(me.sampleRate);
           me.fftSize = 32768;
-          console.log("fftSize: " + me.fftSize);
+          console.log("fftSize!!!!!!!!!!!!!!: " + me.fftSize);
+          me.props.setAudioParam(me.sampleRate, me.fftSize);
           me.analyser.fftSize = me.fftSize;
+          //me.analyser.smoothingTimeConstant = 0.5;
           me.bufferLength = me.analyser.frequencyBinCount;
           me.dataArray = new Uint8Array(me.bufferLength);
           me.source.connect(me.analyser);
@@ -61,8 +64,8 @@ class AudioAnalyzer extends React.Component{
     //create a timer
   }
   componentWillReceiveProps(nextProps){
-    let {threshold, tolerance, freqRange} = nextProps;
-    this.setState({threshold, tolerance, freqRange});
+    let {threshold, tolerance, freqRange,appliedFilter} = nextProps;
+    this.setState({threshold, tolerance, freqRange,appliedFilter});
   }
   componentWillUnmount(){
     clearInterval(this.timer);
@@ -75,6 +78,11 @@ class AudioAnalyzer extends React.Component{
   updateCanvas(){
     this.analyser.getByteFrequencyData(this.dataArray);
     let rangedFreqData = audioUtils.getRangedFreqData(this.dataArray, this.sampleRate, this.fftSize, this.state.freqRange);
+    if (this.state.appliedFilter && this.state.appliedFilter.length>0){
+      //multiply the two arrays
+      //console.log(rangedFreqData.length, this.state.appliedFilter.length);
+      rangedFreqData = multiplyVectors(rangedFreqData, this.state.appliedFilter);
+    }
     let [peakEnergy, peakFreqIndex] = audioUtils.getPeakFreq(rangedFreqData, this.state.threshold);
     //let [peakEnergy, peakFreqIndex] = audioUtils.getBasePeakFreq(rangedFreqData, this.state.threshold, 50);
     let {noteColor, peakFreq,noteName, noteFreq} = this.defaultInfo;
@@ -104,7 +112,7 @@ class AudioAnalyzer extends React.Component{
       let axisH = 30;
       let chartH = canvasDom.height-axisH-20;
       let chartHTo255 = chartH/255;
-      let dataArray = this.state.dataArray;
+      let dataArray = this.state.dataArray||[];
       let dataLen = dataArray.length;
       let barWidth = (chartW / dataLen);
       let barHeight;
@@ -179,6 +187,9 @@ function mapDispatchToProps(dispatch){
     },
     displayInfo: (peakEnergy, peakFreq, noteColor, noteName, noteFreq)=>{
       dispatch(audioActions.displayInfo(peakEnergy, peakFreq, noteColor, noteName, noteFreq))
+    },
+    setAudioParam: (sampleRate, fftSize)=>{
+      dispatch(audioActions.setAudioParam(sampleRate, fftSize));
     }
   }
 }
