@@ -43,8 +43,8 @@ export default function audioReducer(state=initState, action={}){
       return Object.assign({}, state, {filters, filters_AJAXFlag:0});
     }
     case types.APPLY_FILTER: {
-      let appliedFilter = action.appliedFilter;
-      return Object.assign({}, state, {appliedFilter});
+      let {appliedFiltername, appliedFilter} = action;
+      return Object.assign({}, state, {appliedFilter, appliedFiltername});
     }
     default:
       return state;

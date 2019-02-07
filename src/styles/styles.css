@@ -140,18 +140,27 @@ td.hide {
 }
 
 .scrollUp {
-  max-height: 200px;
-  height: 0px;
+  max-height: 0px;
   width:200px;
   overflow: hidden;
+  height:auto;
   transition: 0.5s;
   transition-timing-function:ease-in-out;
 }
 .scrollUpShow {
-  height: 200px;
+  max-height: 300px;
 }
 
 .audioFilter {
   display: flex;
   flex-direction: row;
+}
+
+.customModalShow{
+  display:block;
+}
+
+.customModalHide{
+  display:none;
+  transition: 0.5s linear
 }

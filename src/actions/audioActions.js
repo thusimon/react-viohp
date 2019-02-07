@@ -48,6 +48,6 @@ export const saveFilterPoints = (xpoints, ypoints)=>{
   return {type:types.SAVE_FILTER_POINTS, xpoints, ypoints};
 }
 
-export const applyFilter = (appliedFilter) => {
-  return {type:types.APPLY_FILTER, appliedFilter}
+export const applyFilter = (appliedFiltername, appliedFilter) => {
+  return {type:types.APPLY_FILTER, appliedFiltername, appliedFilter}
 }

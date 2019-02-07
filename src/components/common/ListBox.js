@@ -2,9 +2,10 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 //import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
-const ListBox = ({status, data, style, clickEvt})=>{
+const ListBox = ({status, data, style, curName, clickEvt})=>{
     // status: 0: ready, 1: loading
     // data: array of {name, value}
+    // curName: string
     // style: height and width
     function ListBoxClick(evt){
         let target = evt.target;
@@ -21,8 +22,13 @@ const ListBox = ({status, data, style, clickEvt})=>{
     }
     let content;
     if (status == 0){
-        content = data.map(d=><button type="button" key={d.name} title={d.title} 
-            className="list-group-item list-group-item-action" name={d.name}>{d.value}</button>);
+        content = data.map(d=>{
+            let className = "list-group-item list-group-item-action";
+            if (d.name==curName){
+                className += " active";
+            }
+            return <button type="button" key={d.name} title={d.title} className={className} name={d.name}>{d.value}</button>
+        });
     } else {
         content = 
         <div title="Requesting..." className="centerInParent">

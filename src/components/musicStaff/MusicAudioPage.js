@@ -15,13 +15,21 @@ import Note from './Note';
 import * as musicActions from '../../actions/musicActions';
 import * as Symbols from './Symbols';
 import AudioFilter from '../audio/AudioFilter';
+import ToggleButton from '../common/ToggleButton';
 
 class MusicAudioPage extends React.Component{
   constructor(props){
     super(props);
+    this.toggleFilter=this.toggleFilter.bind(this);
+    this.state = {showFilter: false};
   }
-
+  toggleFilter(){
+    let curShowFilter = this.state.showFilter;
+    this.setState({showFilter:!curShowFilter});
+  }
   render(){
+    let showFilterBtnText = this.props.appliedFiltername ? `You applied ${this.props.appliedFiltername} filter` : "Try filter?";
+    let audioSettingClass = this.state.showFilter ? "scrollUp scrollUpShow" : "scrollUp";
     return (
       <div style={{marginTop:"20px", display:"flex"}}>
         <div style={{flex:"auto"}}>
@@ -30,8 +38,8 @@ class MusicAudioPage extends React.Component{
         <div style={{flex:"auto"}}>
           <MusicStaffPage></MusicStaffPage>
         </div>
-        <div style={{flex:"auto", display:"flex",flexDirection:"column", marginLeft:"8px"}}>
-          <div style={{textAlign:'center',flex:"auto"}}>
+        <div style={{flex:"auto", marginLeft:"8px"}}>
+          <div style={{textAlign:'center'}}>
             <span className="badge badge-info" style={{fontSize:'18px', marginBottom:"10px"}}>Audio Analyse</span>
             <div style={{display:"flex",flexDirection: "row"}}>
               <div style={{marginRight:"5px"}}>
@@ -39,12 +47,12 @@ class MusicAudioPage extends React.Component{
               </div>
             </div>
           </div>
-          <div style={{textAlign:'center',flex:"auto"}}>
-            <span className="badge badge-info" style={{fontSize:'18px', marginBottom:"10px"}}>Audio Filter</span>
-            <div style={{display:"flex",flexDirection: "row"}}>
-              <div style={{marginLeft:"5px"}}>
-                <AudioFilter />
-              </div>
+          <div>
+            <div style={{textAlign:'left'}}>
+              <ToggleButton text={showFilterBtnText} toggle={this.state.showFilter} onclick={this.toggleFilter} />
+            </div>
+            <div className={audioSettingClass} style={{textAlign:"center",marginLeft:"5px", marginTop:"10px", width:"100%"}}>
+              <AudioFilter />
             </div>
           </div>
           <br />
@@ -58,4 +66,10 @@ class MusicAudioPage extends React.Component{
   }
 }
 
-export default MusicAudioPage;
+function mapStateToProps(state){
+  return {
+    appliedFiltername:state.audio.appliedFiltername
+  }
+}
+
+export default connect(mapStateToProps)(MusicAudioPage);
