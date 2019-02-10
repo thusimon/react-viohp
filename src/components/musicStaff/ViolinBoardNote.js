@@ -11,13 +11,14 @@ const ViolinBoardNote = ({note, markNotes, noteName, noteColor}) => {
     const mn = markNotes[i];
     if (note.findIndex(n=>(n.name==mn.name && n.sfIdx==mn.sfIdx)) > -1){
       marked = true;
+      console.log("this note is marked!", note, noteName, noteColor);
       break;
     }
   }
   const boardNoteClassName = marked ? "violinBoardNote violinBoardNoteSelect" : "violinBoardNote";
 
   // we should decide whether this note is detected by audio
-  let fontColor = "#b8daff";
+  let fontColor = marked ? "#e30ff7" : "#b8daff";
   if (noteName=='--'){
     //show nothing
   } else if (labels.indexOf(noteName)<0){

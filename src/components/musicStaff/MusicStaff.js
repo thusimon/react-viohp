@@ -123,7 +123,7 @@ class MusicStaff extends React.Component {
       res.push(
         <div key={keyi} style={{position:'absolute', top: finalOffset[1]+'px', left:finalOffset[0]+'px'}}>
           <Note code={curSymCode} showLabel label={curSymNames} primary={isPrimary}
-                sfIdx={curSym.sfIdx} name={curSym.name} mark={curSym.mark}
+                sfIdx={curSym.sfIdx} name={curSym.name} mark={curSym.mark} descriptor={curSym.descriptor}
                 onNoteClicked={this.props.onNoteClicked}
             />
         </div>

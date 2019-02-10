@@ -35,11 +35,11 @@ class Score {
       let curStaffNotesLen = curStaffRawNotes.length;
       let incStep = (790-120)/curStaffNotesLen;
       for (let j=0;j<curStaffNotesLen;j++){
-        let {type, pitch} = curStaffRawNotes[j];
+        let {type, pitch, descriptor} = curStaffRawNotes[j];
         let {name,label,scale,sfIdx,freq} = NotesFullMap[pitch];
         //calculate the xCord
         let xCord = Math.round(120+j*incStep);
-        curStaffNotes[j]={type,name,label,scale,sfIdx,freq,xCord};
+        curStaffNotes[j]={type,name,label,scale,sfIdx,freq,xCord,descriptor};
       }
       processedNotes.push(curStaffNotes);
     }

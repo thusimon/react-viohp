@@ -11,6 +11,14 @@ class Note extends React.Component {
     this.noteClick = this.noteClick.bind(this);
     let {mark,name,sfIdx} = this.props;
     this.state = {mark,name,sfIdx};
+    this.descriptor = this.props.descriptor || {};
+    // by default center is (14, 70), but if rotate, the center would change
+    this.rotate = this.descriptor.rotate || false;
+    if (this.rotate){
+      this.center=[14, 70];
+    } else {
+      this.center=[14, 70];
+    }
   }
 
   noteClick(event){
@@ -22,12 +30,45 @@ class Note extends React.Component {
     }
   }
 
-  render(){
+  drawStaffline(){
+    //the -1 line's sfIdx=10, the +1 line's sfIdx=-2
+    //line space = 20, half line spce is 10
     const noteMarkClass = this.state.mark ? "noteSelected" : "";
-
+    let staffLineOffset = [];
+    let cursfIdx = this.state.sfIdx;
+    let staffLineIdx = 0;
+    if (cursfIdx>=10){
+      staffLineIdx = 10 - cursfIdx;
+      while(staffLineIdx<=0){
+        staffLineOffset.push(staffLineIdx);
+        staffLineIdx+=2;
+      }
+    } else if (cursfIdx<=-2){
+      staffLineIdx = -2 - cursfIdx;
+      while(staffLineIdx>=0){
+        staffLineOffset.push(staffLineIdx);
+        staffLineIdx-=2;
+      }
+    } else {
+      //do nothing
+    }
+    // now staffLineOffset contains the segment of the staff line
+    // like [0,2,4] or [-1, -3], meaning the offset from the Note center
+    // 0 meaning the segment will accross the note center
+    // 2 meaning the segment will be 2*10 px BELOW the note center
+    // -1 meaning the segment will be 1*10 px ABOVE the note center
+    return staffLineOffset.map(l=>{
+      let lineSegPos = this.center[1]+l*10;
+      let lineKey = "staffSeg"+l;
+      return <div className='staffLineSeg' key={lineKey} style={{top:lineSegPos}}></div>
+    })
+  }
+  render(){
+    let noteSpanClass = this.state.mark ? "noteSelected" : "";
     return (
       <div className="note">
-        <span onClick={this.noteClick} name={this.props.name} className={noteMarkClass}>{this.props.code}</span>
+        <span onClick={this.noteClick} name={this.props.name} className={noteSpanClass}>{this.props.code}</span>
+        {this.drawStaffline()}
         {this.props.showLabel && <span className="noteLabel">{this.props.label}</span>}
       </div>
     );
@@ -42,7 +83,13 @@ Note.propTypes = {
   mark: PropTypes.bool,
   name: PropTypes.string,
   sfIdx: PropTypes.number,
-  onNoteClicked: PropTypes.func
+  onNoteClicked: PropTypes.func,
+  //this will define a bunch of properties, such as
+  // 1. whether rotate
+  // 2. flat or shart, on the note left side
+  // 3. whether extend, on the note right side
+  // 4. wheter show the staff segment line
+  descriptors:PropTypes.object 
 };
 
 Note.center = [14, 70];

@@ -30,7 +30,11 @@ const musicReducer = (state=initState, action={}) => {
     case types.CLEAR_ALL_NOTES:
       return Object.assign({}, state, {notes:[{},{},{},{}], markNotes:[]});
     case types.NOTE_CLICK:
-      return Object.assign({}, state, {markNotes: updateMarkNote([...state.markNotes], action.markNote)});
+    {
+      let markNotesUpdate = updateMarkNote([...state.markNotes], action.markNote);
+      console.log(markNotesUpdate);
+      return Object.assign({}, state, {markNotes: markNotesUpdate});
+    }
     case types.NOTE_DRAG:
       return Object.assign({}, state, {dragInfo: action.dragInfo});
     case types.SHOW_FREQLINE:
