@@ -11,8 +11,8 @@ export const BlackHeart={
   title:"Black Heart",
   author:"Two steps from hell",
   notes:[
-    [ {type:Syms.NOTE_QUARTER_TYPE, pitch:"A3", descriptor:{showStaffline:true}},
-      {type:Syms.NOTE_HALF_TYPE, pitch:"D4"},
+    [ {type:Syms.NOTE_QUARTER_TYPE, pitch:"A3", descriptor:{showStaffline:true, rotate:true}},
+      {type:Syms.NOTE_HALF_TYPE, pitch:"D4",descriptor:{rotate:true}},
       {type:Syms.NOTE_QUARTER_TYPE, pitch:"D4"},
       {type:Syms.NOTE_HALF_TYPE, pitch:"D4"},
       {type:Syms.NOTE_QUARTER_TYPE, pitch:"F4", descriptor:{rotate:true}},

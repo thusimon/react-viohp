@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import * as Symbols from './Symbols';
 import * as Utils from './Utils';
 import Note from './Note';
+import NoteFlip from './NoteFlip';
 import NoteKey from './NoteKey';
 import * as musicActions from '../../actions/musicActions';
 import {NotesFullArr, SHARPFLATIDX} from './Constants';
@@ -113,19 +114,24 @@ class MusicStaff extends React.Component {
     const halfSpace = this.LineSpace / 2;
     for (let keyi in curStaffNotes){
       const curSym = curStaffNotes[keyi];
-      const curSymCode = Symbols[curSym.type];
+      const curSymType = curSym.type;
+      const curSymCode = Symbols[curSymType];
       const isPrimary = curSym.primary;
       const curSymNames = curSym.label;
       const curSymYPos = curSym.sfIdx + this.staffStart;
       const curSymXPos = curSym.xCord;
       const initOffset = [curSymXPos,curSymYPos*halfSpace]; //[x, y]
       const finalOffset = [initOffset[0]-symCenter[0], initOffset[1]-symCenter[1]];
+      const descriptor = curSym.descriptor || {};
+      let curNote = descriptor.rotate ? <NoteFlip code={curSymCode} type={curSymType} showLabel label={curSymNames} primary={isPrimary}
+      sfIdx={curSym.sfIdx} name={curSym.name} mark={curSym.mark} descriptor={curSym.descriptor}
+      onNoteClicked={this.props.onNoteClicked} /> : 
+      <Note code={curSymCode} type={curSymType} showLabel label={curSymNames} primary={isPrimary}
+      sfIdx={curSym.sfIdx} name={curSym.name} mark={curSym.mark} descriptor={curSym.descriptor}
+      onNoteClicked={this.props.onNoteClicked}  />
       res.push(
         <div key={keyi} style={{position:'absolute', top: finalOffset[1]+'px', left:finalOffset[0]+'px'}}>
-          <Note code={curSymCode} showLabel label={curSymNames} primary={isPrimary}
-                sfIdx={curSym.sfIdx} name={curSym.name} mark={curSym.mark} descriptor={curSym.descriptor}
-                onNoteClicked={this.props.onNoteClicked}
-            />
+          {curNote}
         </div>
       );
     }

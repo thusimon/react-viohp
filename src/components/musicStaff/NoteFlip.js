@@ -4,6 +4,7 @@
 import React from 'react';
 import * as Syms from './Symbols';
 import PropTypes from 'prop-types';
+import {getSvgClassName} from "./Utils";
 
 class Note extends React.Component {
   constructor(props, context){
@@ -13,7 +14,7 @@ class Note extends React.Component {
     this.state = {mark,name,sfIdx};
     this.descriptor = this.props.descriptor || {};
     // by default center is (14, 70), but if rotate, the center would change
-    this.center=[14, 70];
+    this.center=[0, 58];
   }
 
   noteClick(event){
@@ -55,16 +56,16 @@ class Note extends React.Component {
     return staffLineOffset.map(l=>{
       let lineSegPos = this.center[1]+l*10;
       let lineKey = "staffSeg"+l;
-      return <div className='staffLineSeg' key={lineKey} style={{top:lineSegPos}}></div>
+      return <div className='staffLineSeg staffLineSegFlipNote' key={lineKey} style={{top:lineSegPos}}></div>
     })
   }
   render(){
-    let noteSpanClass = this.state.mark ? "noteSelected" : "";
+    let flipNoteClassName = getSvgClassName(this.props.type);
     return (
       <div className="note">
-        <span onClick={this.noteClick} name={this.props.name} className={noteSpanClass}>{this.props.code}</span>
+        <div style={{position:"absolute", width:"20px", height:"60px", top:"48px", left:"0px"}} className={flipNoteClassName}></div>
         {this.drawStaffline()}
-        {this.props.showLabel && <span className="noteLabel">{this.props.label}</span>}
+        {this.props.showLabel && <span className="filpNoteLabel">{this.props.label}</span>}
       </div>
     );
   }

@@ -2,6 +2,7 @@
  * Created by Lu on 8/15/2018.
  */
 import * as Constant from './Constants';
+import * as Symbols from './Symbols';
 
 export const noteShift = (note, offSet) => {
 
@@ -167,3 +168,27 @@ export const updateMarkNote = (currMarkNotes, markNote) => {
   }
   return currMarkNotes;
 };
+
+export const getSvgClassName = (noteName)=>{
+  let svgClassName="note_2th_flip";
+  switch(noteName){
+    case Symbols.NOTE_HALF_TYPE:
+      svgClassName="note_2th_flip";
+      break;
+    case Symbols.NOTE_QUARTER_TYPE:
+      svgClassName="note_4th_flip";
+      break;
+    case Symbols.NOTE_EIGHTH_TYPE:
+      svgClassName="note_8th_flip";
+      break;
+    case Symbols.NOTE_SIXTEENTH_TYPE:
+      svgClassName="note_16th_flip";
+      break;
+    case Symbols.NOTE_THIRTYSECOND_TYPE:
+      svgClassName="note_32th_flip";
+      break;
+    default:
+      break;
+  }
+  return svgClassName;
+}
