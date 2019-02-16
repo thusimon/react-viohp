@@ -3,7 +3,7 @@
   font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #4d4d4d;
   min-width: 800px;
-  max-width: 1600px;
+  max-width:2200px;
   margin: 0 auto;
 }
 
@@ -13,6 +13,9 @@ a.active {
 
 nav {
   padding-top: 20px;
+}
+.homeDiv{
+  
 }
 .centerInParent {
   text-align: center;
@@ -32,24 +35,54 @@ nav {
   height:80px;
 }
 .note_2th_flip {
-  background: url(../resources/images/note_2th_flip.svg) no-repeat center;
+  background-color: #000000;
   background-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: url(../resources/images/note_2th_flip.svg);
+  -webkit-mask-image: url(../resources/images/note_2th_flip.svg);
 }
 .note_4th_flip {
-  background: url(../resources/images/note_4th_flip.svg) no-repeat center;
+  background-color: #000000;
   background-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: url(../resources/images/note_4th_flip.svg);
+  -webkit-mask-image: url(../resources/images/note_4th_flip.svg);
 }
 .note_8th_flip {
-  background: url(../resources/images/note_8th_flip.svg) no-repeat center;
+  background-color: #000000;
   background-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: url(../resources/images/note_8th_flip.svg);
+  -webkit-mask-image: url(../resources/images/note_8th_flip.svg);
 }
 .note_16th_flip {
-  background: url(../resources/images/note_16th_flip.svg) no-repeat center;
+  background-color: #000000;
   background-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: url(../resources/images/note_16th_flip.svg);
+  -webkit-mask-image: url(../resources/images/note_16th_flip.svg);
 }
 .note_32th_flip {
-  background: url(../resources/images/note_32th_flip.svg) no-repeat center;
+  background-color: #000000;
   background-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: url(../resources/images/note_32th_flip.svg);
+  -webkit-mask-image: url(../resources/images/note_32th_flip.svg);
 }
 .noteRotate {
   transform-origin: 50% 90%;
@@ -64,6 +97,12 @@ nav {
 .staffLineSegFlipNote {
   width:30px;
   left:-5px;
+}
+.noteAugmentDot {
+  position:absolute;
+  border:none;
+  font-size:50px;
+  line-height:10px;
 }
 
 .noteKey {
@@ -156,7 +195,9 @@ td.hide {
 .noteSelected{
   color:#f0ad4e;
 }
-
+.noteSelectedBg{
+  background-color: #f0ad4e;
+}
 .arrow {
   border: solid #80bdff;
   border-width: 0 3px 3px 0;

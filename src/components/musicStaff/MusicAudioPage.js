@@ -38,7 +38,7 @@ class MusicAudioPage extends React.Component{
         <div style={{flex:"auto"}}>
           <MusicStaffPage></MusicStaffPage>
         </div>
-        <div style={{flex:"auto", marginLeft:"8px"}}>
+        <div style={{flex:"auto", marginLeft:"8px", maxWidth:"710px"}}>
           <div style={{textAlign:'center'}}>
             <span className="badge badge-info" style={{fontSize:'18px', marginBottom:"10px"}}>Audio Analyse</span>
             <div style={{display:"flex",flexDirection: "row"}}>

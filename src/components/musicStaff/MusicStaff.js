@@ -17,11 +17,12 @@ class MusicStaff extends React.Component {
   constructor(props, context){
     super(props, context);
     this.displayScaleHead = this.displayScaleHead.bind(this);
-    this.displayNotesOnStaff = this.displayNotesOnStaff.bind(this);
+    this.displayNotesOnStaff = this.displaySymsOnStaff.bind(this);
     this.displayFreqLine = this.displayFreqLine.bind(this);
     this.generateFullStaffIndex = this.generateFullStaffIndex.bind(this);
     this.onMusicStaffMouseUp = this.onMusicStaffMouseUp.bind(this);
     this.positionNoteOnStaff = this.positionNoteOnStaff.bind(this);
+    this.getSymByProperties = this.getSymByProperties.bind(this);
     this.staffRef = React.createRef();
     // class fixed constants
     this.LineSpace = 20;
@@ -57,8 +58,7 @@ class MusicStaff extends React.Component {
     // find the note by signature and scale
     let noteFound = Utils.getNoteFromPosition(this.state.fullScaleNotes, sfIdx);
     if(noteFound){
-      let newNote = {type:noteName, sfIdx:sfIdx, xCord:Math.round(x), name:noteFound.name, label:noteFound.label};
-      console.log(newNote);
+      let newNote = {type:noteName, sfIdx:sfIdx, x:Math.round(x), name:noteFound.name, label:noteFound.label};
       this.props.addNote(newNote, this.props.idx);
     }
   }
@@ -103,37 +103,65 @@ class MusicStaff extends React.Component {
     }
     return res;
   }
-
-  displayNotesOnStaff(){
+  getSymByProperties(rawSym, idx){
+    let {type, name, label, sfIdx, x, mark, descriptor={}} = rawSym;
+    const halfSpace = this.LineSpace / 2;
+    const symCenter = Note.center;
+    let sym;
+    switch (type){
+      case Symbols.BARLINE_TYPE:
+      {
+        sym = <div key={"BL_"+idx} style={{position:'absolute', top: "60px", left:x+"px"}}>
+          <div style={{borderLeft: "2px solid black", height:"80px"}}></div>
+        </div>;
+        break;
+      }
+      case Symbols.WHOLEREST_TYPE:
+      {
+        sym = <div key={"RW_"+idx} style={{position:'absolute', top: "63px", left:x+"px"}}>
+          <span style={{fontSize:"40px"}}>{Symbols.WHOLEREST}</span>
+        </div>;
+        break;
+      }
+      case Symbols.HALFREST_TYPE:
+      {
+        sym = <div key={"RH_"+idx} style={{position:'absolute', top: "75px", left:x+"px"}}>
+          <span style={{fontSize:"40px"}}>{Symbols.HALFREST}</span>
+        </div>;
+        break;
+      }
+      case Symbols.QUARTERREST_TYPE:
+        break;
+      case Symbols.EIGTHREST_TYPE:
+        break;
+      default:
+      {
+        // here they are all notes by default:
+        const curSymCode = Symbols[type];
+        const curSymYPos = sfIdx + this.staffStart;
+        const initOffset = [x,curSymYPos*halfSpace]; //[x, y]
+        const finalOffset = [initOffset[0]-symCenter[0], initOffset[1]-symCenter[1]];
+        let curNote = descriptor.rotate ? 
+        <NoteFlip code={curSymCode} type={type} showLabel label={label} sfIdx={sfIdx} name={name} mark={mark} descriptor={descriptor} onNoteClicked={this.props.onNoteClicked} /> : 
+        <Note code={curSymCode} type={type} showLabel label={label} sfIdx={sfIdx} name={name} mark={mark} descriptor={descriptor} onNoteClicked={this.props.onNoteClicked} />
+        sym = <div key={"NT_"+idx} style={{position:'absolute', top: finalOffset[1]+'px', left:finalOffset[0]+'px'}}>
+          {curNote}
+        </div>
+        break;
+      }
+    }
+    return sym;
+  }
+  displaySymsOnStaff(){
     let curStaffNotes = this.state.notes[this.props.idx];
     const res = [];
     if (!curStaffNotes){
       return res;
     }
-    const symCenter = Note.center;
-    const halfSpace = this.LineSpace / 2;
     for (let keyi in curStaffNotes){
       const curSym = curStaffNotes[keyi];
-      const curSymType = curSym.type;
-      const curSymCode = Symbols[curSymType];
-      const isPrimary = curSym.primary;
-      const curSymNames = curSym.label;
-      const curSymYPos = curSym.sfIdx + this.staffStart;
-      const curSymXPos = curSym.xCord;
-      const initOffset = [curSymXPos,curSymYPos*halfSpace]; //[x, y]
-      const finalOffset = [initOffset[0]-symCenter[0], initOffset[1]-symCenter[1]];
-      const descriptor = curSym.descriptor || {};
-      let curNote = descriptor.rotate ? <NoteFlip code={curSymCode} type={curSymType} showLabel label={curSymNames} primary={isPrimary}
-      sfIdx={curSym.sfIdx} name={curSym.name} mark={curSym.mark} descriptor={curSym.descriptor}
-      onNoteClicked={this.props.onNoteClicked} /> : 
-      <Note code={curSymCode} type={curSymType} showLabel label={curSymNames} primary={isPrimary}
-      sfIdx={curSym.sfIdx} name={curSym.name} mark={curSym.mark} descriptor={curSym.descriptor}
-      onNoteClicked={this.props.onNoteClicked}  />
-      res.push(
-        <div key={keyi} style={{position:'absolute', top: finalOffset[1]+'px', left:finalOffset[0]+'px'}}>
-          {curNote}
-        </div>
-      );
+      let staffSym = this.getSymByProperties(curSym, keyi);
+      res.push(staffSym);
     }
     return res;
   }
@@ -154,7 +182,7 @@ class MusicStaff extends React.Component {
     const halfSpace = this.LineSpace / 2;
     const freqLineYPos = (freqLineSfIdx*halfSpace).toFixed(2);
     return (
-      <hr style={{position:'absolute', top: freqLineYPos+'px', left:"80px", width:"700px",border:"1px solid #0000FF", margin:"0px"}} />
+      <hr style={{position:'absolute', top: freqLineYPos+'px', left:"80px", width:"90%",border:"1px solid #0000FF", margin:"0px"}} />
     )
   }
   render(){
@@ -165,7 +193,7 @@ class MusicStaff extends React.Component {
     return (
       <div ref={this.staffRef}
            className="staffLines"
-           style={{height:staffWholeHeight+'px',width:"800px"}}
+           style={{height:staffWholeHeight+'px',width:"1200px"}}
            onMouseUp={this.onMusicStaffMouseUp}>
         <div className="staffLinesContent">
           <table>
@@ -179,7 +207,7 @@ class MusicStaff extends React.Component {
           </table>
           <div className="clef">{Symbols.CLEF_G}</div>
           {this.displayScaleHead()}
-          {this.displayNotesOnStaff()}
+          {this.displaySymsOnStaff()}
           {freqLine}
         </div>
       </div>

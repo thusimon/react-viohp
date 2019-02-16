@@ -5,16 +5,13 @@ import React from 'react';
 import * as Syms from './Symbols';
 import PropTypes from 'prop-types';
 import {getSvgClassName} from "./Utils";
+import Note from './Note';
 
-class Note extends React.Component {
+class NoteFlip extends Note {
   constructor(props, context){
     super(props, context);
     this.noteClick = this.noteClick.bind(this);
-    let {mark,name,sfIdx} = this.props;
-    this.state = {mark,name,sfIdx};
-    this.descriptor = this.props.descriptor || {};
-    // by default center is (14, 70), but if rotate, the center would change
-    this.center=[0, 58];
+    this.center=[0, 55];
   }
 
   noteClick(event){
@@ -61,9 +58,12 @@ class Note extends React.Component {
   }
   render(){
     let flipNoteClassName = getSvgClassName(this.props.type);
+    if (this.state.mark){
+      flipNoteClassName += " noteSelectedBg";
+    }
     return (
       <div className="note">
-        <div style={{position:"absolute", width:"20px", height:"60px", top:"48px", left:"0px"}} className={flipNoteClassName}></div>
+        <div style={{position:"absolute", width:"20px", height:"60px", top:"45px", left:"0px"}} className={flipNoteClassName} onClick={this.noteClick}></div>
         {this.drawStaffline()}
         {this.props.showLabel && <span className="filpNoteLabel">{this.props.label}</span>}
       </div>
@@ -88,9 +88,9 @@ Note.propTypes = {
   descriptors:PropTypes.object 
 };
 
-Note.center = [14, 70];
+NoteFlip.center = [14, 70];
 // hard code the certer point, maybe an issue on other browsers
-Note.defaultProps  = {
+NoteFlip.defaultProps  = {
   name:Syms.NOTE_QUARTER_TYPE,
   code:'\ud834\udd5f',
   showLabel: false,
@@ -99,4 +99,4 @@ Note.defaultProps  = {
   onNoteClicked: null
 };
 
-export default Note;
+export default NoteFlip;

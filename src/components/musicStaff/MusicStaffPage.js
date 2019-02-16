@@ -68,7 +68,7 @@ class MusicStaffPage extends React.Component {
     let {dragStatus, dragNoteName, startOffSet, noteShift} = this.state.dragInfo;
     let dragNotePos = [noteShift[0]-startOffSet[0], noteShift[1]-startOffSet[1]];
     return (
-      <div style={{position:'relative', width:"820px", height:"100%"}}
+      <div style={{position:'relative', width:"100%", height:"100%"}}
            ref={this.staffPageRef}
            onMouseMove={this.onMusicStaffPageMouseMove}
            onMouseUp={this.onMusicStaffPageMouseUp}>

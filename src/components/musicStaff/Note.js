@@ -9,6 +9,8 @@ class Note extends React.Component {
   constructor(props, context){
     super(props, context);
     this.noteClick = this.noteClick.bind(this);
+    this.drawAugment = this.drawAugment.bind(this);
+    this.drawScale = this.drawScale.bind(this);
     let {mark,name,sfIdx} = this.props;
     this.state = {mark,name,sfIdx};
     this.descriptor = this.props.descriptor || {};
@@ -28,7 +30,6 @@ class Note extends React.Component {
   drawStaffline(){
     //the -1 line's sfIdx=10, the +1 line's sfIdx=-2
     //line space = 20, half line spce is 10
-    const noteMarkClass = this.state.mark ? "noteSelected" : "";
     let staffLineOffset = [];
     let cursfIdx = this.state.sfIdx;
     let staffLineIdx = 0;
@@ -58,12 +59,33 @@ class Note extends React.Component {
       return <div className='staffLineSeg' key={lineKey} style={{top:lineSegPos}}></div>
     })
   }
+  drawAugment(){
+    // find sfIdx value if it is even, meaning it lies on the staff line, the augment dot should be higher
+    if (this.descriptor.augment){
+      let sfIdxEven = this.props.sfIdx % 2 == 0;
+      let augmentPosY = this.center[1];
+      let augmentPosX = this.center[0]+14;
+      if (sfIdxEven){
+        console.log("not even", this.props.sfIdx);
+        augmentPosY -= 10;
+      } else {
+        augmentPosY -= 5;
+      }
+      return <div className="noteAugmentDot" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.AUGMENTDOT}</div>
+    } else {
+      return null;
+    }
+  }
+  drawScale(){
+
+  }
   render(){
     let noteSpanClass = this.state.mark ? "noteSelected" : "";
     return (
       <div className="note">
         <span onClick={this.noteClick} name={this.props.name} className={noteSpanClass}>{this.props.code}</span>
         {this.drawStaffline()}
+        {this.drawAugment()}
         {this.props.showLabel && <span className="noteLabel">{this.props.label}</span>}
       </div>
     );
