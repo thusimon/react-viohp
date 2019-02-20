@@ -56,6 +56,40 @@ class NoteFlip extends Note {
       return <div className='staffLineSeg staffLineSegFlipNote' key={lineKey} style={{top:lineSegPos}}></div>
     })
   }
+  drawAugment(){
+    // find sfIdx value if it is even, meaning it lies on the staff line, the augment dot should be higher
+    if (this.descriptor.augment){
+      let sfIdxEven = this.props.sfIdx % 2 == 0;
+      let augmentPosY = this.center[1];
+      let augmentPosX = this.center[0]+24;
+      if (sfIdxEven){
+        augmentPosY -= 10;
+      } else {
+        augmentPosY -= 5;
+      }
+      return <div className="noteAugmentDot" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.AUGMENTDOT}</div>
+    } else {
+      return null;
+    }
+  }
+  drawScale(){
+    if(this.descriptor.scale){
+      let augmentPosY = this.center[1]-5;
+      let augmentPosX = this.center[0]-10;
+      if (this.descriptor.scale==Syms.FLAT_TYPE){
+        return <div className="noteScaleLeft" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.FLAT}</div>
+      } else if(this.descriptor.scale==Syms.SHARP_TYPE)
+      {
+        return <div className="noteScaleLeft" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.SHARP}</div>
+      } else if(this.descriptor.scale==Syms.NATURAL_TYPE){
+        return <div className="noteScaleLeft" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.NATURAL}</div>
+      } else {
+        return null;
+      }
+    } else{
+      return null;
+    }
+  }
   render(){
     let flipNoteClassName = getSvgClassName(this.props.type);
     if (this.state.mark){
@@ -65,6 +99,8 @@ class NoteFlip extends Note {
       <div className="note">
         <div style={{position:"absolute", width:"20px", height:"60px", top:"45px", left:"0px"}} className={flipNoteClassName} onClick={this.noteClick}></div>
         {this.drawStaffline()}
+        {this.drawAugment()}
+        {this.drawScale()}
         {this.props.showLabel && <span className="filpNoteLabel">{this.props.label}</span>}
       </div>
     );

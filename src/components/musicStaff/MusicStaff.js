@@ -131,9 +131,19 @@ class MusicStaff extends React.Component {
         break;
       }
       case Symbols.QUARTERREST_TYPE:
+      {
+        sym = <div key={"RQ_"+idx} style={{position:'absolute', top: "75px", left:x+"px"}}>
+          <span style={{fontSize:"40px"}}>{Symbols.QUARTERREST}</span>
+        </div>;
         break;
+      }
       case Symbols.EIGTHREST_TYPE:
+      {
+        sym = <div key={"RE_"+idx} style={{position:'absolute', top: "75px", left:x+"px"}}>
+          <span style={{fontSize:"40px"}}>{Symbols.EIGTHREST}</span>
+        </div>;
         break;
+      }
       default:
       {
         // here they are all notes by default:

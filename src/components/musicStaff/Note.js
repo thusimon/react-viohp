@@ -66,7 +66,6 @@ class Note extends React.Component {
       let augmentPosY = this.center[1];
       let augmentPosX = this.center[0]+14;
       if (sfIdxEven){
-        console.log("not even", this.props.sfIdx);
         augmentPosY -= 10;
       } else {
         augmentPosY -= 5;
@@ -77,7 +76,22 @@ class Note extends React.Component {
     }
   }
   drawScale(){
-
+    if(this.descriptor.scale){
+      let augmentPosY = this.center[1]-3;
+      let augmentPosX = this.center[0]-20;
+      if (this.descriptor.scale==Syms.FLAT_TYPE){
+        return <div className="noteScaleLeft" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.FLAT}</div>
+      } else if(this.descriptor.scale==Syms.SHARP_TYPE)
+      {
+        return <div className="noteScaleLeft" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.SHARP}</div>
+      } else if(this.descriptor.scale==Syms.NATURAL_TYPE){
+        return <div className="noteScaleLeft" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.NATURAL}</div>
+      } else {
+        return null;
+      }
+    } else{
+      return null;
+    }
   }
   render(){
     let noteSpanClass = this.state.mark ? "noteSelected" : "";
@@ -86,6 +100,7 @@ class Note extends React.Component {
         <span onClick={this.noteClick} name={this.props.name} className={noteSpanClass}>{this.props.code}</span>
         {this.drawStaffline()}
         {this.drawAugment()}
+        {this.drawScale()}
         {this.props.showLabel && <span className="noteLabel">{this.props.label}</span>}
       </div>
     );
