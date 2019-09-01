@@ -34,6 +34,38 @@ nav {
   width:28px;
   height:80px;
 }
+.note-base {
+  width:28px;
+  height:60px;
+}
+.note-component {
+  position:absolute;
+  background-color: #000000;
+  background-size: contain;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+}
+.note_circle {
+  mask-image: url(../resources/images/note_circle.svg);
+}
+.note-circle {
+  -webkit-mask-image: url(../resources/images/note_circle.svg);
+}
+.note-head-empty {
+  -webkit-mask-image: url(../resources/images/note_head_empty.svg);
+}
+.note-head-fill {
+  -webkit-mask-image: url(../resources/images/note_head_fill.svg);
+}
+.note-pole {
+  -webkit-mask-image: url(../resources/images/note_pole.svg);
+}
+.note-tail {
+  -webkit-mask-image: url(../resources/images/note_tail.svg);
+}
+.note-tail-reverse {
+  -webkit-mask-image: url(../resources/images/note_tail_reverse.svg);
+}
 .note_2th_flip {
   background-color: #000000;
   background-size: contain;
@@ -101,8 +133,10 @@ nav {
 .noteAugmentDot {
   position:absolute;
   border:none;
-  font-size:50px;
-  line-height:10px;
+  width:2px;
+  height: 2px;
+  border: solid black 2px;
+  border-radius: 2px;
 }
 .noteScaleLeft{
   position:absolute;

@@ -1,27 +1,28 @@
 /**
- * Created by Lu on 8/12/2018.
+ * 
+ */
+/**
+ * Created by Lu on 8/31/2019.
  */
 import React from 'react';
-import * as Syms from './Symbols';
+import * as Syms from '../Symbols';
 import PropTypes from 'prop-types';
-import {getSvgClassName} from "./Utils";
-import Note from './Note';
-import FullNote from './notes/Full';
-import HeadEmptyNote from './notes/HeadEmpty';
-import HalfNote from './notes/Half';
-import HalfReverseNote from './notes/HalfReverse';
-import QuarterNote from './notes/Quarter';
-import QuarterReverseNote from './notes/QuarterReverse';
-import EighthNote from './notes/Eighth';
-import EighthReverseNote from './notes/EighthReverse';
+import {getSvgClassName} from "../Utils";
 
-class NoteFlip extends Note {
+class Note extends React.Component {
   constructor(props, context){
     super(props, context);
     this.noteClick = this.noteClick.bind(this);
-    this.center=[0, 55];
+    this.drawAugment = this.drawAugment.bind(this);
+    this.drawScale = this.drawScale.bind(this);
+    let {mark,name,sfIdx} = this.props;
+    this.state = {mark,name,sfIdx};
+    this.descriptor = this.props.descriptor || {};
+    // by default center is (14, 70), but if rotate, the center would change
+    this.center=this.props.center || [14, 70];
+    // component
+    this.component = this.props.component || [];
   }
-
   noteClick(event){
     let {mark,name,sfIdx} = this.state;
     mark = !mark;
@@ -30,11 +31,9 @@ class NoteFlip extends Note {
       this.props.onNoteClicked({mark, name, sfIdx});
     }
   }
-
   drawStaffline(){
     //the -1 line's sfIdx=10, the +1 line's sfIdx=-2
     //line space = 20, half line spce is 10
-    const noteMarkClass = this.state.mark ? "noteSelected" : "";
     let staffLineOffset = [];
     let cursfIdx = this.state.sfIdx;
     let staffLineIdx = 0;
@@ -51,7 +50,7 @@ class NoteFlip extends Note {
         staffLineIdx-=2;
       }
     } else {
-      //do nothing
+      //the note is in the range of normal music staff, no need to darw staff line
     }
     // now staffLineOffset contains the segment of the staff line
     // like [0,2,4] or [-1, -3], meaning the offset from the Note center
@@ -65,7 +64,7 @@ class NoteFlip extends Note {
     })
   }
   drawAugment(){
-    // find sfIdx value if it is even, meaning it lies on the staff line, the augment dot should be higher
+    // find sfIdx value if it is even, meaning it lies on the staff line, the augment dot should be a bit higher
     if (this.descriptor.augment){
       let sfIdxEven = this.props.sfIdx % 2 == 0;
       let augmentPosY = this.center[1];
@@ -75,7 +74,7 @@ class NoteFlip extends Note {
       } else {
         augmentPosY -= 5;
       }
-      return <div className="noteAugmentDot" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.AUGMENTDOT}</div>
+      return <div className="noteAugmentDot" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}></div>
     } else {
       return null;
     }
@@ -98,78 +97,8 @@ class NoteFlip extends Note {
       return null;
     }
   }
-  render(){
-    let flipNoteClassName = getSvgClassName(this.props.type);
-    if (this.state.mark){
-      flipNoteClassName += " noteSelectedBg";
-    }
-    if (flipNoteClassName == 'note-circle') {
-      return (
-        <div className='note'>
-          <FullNote />
-        </div>
-      );
-    }
-    if (flipNoteClassName == 'note-head-empty') {
-      return (
-        <div className='note'>
-          <HeadEmptyNote />
-        </div>
-      );
-    }
-    if (flipNoteClassName === 'note-half') {
-      return (
-        <div className='note'>
-          <HalfNote />
-        </div> 
-      );
-    }
-    if (flipNoteClassName === 'note-half-reverse') {
-      return (
-        <div className='note'>
-          <HalfReverseNote />
-        </div>
-      );
-    }
-    if (flipNoteClassName === 'note-quarter') {
-      return (
-        <div className='note'>
-          <QuarterNote />
-        </div>
-      );
-    }
-    if (flipNoteClassName === 'note-quarter-reverse') {
-      return (
-        <div className='note'>
-          <QuarterReverseNote />
-        </div>
-      );
-    }
-    if (flipNoteClassName === 'note-eighth') {
-      return (
-        <div className='note'>
-          <EighthNote />
-        </div>
-      );
-    }
-    if (flipNoteClassName === 'note-eighth-reverse') {
-      return (
-        <div className='note'>
-          <EighthReverseNote />
-        </div>
-      )
-    }
-    return (
-      <div className="note">        
-        <div style={{position:"absolute", width:"20px", height:"60px", top:"45px", left:"0px"}} className={flipNoteClassName} onClick={this.noteClick}></div>
-        {this.drawStaffline()}
-        {this.drawAugment()}
-        {this.drawScale()}
-        {this.props.showLabel && <span className="filpNoteLabel">{this.props.label}</span>}
-      </div>
-    );
-  }
 }
+
 
 Note.propTypes = {
   code: PropTypes.string.isRequired,
@@ -188,9 +117,9 @@ Note.propTypes = {
   descriptors:PropTypes.object 
 };
 
-NoteFlip.center = [14, 70];
+Note.center = [14, 70];
 // hard code the certer point, maybe an issue on other browsers
-NoteFlip.defaultProps  = {
+Note.defaultProps  = {
   name:Syms.NOTE_QUARTER_TYPE,
   code:'\ud834\udd5f',
   showLabel: false,
@@ -199,4 +128,4 @@ NoteFlip.defaultProps  = {
   onNoteClicked: null
 };
 
-export default NoteFlip;
+export default Note;

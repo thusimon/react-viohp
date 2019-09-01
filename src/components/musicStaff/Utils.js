@@ -172,6 +172,45 @@ export const updateMarkNote = (currMarkNotes, markNote) => {
 export const getSvgClassName = (noteName)=>{
   let svgClassName="note_2th_flip";
   switch(noteName){
+    case Symbols.NOTE_WHOLE_TYPE:
+      svgClassName = "note_circle";
+      break;
+    case Symbols.NOTE_CIRCLE:
+      svgClassName = 'note-circle';
+      break;
+    case Symbols.NOTE_HEAD_EMPTY:
+      svgClassName = 'note-head-empty';
+      break;
+      case Symbols.NOTE_HEAD_FILL:
+      svgClassName = 'note-head-fill';
+      break;
+    case Symbols.NOTE_POLE:
+      svgClassName = 'note-pole';
+      break;
+    case Symbols.NOTE_TAIL:
+      svgClassName = 'note-tail';
+      break;
+    case Symbols.NOTE_TAIL_REVERSE:
+      svgClassName = 'note-tail-reverse';
+      break;
+    case Symbols.NOTE_HALF2:
+      svgClassName = 'note-half';
+      break;
+    case Symbols.NOTE_HALF_REVERSE:
+      svgClassName = 'note-half-reverse';
+      break;
+    case Symbols.NOTE_QUARTER2:
+      svgClassName = 'note-quarter';
+      break;
+    case Symbols.NOTE_QUARTER_REVERSE:
+      svgClassName = 'note-quarter-reverse';
+      break;
+    case Symbols.NOTE_EIGHTH2:
+      svgClassName = 'note-eighth'
+      break;
+    case Symbols.NOTE_EIGHTH_REVERSE:
+      svgClassName = 'note-eighth-reverse';
+      break;
     case Symbols.NOTE_HALF_TYPE:
       svgClassName="note_2th_flip";
       break;
