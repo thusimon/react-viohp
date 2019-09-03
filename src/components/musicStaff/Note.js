@@ -1,14 +1,15 @@
 /**
- * Created by Lu on 8/12/2018.
+ * Created by Lu on 8/31/2019.
  */
 import React from 'react';
 import * as Syms from './Symbols';
 import PropTypes from 'prop-types';
+import {getNoteClassByType} from './Utils';
+import Notes from './notes/Notes';
 
 class Note extends React.Component {
   constructor(props, context){
     super(props, context);
-    this.noteClick = this.noteClick.bind(this);
     this.drawAugment = this.drawAugment.bind(this);
     this.drawScale = this.drawScale.bind(this);
     let {mark,name,sfIdx} = this.props;
@@ -16,15 +17,7 @@ class Note extends React.Component {
     this.descriptor = this.props.descriptor || {};
     // by default center is (14, 70), but if rotate, the center would change
     this.center=[14, 70];
-  }
-
-  noteClick(event){
-    let {mark,name,sfIdx} = this.state;
-    mark = !mark;
-    this.setState({mark});
-    if (this.props.onNoteClicked) {
-      this.props.onNoteClicked({mark, name, sfIdx});
-    }
+    this.noteClass = getNoteClassByType(this.props.type);
   }
 
   drawStaffline(){
@@ -70,7 +63,7 @@ class Note extends React.Component {
       } else {
         augmentPosY -= 5;
       }
-      return <div className="noteAugmentDot" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.AUGMENTDOT}</div>
+      return <div className="noteAugmentDot" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}></div>
     } else {
       return null;
     }
@@ -94,10 +87,11 @@ class Note extends React.Component {
     }
   }
   render(){
-    let noteSpanClass = this.state.mark ? "noteSelected" : "";
+    const Note = Notes[this.noteClass]
+    this.center = Note.center;
     return (
-      <div className="note">
-        <span onClick={this.noteClick} name={this.props.name} className={noteSpanClass}>{this.props.code}</span>
+      <div className="note" style={{top: -this.center[1]+'px'}}>
+        <Note mark={this.props.mark} name={this.props.name} sfIdx={this.props.sfIdx} />
         {this.drawStaffline()}
         {this.drawAugment()}
         {this.drawScale()}
@@ -115,7 +109,6 @@ Note.propTypes = {
   mark: PropTypes.bool,
   name: PropTypes.string,
   sfIdx: PropTypes.number,
-  onNoteClicked: PropTypes.func,
   //this will define a bunch of properties, such as
   // 1. whether rotate
   // 2. flat or shart, on the note left side
@@ -131,8 +124,7 @@ Note.defaultProps  = {
   code:'\ud834\udd5f',
   showLabel: false,
   primary: true,
-  label: 'C',
-  onNoteClicked: null
+  label: 'C'
 };
 
 export default Note;

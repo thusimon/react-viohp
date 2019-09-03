@@ -3,6 +3,13 @@
  */
 import * as Constant from './Constants';
 import * as Symbols from './Symbols';
+import path from 'path';
+import noteCircleSvg from '../../resources/images/note_circle.svg';
+import noteHeadEmptySvg from '../../resources/images/note_head_empty.svg';
+import noteHeadFillSvg from '../../resources/images/note_head_fill.svg';
+import notePole from '../../resources/images/note_pole.svg';
+import noteTailSvg from '../../resources/images/note_tail.svg';
+import noteTailRevSvg from '../../resources/images/note_tail_reverse.svg';
 
 export const noteShift = (note, offSet) => {
 
@@ -169,6 +176,89 @@ export const updateMarkNote = (currMarkNotes, markNote) => {
   return currMarkNotes;
 };
 
+export const getNoteClassByType = (noteType) => {
+  let noteClass = 'Full';
+  switch (noteType) {
+    case Symbols.NOTE_CIRCLE:
+      noteClass = 'Full';
+      break;
+    case Symbols.NOTE_HALF:
+      noteClass = 'Half';
+      break;
+    case Symbols.NOTE_HALF_REVERSE:
+      noteClass = 'HalfReverse';
+      break;
+    case Symbols.NOTE_QUARTER:
+      noteClass = 'Quarter';
+      break;
+    case Symbols.NOTE_QUARTER_REVERSE:
+      noteClass = 'QuarterReverse';
+      break;
+    case Symbols.NOTE_EIGHTH:
+      noteClass = 'Eighth';
+      break;
+    case Symbols.NOTE_EIGHTH_REVERSE:
+      noteClass = 'EighthReverse';
+      break;
+    default:
+      break;
+  }
+  return noteClass;
+}
+
+export const getSvgFilePath = (noteName) => {
+  let svgFileName='/note_circle.svg';
+  switch(noteName){
+    case Symbols.NOTE_CIRCLE:
+      svgFileName = '/note-circle.svg';
+      break;
+    case Symbols.NOTE_HEAD_EMPTY:
+      svgFileName = '/note-head-empty.svg';
+      break;
+    case Symbols.NOTE_HEAD_FILL:
+      svgFileName = '/note-head-fill.svg';
+      break;
+    case Symbols.NOTE_POLE:
+      svgFileName = '/note-pole.svg';
+      break;
+    case Symbols.NOTE_TAIL:
+      svgFileName = '/note-tail.svg';
+      break;
+    case Symbols.NOTE_TAIL_REVERSE:
+      svgFileName = '/note-tail-reverse.svg';
+      break;
+    default:
+      break;
+  }
+  return path.join('../../resources/images', svgFileName);
+}
+
+export const getSvgFileSrc = (noteName) => {
+  let svgFileSrc = noteCircleSvg;
+  switch(noteName){
+    case Symbols.NOTE_CIRCLE:
+      svgFileSrc = noteCircleSvg;
+      break;
+    case Symbols.NOTE_HEAD_EMPTY:
+      svgFileSrc = noteHeadEmptySvg;
+      break;
+    case Symbols.NOTE_HEAD_FILL:
+      svgFileSrc = noteHeadFillSvg;
+      break;
+    case Symbols.NOTE_POLE:
+      svgFileSrc = notePole;
+      break;
+    case Symbols.NOTE_TAIL:
+      svgFileSrc = noteTailSvg;
+      break;
+    case Symbols.NOTE_TAIL_REVERSE:
+      svgFileSrc = noteTailRevSvg;
+      break;
+    default:
+      break;
+  }
+  return svgFileSrc;
+}
 export const getSvgClassName = (noteName)=>{
   let svgClassName="note_2th_flip";
   switch(noteName){

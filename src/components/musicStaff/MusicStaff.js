@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 import * as Symbols from './Symbols';
 import * as Utils from './Utils';
 import Note from './Note';
-import NoteFlip from './NoteFlip';
 import NoteKey from './NoteKey';
 import * as musicActions from '../../actions/musicActions';
 import {NotesFullArr, SHARPFLATIDX} from './Constants';
@@ -150,11 +149,9 @@ class MusicStaff extends React.Component {
         const curSymCode = Symbols[type];
         const curSymYPos = sfIdx + this.staffStart;
         const initOffset = [x,curSymYPos*halfSpace]; //[x, y]
-        const finalOffset = [initOffset[0]-symCenter[0], initOffset[1]-symCenter[1]];
-        let curNote = descriptor.rotate ? 
-        <NoteFlip code={curSymCode} type={type} showLabel label={label} sfIdx={sfIdx} name={name} mark={mark} descriptor={descriptor} onNoteClicked={this.props.onNoteClicked} /> : 
-        <Note code={curSymCode} type={type} showLabel label={label} sfIdx={sfIdx} name={name} mark={mark} descriptor={descriptor} onNoteClicked={this.props.onNoteClicked} />
-        sym = <div key={"NT_"+idx} style={{position:'absolute', top: finalOffset[1]+'px', left:finalOffset[0]+'px'}}>
+        const adjustedOffset = [initOffset[0]-symCenter[0], initOffset[1]];
+        let curNote = <Note code={curSymCode} type={type} showLabel label={label} sfIdx={sfIdx} name={name} mark={mark} descriptor={descriptor} onNoteClicked={this.props.onNoteClicked} />;
+        sym = <div key={"NT_"+idx} style={{position:'absolute', top: adjustedOffset[1]+'px', left:adjustedOffset[0]+'px'}}>
           {curNote}
         </div>
         break;

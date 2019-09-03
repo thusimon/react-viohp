@@ -2,7 +2,7 @@ import React from 'react';
 import NoteBase from './NoteBase';
 import {NOTE_CIRCLE} from '../Symbols';
 
-const FullNote = function() {
+const Full = function() {
   const center = [9, 8];
   const components = [
     {
@@ -15,7 +15,8 @@ const FullNote = function() {
       }
     }
   ]
-  return <NoteBase center={center} components={components} />;
+  return <NoteBase center={Full.center} components={components} />;
 }
+Full.center = [9,8];
 
-export default FullNote;
+export default Full;

@@ -2,9 +2,12 @@
  * Created by Lu on 8/31/2019.
  */
 import React from 'react';
-import * as Syms from '../Symbols';
 import PropTypes from 'prop-types';
-import {getSvgClassName} from "../Utils";
+import {connect} from 'react-redux';
+import * as musicActions from '../../../actions/musicActions';
+import {getSvgFilePath, getSvgFileSrc} from "../Utils";
+//import noteHeadFillImg from '../../../resources/images/note_head_fill.svg';
+import InlineSVG from 'svg-inline-react';
 
 /**
  * NoteBase only renders the note view, such as is this note only a circle, or the note has pole and tail
@@ -15,20 +18,32 @@ class NoteBase extends React.Component {
     super(props, context);
     this.components = this.props.components || [];
     this.center = this.props.center || [14, 70];
+    let {mark,name,sfIdx} = this.props;
+    this.state = {mark,name,sfIdx};
+    this.noteClick = this.noteClick.bind(this);
+  }
+  noteClick(event) {
+    let {mark,name,sfIdx} = this.state;
+    mark = !mark;
+    this.setState({mark});
+    if (this.props.onNoteClicked) {
+      this.props.onNoteClicked({mark, name, sfIdx});
+    }
   }
   render() {
+    let noteClass = this.state.mark ? "note-base noteSelected" : "note-base noteDeselected";
     return (
-      <div className="note-base">
+      <div className={noteClass} onClick={this.noteClick}>
         {this.components.map(component => {
           const {type, rect} = component;
-          // rect should define this components width, height, top, left
-          const className = "note-component " + getSvgClassName(type);
-
-          return <div className={className} style={{
+          let svgSrc = getSvgFileSrc(type);
+          return <div className='note-component' style={{
             width:rect.width,
             height:rect.height,
             top:rect.top,
-            left:rect.left}}></div>
+            left:rect.left}}>
+              <InlineSVG src={svgSrc} />
+            </div>
         })}
       </div>
     )
@@ -40,4 +55,13 @@ NoteBase.propTypes = {
   components:PropTypes.array
 };
 
-export default NoteBase;
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onNoteClicked: (markNote) => {
+      dispatch(musicActions.clickNote(markNote));
+    }
+  };
+}
+
+export default connect(null, mapDispatchToProps)(NoteBase);

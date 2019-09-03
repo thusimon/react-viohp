@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    version="1.0"
-   width="12"
-   height="29"
+   style="width:12px;height:29px"
 >
   <g transform="scale(1,-1),translate(0,-28.31978)" id="note-tail-reverse">
     <path d="M 0.5625,28.31978 C 0,21.94982 5.40505,19.68858 8.0625,16.76232 C 10.58846,13.98085 11.51117,10.7726 11.40798,7.76672 C 11.38043,6.96415 11.16255,3.48661 8.79353,0 C 11.96145,8.74711 9.012,12.25806 6.13057,15.05158 C 2.64063,18.43504 0.04445,21.62376 0.5625,28.26232 z"
-      style="fill:#000000" />
+      style="width:12px;height:29px" />
   </g>
 </svg>

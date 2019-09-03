@@ -2,7 +2,7 @@ import React from 'react';
 import NoteBase from './NoteBase';
 import {NOTE_HEAD_FILL, NOTE_POLE} from '../Symbols';
 
-const Half = function() {
+const Quarter = function() {
   const center = [9, 38];
   const components = [
     {
@@ -27,4 +27,4 @@ const Half = function() {
   return <NoteBase center={center} components={components} />;
 }
 
-export default Half;
+export default Quarter;

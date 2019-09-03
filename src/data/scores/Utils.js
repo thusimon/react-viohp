@@ -2,7 +2,8 @@
  * Created by Lu on 11/10/2018.
  */
 /*eslint import/namespace: ['error', { allowComputed: true }]*/
-import * as scores from './Score_fav';
+//import * as scores from './Score_fav';
+import * as scores from './Score_fav_v2';
 import Score from './Score';
 
 export const getAllScoreList = () => {
