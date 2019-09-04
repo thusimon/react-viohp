@@ -5,8 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import * as musicActions from '../../../actions/musicActions';
-import {getSvgFilePath, getSvgFileSrc} from "../Utils";
-//import noteHeadFillImg from '../../../resources/images/note_head_fill.svg';
+import noteComponents from '../../../resources/js/note-components';
 import InlineSVG from 'svg-inline-react';
 
 /**
@@ -34,15 +33,15 @@ class NoteBase extends React.Component {
     let noteClass = this.state.mark ? "note-base noteSelected" : "note-base noteDeselected";
     return (
       <div className={noteClass} onClick={this.noteClick}>
-        {this.components.map(component => {
+        {this.components.map((component,idx) => {
           const {type, rect} = component;
-          let svgSrc = getSvgFileSrc(type);
-          return <div className='note-component' style={{
+          let svgSrc = noteComponents[type];
+          return <div className='note-component' key={type+idx} style={{
             width:rect.width,
             height:rect.height,
             top:rect.top,
             left:rect.left}}>
-              <InlineSVG src={svgSrc} />
+              <InlineSVG src={svgSrc()} />
             </div>
         })}
       </div>

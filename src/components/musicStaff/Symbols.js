@@ -1,12 +1,6 @@
 /**
  * Created by Lu on 8/13/2018.
  */
-export const NOTE_WHOLE = '\ud834\udd5d';
-export const NOTE_HALF = '\ud834\udd5e';
-export const NOTE_QUARTER = '\ud834\udd5f';
-export const NOTE_EIGHTH = '\ud834\udd60';
-export const NOTE_SIXTEENTH = '\ud834\udd61';
-export const NOTE_THIRTYSECOND = '\ud834\udd62';
 export const CLEF_G = '\ud834\udd1e';
 
 export const SHARP = '\u266F';
@@ -42,9 +36,11 @@ export const NOTE_HEAD_FILL = 'NOTE_HEAD_FILL';
 export const NOTE_POLE = 'NOTE_POLE';
 export const NOTE_TAIL = 'NOTE_TAIL';
 export const NOTE_TAIL_REVERSE = 'NOTE_TAIL_REVERSE';
-export const NOTE_HALF2 = 'NOTE_HALF2';
+
+export const NOTE_WHOLE = 'NOTE_WHOLE';
+export const NOTE_HALF = 'NOTE_HALF';
 export const NOTE_HALF_REVERSE = 'NOTE_HALF_REVERSE';
-export const NOTE_QUARTER2 = 'NOTE_QUARTER2';
+export const NOTE_QUARTER = 'NOTE_QUARTER';
 export const NOTE_QUARTER_REVERSE = 'NOTE_QUARTER_REVERSE';
-export const NOTE_EIGHTH2 = 'NOTE_EIGHTH2';
+export const NOTE_EIGHTH = 'NOTE_EIGHTH';
 export const NOTE_EIGHTH_REVERSE = 'NOTE_EIGHTH_REVERSE';

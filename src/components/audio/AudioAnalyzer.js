@@ -94,9 +94,9 @@ class AudioAnalyzer extends React.Component{
       noteColor = freqDisplayInfo.noteColor;
       noteName = freqDisplayInfo.noteName;
       noteFreq = freqDisplayInfo.noteFreq;
-      this.props.showFreqLineOnStaff(peakFreq);
+      //this.props.showFreqLineOnStaff(peakFreq);
     } else {
-      this.props.showFreqLineOnStaff(-1);
+      //this.props.showFreqLineOnStaff(-1);
     }
     this.props.displayInfo(peakEnergy, peakFreq, noteColor, noteName, noteFreq);
     this.setState({dataArray: rangedFreqData, sampleRate:this.sampleRate, peakEnergy, peakFreq, noteColor, noteName, noteFreq});
@@ -182,9 +182,6 @@ function mapStateToProps(state){
 }
 function mapDispatchToProps(dispatch){
   return {
-    showFreqLineOnStaff: (freq)=>{
-      dispatch(musicActions.showFreqLine(freq));
-    },
     displayInfo: (peakEnergy, peakFreq, noteColor, noteName, noteFreq)=>{
       dispatch(audioActions.displayInfo(peakEnergy, peakFreq, noteColor, noteName, noteFreq))
     },

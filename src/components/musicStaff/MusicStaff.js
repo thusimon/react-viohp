@@ -10,7 +10,7 @@ import * as Utils from './Utils';
 import Note from './Note';
 import NoteKey from './NoteKey';
 import * as musicActions from '../../actions/musicActions';
-import {NotesFullArr, SHARPFLATIDX} from './Constants';
+import {SHARPFLATIDX} from './Constants';
 
 class MusicStaff extends React.Component {
   constructor(props, context){
@@ -146,11 +146,10 @@ class MusicStaff extends React.Component {
       default:
       {
         // here they are all notes by default:
-        const curSymCode = Symbols[type];
         const curSymYPos = sfIdx + this.staffStart;
         const initOffset = [x,curSymYPos*halfSpace]; //[x, y]
         const adjustedOffset = [initOffset[0]-symCenter[0], initOffset[1]];
-        let curNote = <Note code={curSymCode} type={type} showLabel label={label} sfIdx={sfIdx} name={name} mark={mark} descriptor={descriptor} onNoteClicked={this.props.onNoteClicked} />;
+        let curNote = <Note type={type} showLabel label={label} sfIdx={sfIdx} name={name} mark={mark} descriptor={descriptor} />;
         sym = <div key={"NT_"+idx} style={{position:'absolute', top: adjustedOffset[1]+'px', left:adjustedOffset[0]+'px'}}>
           {curNote}
         </div>
@@ -215,7 +214,6 @@ class MusicStaff extends React.Component {
           <div className="clef">{Symbols.CLEF_G}</div>
           {this.displayScaleHead()}
           {this.displaySymsOnStaff()}
-          {freqLine}
         </div>
       </div>
     );
@@ -223,8 +221,7 @@ class MusicStaff extends React.Component {
 }
 
 MusicStaff.propTypes = {
-  notes: PropTypes.array,
-  onNoteClicked: PropTypes.func.isRequired
+  notes: PropTypes.array
 };
 //define some static properties, config of the class
 MusicStaff.defaultProps = {
@@ -243,9 +240,6 @@ function mapStateToProps(state){
 }
 function mapDispatchToProps(dispatch) {
   return {
-    onNoteClicked: (markNote) => {
-      dispatch(musicActions.clickNote(markNote));
-    },
     dragStatusChange: (dragInfo) => {
       dispatch(musicActions.noteDrag(dragInfo));
     },

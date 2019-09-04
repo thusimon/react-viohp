@@ -87,11 +87,11 @@ class Note extends React.Component {
     }
   }
   render(){
-    const Note = Notes[this.noteClass]
-    this.center = Note.center;
+    const NoteTag = Notes[this.noteClass]
+    this.center = NoteTag.center;
     return (
       <div className="note" style={{top: -this.center[1]+'px'}}>
-        <Note mark={this.props.mark} name={this.props.name} sfIdx={this.props.sfIdx} />
+        <NoteTag mark={this.props.mark} name={this.props.name} sfIdx={this.props.sfIdx} />
         {this.drawStaffline()}
         {this.drawAugment()}
         {this.drawScale()}
@@ -102,7 +102,6 @@ class Note extends React.Component {
 }
 
 Note.propTypes = {
-  code: PropTypes.string.isRequired,
   showLabel: PropTypes.bool,
   label: PropTypes.string,
   primary: PropTypes.bool,
@@ -121,7 +120,6 @@ Note.center = [14, 70];
 // hard code the certer point, maybe an issue on other browsers
 Note.defaultProps  = {
   name:Syms.NOTE_QUARTER_TYPE,
-  code:'\ud834\udd5f',
   showLabel: false,
   primary: true,
   label: 'C'

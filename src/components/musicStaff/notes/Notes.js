@@ -156,8 +156,8 @@ const Eighth = function(props) {
       rect: {
         width: '12px',
         height: '30px',
-        top: '-1px',
-        left: '18px'
+        top: '1px',
+        left: '17px'
       }
     },
   ]
