@@ -38,3 +38,8 @@ export const scoreInitState = {
   name:"",
   scoreList:[]
 };
+
+export const playerInitState = {
+  playing: -1,
+  seek: 0
+}

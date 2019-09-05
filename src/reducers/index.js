@@ -7,13 +7,15 @@ import authors from './authorReducer';
 import ajaxCallsInProgress from './ajaxStatusReducer';
 import musicReducer from './musicReducer';
 import audioReducer from './audioReducer';
+import playerReducer from './playerReducer';
 
 const rootReducer = combineReducers({
   courses,
   authors,
   ajaxCallsInProgress,
   music: musicReducer,
-  audio: audioReducer
+  audio: audioReducer,
+  player: playerReducer
 });
 
 export default rootReducer;

@@ -26,10 +26,6 @@ class AudioFilter extends React.Component {
         this.props.getFilters();
     }
     
-    componentWillReceiveProps(nextProps){
-        console.log("audio will receive props", nextProps);
-        //this.setState({filters:nextProps.filters, filters_AJAXFlag: nextProps.filters_AJAXFlag})
-    }
     getFiltersOnClick(){
         this.props.getFilters();
     }

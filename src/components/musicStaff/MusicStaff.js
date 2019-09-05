@@ -172,14 +172,14 @@ class MusicStaff extends React.Component {
     return res;
   }
 
-  componentWillReceiveProps(nextProps){
+  static getDerivedStateFromProps(nextProps, state){
     let {scale, signature, freqLineVal, dragInfo, notes} = nextProps;
-    if (scale !=this.state.scale || signature!=this.state.signature){
+    if (scale !=state.scale || signature!=state.signature){
       let fullScaleNotes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
       let scaleHead = SHARPFLATIDX[signature][scale];
-      this.setState({scale, signature, freqLineVal, fullScaleNotes,scaleHead, dragInfo, notes});
+      return {scale, signature, freqLineVal, fullScaleNotes,scaleHead, dragInfo, notes};
     } else {
-      this.setState({freqLineVal, dragInfo, notes});
+      return {freqLineVal, dragInfo, notes};
     }
   }
   displayFreqLine(){

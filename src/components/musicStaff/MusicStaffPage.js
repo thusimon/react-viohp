@@ -35,15 +35,15 @@ class MusicStaffPage extends React.Component {
     this.staffPageRef = React.createRef();
   }
 
-  componentWillReceiveProps(nextProps){
+  static getDerivedStateFromProps(nextProps, state){
     let {signature, scale, dragInfo, notes, musicInfo, scoreName} = nextProps;
     let staffNum = notes.length;
-    if (signature != this.state.signature || scale != this.state.scale){
+    if (signature != state.signature || scale != state.scale){
       // need to update the scaleHead
-      this.setState({signature, scale, dragInfo, staffNum, musicInfo,scoreName});
+      return {signature, scale, dragInfo, staffNum, musicInfo,scoreName};
     } else {
       // signature and scale is not changed
-      this.setState({dragInfo, staffNum, musicInfo,scoreName})
+      return {dragInfo, staffNum, musicInfo,scoreName};
     }
   }
 

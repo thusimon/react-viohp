@@ -6,14 +6,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import MusicStaffPage from './MusicStaffPage';
-import * as Constants from './Constants';
-import * as Utils from './Utils';
 import Violin from './Violin';
 import AudioAnalyzer from '../audio/AudioAnalyzer';
 import ScorePicker from '../Scores/ScorePicker';
-import Note from './Note';
-import * as musicActions from '../../actions/musicActions';
-import * as Symbols from './Symbols';
+import AudioPlayer from '../audio/AudioPlayer';
 import AudioFilter from '../audio/AudioFilter';
 import ToggleButton from '../common/ToggleButton';
 
@@ -33,7 +29,11 @@ class MusicAudioPage extends React.Component{
     return (
       <div style={{marginTop:"20px", display:"flex"}}>
         <div style={{flex:"auto"}}>
-          <ScorePicker></ScorePicker>
+          <div style={{display:"flex", flexDirection:"column"}}>
+            <ScorePicker></ScorePicker>
+            <br></br>
+            <AudioPlayer></AudioPlayer>
+          </div>
         </div>
         <div style={{flex:"auto"}}>
           <MusicStaffPage></MusicStaffPage>

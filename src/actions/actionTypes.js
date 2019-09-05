@@ -35,4 +35,8 @@ export const SAVE_FILTER_POINTS = 'SAVE_FILTER_POINTS';
 export const APPLY_FILTER = 'APPLY_FILTER';
 
 //player action types
-export const INIT_SCORE = 'INIT_SCORE';
+export const PLAY = 'PLAY';
+export const BACKWARD = 'BACKWARD';
+export const FORWARD = 'FORWARD';
+export const RESET_SEEK = 'RESET_SEEK';
+export const PAUSE = 'PAUSE';

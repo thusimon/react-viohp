@@ -17,7 +17,6 @@ class AudioAnalyzer extends React.Component{
   constructor(props, context){
     super(props, context);
     this.canvasRef = React.createRef();
-    this.state = {dataArray:[]};
     this.constraints = {audio: true, video:false};
     this.updateCanvas = this.updateCanvas.bind(this);
     this.toggleSettings = this.toggleSettings.bind(this);
@@ -63,9 +62,9 @@ class AudioAnalyzer extends React.Component{
 
     //create a timer
   }
-  componentWillReceiveProps(nextProps){
+  static getDerivedStateFromProps(nextProps, state){
     let {threshold, tolerance, freqRange,appliedFilter} = nextProps;
-    this.setState({threshold, tolerance, freqRange,appliedFilter});
+    return {threshold, tolerance, freqRange,appliedFilter};
   }
   componentWillUnmount(){
     clearInterval(this.timer);

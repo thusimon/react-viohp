@@ -1,5 +1,21 @@
 import * as types from './actionTypes';
 
-export const initScore = (scoreName)=>{
-    return {type: types.INIT_SCORE, scoreName}
+export const play = () => {
+    return {type: types.PLAY}
+}
+
+export const pause = () => {
+    return {type: types.PAUSE};
+};
+
+export const backward = () => {
+    return {type: types.BACKWARD};
+};
+
+export const forward = () => {
+    return {type: types.FORWARD};
+}
+
+export const resetSeek = () => {
+    return {type: types.RESET_SEEK}
 }

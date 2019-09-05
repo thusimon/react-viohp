@@ -26,10 +26,10 @@ export class ManageCoursePage extends React.Component {
     this.redirectOnSaveSuccess = this.redirectOnSaveSuccess.bind(this);
   }
 
-  componentWillReceiveProps(nextProps){
+  static getDerivedStateFromProps(nextProps){
     if(this.props.course.id != nextProps.course.id){
       //necessary to populate form when existing course is loaded
-      this.setState({course:Object.assign({}, nextProps.course)});
+      return {course:Object.assign({}, nextProps.course)};
     }
   }
 
