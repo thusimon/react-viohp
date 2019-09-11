@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as playerActions from '../../actions/playerActions';
+import PropTypes from 'prop-types';
 
 class AudioPlayer extends React.Component {
   constructor(props, context){
@@ -40,18 +41,18 @@ class AudioPlayer extends React.Component {
     const backwardClass = this.props.seek === -1 ? 'playerColorBtn' : '';
     const forwardClass = this.props.seek === 1 ? 'playerColorBtn' : '';
     return (
-      <div class='btn-group' role='group' aria-label='player-buttons'>
-        <button type='button' class={'btn btn-secondary ' + backwardClass} onClick = {this.clickBackwardBtn}>
-          <FontAwesomeIcon icon='backward' />
+      <div className="btn-group" role="group" aria-label="player-buttons">
+        <button type="button" className={'btn btn-secondary ' + backwardClass} onClick = {this.clickBackwardBtn}>
+          <FontAwesomeIcon icon="backward" />
         </button>
-        <button type='button' class={'btn btn-secondary ' + playClass} onClick = {this.props.play}>
-          <FontAwesomeIcon icon='play' />
+        <button type="button" className={'btn btn-secondary ' + playClass} onClick = {this.props.play}>
+          <FontAwesomeIcon icon="play" />
         </button>
-        <button type='button' class={'btn btn-secondary ' + pauseClass} onClick = {this.props.pause}>
-          <FontAwesomeIcon icon='pause' />
+        <button type="button" className={'btn btn-secondary ' + pauseClass} onClick = {this.props.pause}>
+          <FontAwesomeIcon icon="pause" />
         </button>
-        <button type='button' class={'btn btn-secondary ' + forwardClass} onClick = {this.clickForwardBtn}>
-          <FontAwesomeIcon icon='forward' />
+        <button type="button" className={'btn btn-secondary ' + forwardClass} onClick = {this.clickForwardBtn}>
+          <FontAwesomeIcon icon="forward" />
         </button>
       </div>
     );
@@ -60,7 +61,7 @@ class AudioPlayer extends React.Component {
 
 const mapStateToProps = (state) => {
   return state.player;
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -79,7 +80,16 @@ const mapDispatchToProps = (dispatch) => {
       resetSeek: () => {
         dispatch(playerActions.resetSeek());
       }
-  }
+  };
 };
 
+AudioPlayer.propTypes = {
+  backward: PropTypes.func,
+  resetSeek: PropTypes.func,
+  forward: PropTypes.func,
+  play: PropTypes.func,
+  pause: PropTypes.func,
+  playing: PropTypes.bool,
+  seek: PropTypes.number
+};
 export default connect(mapStateToProps, mapDispatchToProps)(AudioPlayer);

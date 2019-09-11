@@ -6,7 +6,7 @@ export const lowPass1 = {
         [1,0]
     ],
     edit: false
-}
+};
 
 export const lowPass2 = {
     name: "lowPass2",
@@ -17,7 +17,7 @@ export const lowPass2 = {
         [1, 0.6]
     ],
     edit: false
-}
+};
 
 export const highPass = {
     name: "highPass",
@@ -27,4 +27,4 @@ export const highPass = {
         [1,1]
     ],
     edit: false
-}
+};

@@ -9,7 +9,6 @@ import MusicStaff from './MusicStaff';
 import * as Constants from './Constants';
 import * as Utils from './Utils';
 import TopControls from './TopControls';
-import Note from './Note';
 import * as musicActions from '../../actions/musicActions';
 import * as Symbols from './Symbols';
 import MusicStaffHead from './MusicStaffHead';
@@ -84,8 +83,7 @@ class MusicStaffPage extends React.Component {
         <MusicStaffHead musicInfo={this.state.musicInfo}/>
         <div style={{height:"900px", overflowX:"hidden", overflowY:"auto"}}>
           {Array.from(Array(this.state.staffNum).keys()).map(n =>
-              <MusicStaff key={n.toString()} idx={n}>
-              </MusicStaff>
+              <MusicStaff key={n.toString()} idx={n} />
           )}
         </div>
       </div>);
@@ -94,7 +92,13 @@ class MusicStaffPage extends React.Component {
 
 MusicStaffPage.propTypes = {
   notes: PropTypes.array,
-  scaleHead: PropTypes.array
+  scaleHead: PropTypes.array,
+  signature: PropTypes.object,
+  scale: PropTypes.object,
+  dragInfo: PropTypes.object,
+  musicInfo: PropTypes.object,
+  scoreName: PropTypes.string,
+  dragStatusChange: PropTypes.func
 };
 
 function mapStateToProps(state, ownProps){
@@ -106,7 +110,7 @@ function mapDispatchToProps(dispatch){
     dragStatusChange: (dragInfo) => {
       dispatch(musicActions.noteDrag(dragInfo));
     }
-  }
+  };
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(MusicStaffPage);

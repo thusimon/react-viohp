@@ -52,7 +52,9 @@ class Violin extends React.Component {
 }
 
 Violin.propTypes = {
-  markNotes: PropTypes.array
+  markNotes: PropTypes.array,
+  noteName: PropTypes.string,
+  noteColor: PropTypes.string
 };
 
 function mapStateToProps(state, ownProps){

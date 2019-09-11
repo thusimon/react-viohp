@@ -1,6 +1,7 @@
 /**
  * Created by Lu on 10/29/2018.
  */
+/*eslint no-console: 0 */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
@@ -24,10 +25,13 @@ class AudioAnalyzer extends React.Component{
     this.defaultInfo = {noteColor: "#00FF00", peakFreq: "0", noteName: "--", noteFreq: '--'};
     this.state = Object.assign({}, this.props, {showSettings: false});
   }
+  static getDerivedStateFromProps(nextProps, state){
+    let {threshold, tolerance, freqRange,appliedFilter} = nextProps;
+    return {threshold, tolerance, freqRange,appliedFilter};
+  }
   componentDidMount(){
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     this.analyser = this.audioCtx.createAnalyser();
-    console.log("Audio analyzer did mount");
     // get media
     let me = this;
     if (navigator.mediaDevices.getUserMedia) {
@@ -40,7 +44,6 @@ class AudioAnalyzer extends React.Component{
           //me.props.displaySampleRate(me.sampleRate);
           //me.fftSize = audioUtils.getViolinFFtSize(me.sampleRate);
           me.fftSize = 32768;
-          console.log("fftSize!!!!!!!!!!!!!!: " + me.fftSize);
           me.props.setAudioParam(me.sampleRate, me.fftSize);
           me.analyser.fftSize = me.fftSize;
           //me.analyser.smoothingTimeConstant = 0.5;
@@ -55,23 +58,20 @@ class AudioAnalyzer extends React.Component{
           me.timer = setInterval(me.updateCanvas, 100);
           me.audioCtx.resume();
         })
-        .catch( function(err) { console.log('The following gUM error occured: ' + err);})
+        .catch( function(err) { 
+          console.log('The following gUM error occured: ' + err);
+        });
     } else {
       console.log('getUserMedia not supported on your browser!');
     }
 
     //create a timer
   }
-  static getDerivedStateFromProps(nextProps, state){
-    let {threshold, tolerance, freqRange,appliedFilter} = nextProps;
-    return {threshold, tolerance, freqRange,appliedFilter};
-  }
   componentWillUnmount(){
     clearInterval(this.timer);
   }
   toggleSettings(){
     let curState = this.state.showSettings;
-    console.log("Toggle setting click", this.state.showSettings);
     this.setState({showSettings:!curState});
   }
   updateCanvas(){
@@ -79,7 +79,6 @@ class AudioAnalyzer extends React.Component{
     let rangedFreqData = audioUtils.getRangedFreqData(this.dataArray, this.sampleRate, this.fftSize, this.state.freqRange);
     if (this.state.appliedFilter && this.state.appliedFilter.length>0){
       //multiply the two arrays
-      //console.log(rangedFreqData.length, this.state.appliedFilter.length);
       rangedFreqData = multiplyVectors(rangedFreqData, this.state.appliedFilter);
     }
     let [peakEnergy, peakFreqIndex] = audioUtils.getPeakFreq(rangedFreqData, this.state.threshold);
@@ -116,7 +115,7 @@ class AudioAnalyzer extends React.Component{
       let barWidth = (chartW / dataLen);
       let barHeight;
       let x = axisW;
-      for(var i = 0; i < dataLen; i++) {
+      for(let i = 0; i < dataLen; i++) {
         barHeight = dataArray[i]*chartHTo255; // [0,255]=>[0,chartH]
         canvasCtx.fillStyle = `rgb(${dataArray[i]},${255-dataArray[i]}, 50)`;
         canvasCtx.fillRect(x,chartH-barHeight+20,barWidth,barHeight);
@@ -158,10 +157,9 @@ class AudioAnalyzer extends React.Component{
       canvasCtx.stroke();
     }
     let audioSettingClass = this.state.showSettings ? "scrollUp scrollUpShow" : "scrollUp";
-    return (
-      <div style={{display: "flex"}}>
+    return (<div style={{display: "flex"}}>
         <div style={{flex:"auto"}}>
-          <canvas id="audiocanvas" ref={this.canvasRef} width="500" height="300"></canvas>
+          <canvas id="audiocanvas" ref={this.canvasRef} width="500" height="300" />
           <AudioDisplay />
         </div>
         <div style={{flex:"auto"}}>
@@ -172,8 +170,7 @@ class AudioAnalyzer extends React.Component{
             <AudioControls />
           </div>
         </div>
-      </div>
-      )
+      </div>);
   }
 }
 function mapStateToProps(state){
@@ -182,11 +179,17 @@ function mapStateToProps(state){
 function mapDispatchToProps(dispatch){
   return {
     displayInfo: (peakEnergy, peakFreq, noteColor, noteName, noteFreq)=>{
-      dispatch(audioActions.displayInfo(peakEnergy, peakFreq, noteColor, noteName, noteFreq))
+      dispatch(audioActions.displayInfo(peakEnergy, peakFreq, noteColor, noteName, noteFreq));
     },
     setAudioParam: (sampleRate, fftSize)=>{
       dispatch(audioActions.setAudioParam(sampleRate, fftSize));
     }
-  }
+  };
 }
+
+AudioAnalyzer.propTypes = {
+  displayInfo: PropTypes.func,
+  setAudioParam: PropTypes.func
+};
+
 export default connect(mapStateToProps, mapDispatchToProps)(AudioAnalyzer);

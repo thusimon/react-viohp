@@ -65,7 +65,7 @@ class AudioControls extends React.Component {
             </td>
             <td >
               <input name="audioThreshold" pattern="[0-9]*" value={this.state.threshold} style={{width:"35px"}}
-                     onChange={this.settingChange}></input>
+                     onChange={this.settingChange} />
             </td>
           </tr>
           <tr style={{textAlign:"left"}}>
@@ -74,7 +74,7 @@ class AudioControls extends React.Component {
             </td>
             <td>
               <input name="audioTolerance" pattern="[0-9]*" value={this.state.tolerance} style={{width:"20px"}}
-                     onChange={this.settingChange}></input>
+                     onChange={this.settingChange} />
             </td>
           </tr>
           <tr style={{textAlign:"left"}}>
@@ -83,10 +83,10 @@ class AudioControls extends React.Component {
             </td>
             <td>
               <input name="audioFreqRangeMin" pattern="[0-9]*" value={this.state.freqRangeMin} style={{width:"35px"}}
-                     onChange={this.settingChange}></input>
+                     onChange={this.settingChange} />
               <span>-</span>
               <input name="audioFreqRangeMax" pattern="[0-9]*" value={this.state.freqRangeMax} style={{width:"35px"}}
-                     onChange={this.settingChange}></input>
+                     onChange={this.settingChange} />
             </td>
           </tr>
           <tr>
@@ -96,8 +96,7 @@ class AudioControls extends React.Component {
             </td>
           </tr>
         </tbody>
-      </table>
-    )
+      </table>);
   }
 }
 
@@ -111,7 +110,14 @@ function mapDispatchToProps(dispatch){
     saveAudioSetting: (threshold,tolerance,freqRange)=>{
       dispatch(audioActions.saveSettings(threshold,tolerance,freqRange));
     }
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AudioControls)
+AudioControls.propTypes = {
+  threshold: PropTypes.number,
+  tolerance: PropTypes.number,
+  freqRange: PropTypes.array,
+  saveAudioSetting: PropTypes.func
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AudioControls);

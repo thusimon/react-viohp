@@ -30,13 +30,13 @@ class MusicAudioPage extends React.Component{
       <div style={{marginTop:"20px", display:"flex"}}>
         <div style={{flex:"auto"}}>
           <div style={{display:"flex", flexDirection:"column"}}>
-            <ScorePicker></ScorePicker>
-            <br></br>
-            <AudioPlayer></AudioPlayer>
+            <ScorePicker />
+            <br />
+            <AudioPlayer />
           </div>
         </div>
         <div style={{flex:"auto"}}>
-          <MusicStaffPage></MusicStaffPage>
+          <MusicStaffPage />
         </div>
         <div style={{flex:"auto", marginLeft:"8px", maxWidth:"710px"}}>
           <div style={{textAlign:'center'}}>
@@ -62,14 +62,18 @@ class MusicAudioPage extends React.Component{
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
+
+MusicAudioPage.propTypes = {
+  appliedFiltername: PropTypes.string
+};
 
 function mapStateToProps(state){
   return {
     appliedFiltername:state.audio.appliedFiltername
-  }
+  };
 }
 
 export default connect(mapStateToProps)(MusicAudioPage);

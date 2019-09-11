@@ -57,7 +57,7 @@ export const getSetOfNoteFromSignatureScale = (signature, scale) => {
 
   // find the first note that matches the scale
   let scaleIndex = Constant.SCALE_FULL.findIndex(notes=>{
-      return notes.map(note=>note.scale).includes(scale)
+      return notes.map(note=>note.scale).includes(scale);
     });
   let res = [], i=0, intervalLen = intervals.length;
   let firstNote = Constant.SCALE_FULL[scaleIndex].filter(note=>note.scale==scale);
@@ -196,4 +196,4 @@ export const getNoteClassByType = (noteType) => {
       break;
   }
   return noteClass;
-}
+};

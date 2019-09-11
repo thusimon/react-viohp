@@ -21,7 +21,7 @@ export const getScoreByName = (scoreName)=>{
     let curScore = scores[key];
     let {name, title, author} = curScore;
     if (name==scoreName){
-      return new Score(curScore)
+      return new Score(curScore);
     }
   }
   return null;

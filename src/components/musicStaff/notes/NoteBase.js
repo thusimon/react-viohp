@@ -31,27 +31,29 @@ class NoteBase extends React.Component {
   }
   render() {
     let noteClass = this.state.mark ? "note-base noteSelected" : "note-base noteDeselected";
-    return (
-      <div className={noteClass} onClick={this.noteClick}>
+    return (<div className={noteClass} onClick={this.noteClick}>
         {this.components.map((component,idx) => {
           const {type, rect} = component;
           let svgSrc = noteComponents[type];
-          return <div className='note-component' key={type+idx} style={{
+          return (<div className="note-component" key={type+idx} style={{
             width:rect.width,
             height:rect.height,
             top:rect.top,
             left:rect.left}}>
               <InlineSVG src={svgSrc()} />
-            </div>
+            </div>);
         })}
-      </div>
-    )
+      </div>);
   }
 }
 
 NoteBase.propTypes = {
   center: PropTypes.array,
-  components:PropTypes.array
+  components:PropTypes.array,
+  mark: PropTypes.bool,
+  name: PropTypes.string,
+  sfIdx: PropTypes.number,
+  onNoteClicked: PropTypes.func
 };
 
 

@@ -48,7 +48,13 @@ function mapDispatchToProps(dispatch) {
     setScoreName: (scoreName)=> {
       dispatch(musicActions.setScore(scoreName));
     }
-  }
+  };
 }
+
+ScorePicker.propTypes = {
+  setScoreName: PropTypes.func,
+  initPlayerScore: PropTypes.func,
+  scoreList: PropTypes.func
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScorePicker);

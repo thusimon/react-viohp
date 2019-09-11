@@ -1,8 +1,6 @@
 /**
  * Created by Lu on 8/9/2018.
  */
-import * as MusicConstants from '../components/musicStaff/Constants';
-
 export const courseInitState = {
   authors:[],
   courses:[],
@@ -42,4 +40,4 @@ export const scoreInitState = {
 export const playerInitState = {
   playing: -1,
   seek: 0
-}
+};

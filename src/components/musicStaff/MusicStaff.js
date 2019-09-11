@@ -36,6 +36,17 @@ class MusicStaff extends React.Component {
     this.state = {scale, signature, freqLineVal, fullScaleNotes, notes, scaleHead,dragInfo};
   }
 
+  static getDerivedStateFromProps(nextProps, state){
+    let {scale, signature, freqLineVal, dragInfo, notes} = nextProps;
+    if (scale !=state.scale || signature!=state.signature){
+      let fullScaleNotes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
+      let scaleHead = SHARPFLATIDX[signature][scale];
+      return {scale, signature, freqLineVal, fullScaleNotes,scaleHead, dragInfo, notes};
+    } else {
+      return {freqLineVal, dragInfo, notes};
+    }
+  }
+
   generateFullStaffIndex(){
     //generate full staff index according the props.LineLayout
     let fullIndex = [];
@@ -74,7 +85,6 @@ class MusicStaff extends React.Component {
         event.clientY-staffDomRect.y-startOffSet[1]+Note.center[1]
       ];
       if (noteCoordOnStaff[1]>0 && noteCoordOnStaff[1]<this.staffHeight){
-        console.log("note dropped");
         //should add the note to music staff state.notes
         this.positionNoteOnStaff(dragNoteName, noteCoordOnStaff);
       }
@@ -110,37 +120,37 @@ class MusicStaff extends React.Component {
     switch (type){
       case Symbols.BARLINE_TYPE:
       {
-        sym = <div key={"BL_"+idx} style={{position:'absolute', top: "60px", left:x+"px"}}>
-          <div style={{borderLeft: "2px solid black", height:"80px"}}></div>
-        </div>;
+        sym = (<div key={"BL_"+idx} style={{position:'absolute', top: "60px", left:x+"px"}}>
+          <div style={{borderLeft: "2px solid black", height:"80px"}} />
+        </div>);
         break;
       }
       case Symbols.WHOLEREST_TYPE:
       {
-        sym = <div key={"RW_"+idx} style={{position:'absolute', top: "63px", left:x+"px"}}>
+        sym = (<div key={"RW_"+idx} style={{position:'absolute', top: "63px", left:x+"px"}}>
           <span style={{fontSize:"40px"}}>{Symbols.WHOLEREST}</span>
-        </div>;
+        </div>);
         break;
       }
       case Symbols.HALFREST_TYPE:
       {
-        sym = <div key={"RH_"+idx} style={{position:'absolute', top: "75px", left:x+"px"}}>
+        sym = (<div key={"RH_"+idx} style={{position:'absolute', top: "75px", left:x+"px"}}>
           <span style={{fontSize:"40px"}}>{Symbols.HALFREST}</span>
-        </div>;
+        </div>);
         break;
       }
       case Symbols.QUARTERREST_TYPE:
       {
-        sym = <div key={"RQ_"+idx} style={{position:'absolute', top: "75px", left:x+"px"}}>
+        sym = (<div key={"RQ_"+idx} style={{position:'absolute', top: "75px", left:x+"px"}}>
           <span style={{fontSize:"40px"}}>{Symbols.QUARTERREST}</span>
-        </div>;
+        </div>);
         break;
       }
       case Symbols.EIGTHREST_TYPE:
       {
-        sym = <div key={"RE_"+idx} style={{position:'absolute', top: "75px", left:x+"px"}}>
+        sym = (<div key={"RE_"+idx} style={{position:'absolute', top: "75px", left:x+"px"}}>
           <span style={{fontSize:"40px"}}>{Symbols.EIGTHREST}</span>
-        </div>;
+        </div>);
         break;
       }
       default:
@@ -150,9 +160,9 @@ class MusicStaff extends React.Component {
         const initOffset = [x,curSymYPos*halfSpace]; //[x, y]
         const adjustedOffset = [initOffset[0]-symCenter[0], initOffset[1]];
         let curNote = <Note type={type} showLabel label={label} sfIdx={sfIdx} name={name} mark={mark} descriptor={descriptor} />;
-        sym = <div key={"NT_"+idx} style={{position:'absolute', top: adjustedOffset[1]+'px', left:adjustedOffset[0]+'px'}}>
+        sym = (<div key={"NT_"+idx} style={{position:'absolute', top: adjustedOffset[1]+'px', left:adjustedOffset[0]+'px'}}>
           {curNote}
-        </div>
+        </div>);
         break;
       }
     }
@@ -172,24 +182,12 @@ class MusicStaff extends React.Component {
     return res;
   }
 
-  static getDerivedStateFromProps(nextProps, state){
-    let {scale, signature, freqLineVal, dragInfo, notes} = nextProps;
-    if (scale !=state.scale || signature!=state.signature){
-      let fullScaleNotes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
-      let scaleHead = SHARPFLATIDX[signature][scale];
-      return {scale, signature, freqLineVal, fullScaleNotes,scaleHead, dragInfo, notes};
-    } else {
-      return {freqLineVal, dragInfo, notes};
-    }
-  }
   displayFreqLine(){
     let newsfIdx = Utils.getSFIdxFromFreq(this.state.fullScaleNotes, this.state.freqLineVal);
     const freqLineSfIdx = newsfIdx + this.staffStart;
     const halfSpace = this.LineSpace / 2;
     const freqLineYPos = (freqLineSfIdx*halfSpace).toFixed(2);
-    return (
-      <hr style={{position:'absolute', top: freqLineYPos+'px', left:"80px", width:"90%",border:"1px solid #0000FF", margin:"0px"}} />
-    )
+    return <hr style={{position:'absolute', top: freqLineYPos+'px', left:"80px", width:"90%",border:"1px solid #0000FF", margin:"0px"}} />;
   }
   render(){
     // return table with 10 cells, 4 visible cells form five lines with a clef at left
@@ -221,7 +219,13 @@ class MusicStaff extends React.Component {
 }
 
 MusicStaff.propTypes = {
-  notes: PropTypes.array
+  notes: PropTypes.array,
+  scale: PropTypes.string,
+  signature: PropTypes.string,
+  dragInfo: PropTypes.object,
+  idx: PropTypes.number,
+  freqLineVal: PropTypes.number,
+  addNote: PropTypes.func
 };
 //define some static properties, config of the class
 MusicStaff.defaultProps = {

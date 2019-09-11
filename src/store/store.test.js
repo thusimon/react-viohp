@@ -5,27 +5,26 @@ import expect from 'expect';
 import {createStore, applyMiddleware} from 'redux';
 import rootReducer from '../reducers';
 import {courseInitState as initState} from '../reducers/initialState';
-import * as courseActions from '../actions/courseActions';
+import * as audioActions from '../actions/audioActions';
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import thunk from 'redux-thunk';
 
 describe('Store test', ()=>{
-  it('Store should handle creating courses', (done) => {
+  it('Store should handle save audio settings', (done) => {
     const store = createStore(
       rootReducer,
       initState,
       applyMiddleware(thunk, reduxImmutableStateInvariant())
     );
 
-    const newCourse = {
-      title:"new course 1"
-    };
-    const action = courseActions.saveCourse(newCourse);
+    const [threshold, tolerance, freqRange] = [100, 5, [100,900]];
+    const action = audioActions.saveSettings(threshold, tolerance, freqRange);
 
-    store.dispatch(action).then(()=>{
-      const actualState = store.getState();
-      expect(actualState.courses[0].title).toEqual('new course 1');
-      done();
-    });
+    store.dispatch(action);
+    const actualState = store.getState();
+    expect(actualState.audio.threshold).toBe(threshold);
+    expect(actualState.audio.tolerance).toBe(tolerance);
+    expect(actualState.audio.freqRange).toEqual(freqRange);
+    done();
   }).timeout(10000);
 });

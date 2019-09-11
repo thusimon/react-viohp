@@ -9,7 +9,7 @@ class AudioApi {
                 let audioFilters = Object.assign({}, AudioFilters);
                 resolve(audioFilters);
             }, delay);
-        })
+        });
     }
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-//import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const ListBox = ({status, data, style, curName, clickEvt})=>{
     // status: 0: ready, 1: loading
@@ -16,7 +16,7 @@ const ListBox = ({status, data, style, curName, clickEvt})=>{
         let siblings = [ ...evtParent.children ].filter(c => c.nodeType == 1 && c != evt.target);
         siblings.forEach(sibling=>{
             sibling.classList.remove('active');
-        })
+        });
         evt.target.classList.add('active');
         clickEvt.call(this, evt.target.name);
     }
@@ -27,17 +27,24 @@ const ListBox = ({status, data, style, curName, clickEvt})=>{
             if (d.name==curName){
                 className += " active";
             }
-            return <button type="button" key={d.name} title={d.title} className={className} name={d.name}>{d.value}</button>
+            return <button type="button" key={d.name} title={d.title} className={className} name={d.name}>{d.value}</button>;
         });
     } else {
-        content = 
-        <div title="Requesting..." className="centerInParent">
+        content = (<div title="Requesting..." className="centerInParent">
             <FontAwesomeIcon icon="spinner" size="6x" spin />
-        </div>
+        </div>);
     }
-    return <div className="list-group" style={style} onClick={ListBoxClick}>
+    return (<div className="list-group" style={style} onClick={ListBoxClick}>
         {content}
-    </div>
-}
+    </div>);
+};
+
+ListBox.propTypes = {
+    status: PropTypes.number,
+    data: PropTypes.array,
+    style: PropTypes.object,
+    curName: PropTypes.string,
+    clickEvt: PropTypes.func
+};
 
 export default ListBox;

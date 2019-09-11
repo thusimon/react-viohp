@@ -13,7 +13,7 @@ export const clearAllNotes = () => {
 };
 
 export const loadScore = (score) => {
-  return {type:types.LOAD_SCORE, musicInfo:{title:score.title, author:score.author}, scale:score.scale, signature:score.signature, notes:score.notes}
+  return {type:types.LOAD_SCORE, musicInfo:{title:score.title, author:score.author}, scale:score.scale, signature:score.signature, notes:score.notes};
 };
 
 export const clickNote = (markNote) => {
@@ -25,13 +25,13 @@ export const noteDrag = (dragInfo) => {
 };
 
 export const showFreqLine = (freqLineVal)=>{
-  return {type:types.SHOW_FREQLINE, freqLineVal}
+  return {type:types.SHOW_FREQLINE, freqLineVal};
 };
 
 export const setScore = (scoreName)=>{
-  return {type: types.SET_SCORE_NAME, scoreName}
+  return {type: types.SET_SCORE_NAME, scoreName};
 };
 
 export const setScoreList = (scoreList)=>{
-  return {type: types.SET_SCORE_LIST, scoreList}
+  return {type: types.SET_SCORE_LIST, scoreList};
 };

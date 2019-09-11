@@ -1,7 +1,7 @@
 class AudioOscillator {
     constructor(){
         // create web audio api context
-        var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         // create Oscillator node
         this.oscillator = audioCtx.createOscillator();
         this.oscillator.type = 'sine';

@@ -32,7 +32,6 @@ class Score {
     for (let i=0;i<notes.length;i++){
       let curStaffRawNotes = notes[i];
       let curStaffNotes = {};
-      console.log(curStaffNotes);
       let curStaffSymLen = curStaffRawNotes.length;
       let curStaffNoteLen = curStaffRawNotes.filter(sym=>sym.type!=Symbols.BARLINE_TYPE).length;
       let incStep = (1200-120)/curStaffNoteLen;

@@ -34,7 +34,6 @@ class AudioFilter extends React.Component {
         this.props.applyFilter(null, null);
     }
     addFiltersOnClick(){
-        console.log("add custome filter!!!");
         let {showModal} = this.state;
         this.setState({showModal: !showModal});
     }
@@ -45,40 +44,30 @@ class AudioFilter extends React.Component {
 
     }
     applyFilterOnClick(){
-        console.log("apply filter btn clicked", this.state.selectedFilter, this.props);
         if (this.state.selectedFilter && this.state.selectedFilter.data.length>=2){
             let freqDataRange = getFreqRange(this.props.sampleRate, this.props.fftSize, this.props.freqRange);
             let freqDataSize = freqDataRange[1]-freqDataRange[0]+1;
-            console.log(freqDataSize);
             let generateFilter = generateConsecutiveFilterData(freqDataSize-1, this.state.selectedFilter.data);
-            console.log("generatedFilter!!!", generateFilter);
             this.props.applyFilter(this.state.selectedFilter.name, generateFilter);
         }
     }
     listBoxClick(filterName){
-        console.log("clicked filter name", filterName);
         this.setState({selectedFilterName:filterName, selectedFilter:this.props.filters[filterName]});
     }
     modalBtnHandler(evt){
-        console.log('clicked modal btn');
-        console.log(evt.target);
         this.setState({showModal:false});
     }
     render(){
         // should return two inputs and a add button
-        console.log("rendering audio filters", this.props, this.state);
         let infoLabelClass = "label label-default";
         let {selectedFilter, selectedFilterName} = this.state;
-        console.log("selected filter", selectedFilter);
-        let builtInFilters = Object.values(this.props.filters).filter(f=>{f.edit==false});
+        let builtInFilters = Object.values(this.props.filters).filter(f=>f.edit==false);
         let editBtnDisable = builtInFilters.includes(selectedFilter).toString();
         //filter_AJAXFlag = 1, calling ajax
         let listBoxStatus = this.props.filters_AJAXFlag;
         let filterData = Object.values(this.props.filters).map(fd=>({name:fd.name,value:fd.name, title:fd.desc}));
-        let listBoxstyle = {width: "200px", height: "200px", overflowX:"none", overflowY:"auto"}
-        console.log(listBoxStatus, filterData, listBoxstyle);
-        return (
-        <div className="audioFilter">
+        let listBoxstyle = {width: "200px", height: "200px", overflowX:"none", overflowY:"auto"};
+        return (<div className="audioFilter">
             <div style={{flex:0, width:"200px"}}>
                 <p><strong>Filters:</strong></p>
                 <ListBox status={listBoxStatus} data={filterData} style={listBoxstyle} clickEvt={this.listBoxClick} curName={selectedFilterName}/>
@@ -94,14 +83,12 @@ class AudioFilter extends React.Component {
             </div>
             <div style={{flex:1, width:"250px", marginLeft:"10px"}}>
                 <p><strong>Points:x - y (percentage)</strong></p>
-                {listBoxStatus==0 && <TwoDPDisp points={selectedFilter.data} editable={selectedFilter.edit} width="250px" height="200px"></TwoDPDisp>}
+                {listBoxStatus==0 && <TwoDPDisp points={selectedFilter.data} editable={selectedFilter.edit} width="250px" height="200px" />}
                 {listBoxStatus==0 && selectedFilter.data.length>0 && <div className="btn-group" role="group" aria-label="Basic example">
                     <button type="button" className="btn btn-success btn-sm" onClick={this.applyFilterOnClick}>Apply</button>
                 </div>}
             </div>
-        </div>
-        
-        )
+        </div>);
     }
 }
 
@@ -113,12 +100,21 @@ function mapStateToProps(state){
 function mapDispatchToProps(dispatch){
     return {
         getFilters: ()=>{
-            dispatch(audioActions.loadAllFilters())
+            dispatch(audioActions.loadAllFilters());
         },
         applyFilter: (filtername, appliedFilter)=>{
-            dispatch(audioActions.applyFilter(filtername, appliedFilter))
+            dispatch(audioActions.applyFilter(filtername, appliedFilter));
         }
-    }
+    };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AudioFilter)
+AudioFilter.propTypes = {
+    filters: PropTypes.object,
+    filters_AJAXFlag: PropTypes.number,
+    getFilters: PropTypes.func,
+    applyFilter: PropTypes.func,
+    sampleRate: PropTypes.number,
+    fftSize: PropTypes.number,
+    freqRange: PropTypes.array
+};
+export default connect(mapStateToProps, mapDispatchToProps)(AudioFilter);

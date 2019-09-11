@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import * as Constants from './Constants';
 
 const ViolinBoardNote = ({note, markNotes, noteName, noteColor}) => {
   let labels = note.map(n=>n.label);
@@ -11,7 +10,6 @@ const ViolinBoardNote = ({note, markNotes, noteName, noteColor}) => {
     const mn = markNotes[i];
     if (note.findIndex(n=>(n.name==mn.name && n.sfIdx==mn.sfIdx)) > -1){
       marked = true;
-      console.log("this note is marked!", note, noteName, noteColor);
       break;
     }
   }
@@ -33,7 +31,9 @@ const ViolinBoardNote = ({note, markNotes, noteName, noteColor}) => {
 
 ViolinBoardNote.propTypes = {
   note: PropTypes.array,
-  markNotes: PropTypes.array
+  markNotes: PropTypes.array,
+  noteName: PropTypes.string,
+  noteColor: PropTypes.string
 };
 
 ViolinBoardNote.defaultProps = {

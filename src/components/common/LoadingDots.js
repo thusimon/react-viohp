@@ -10,7 +10,6 @@ class LoadingDots extends React.Component {
   }
 
   componentDidMount() {
-    console.log("loading dots did mount");
     this.interval = setInterval(()=>{
       this.setState({
         frame: (this.state.frame % this.props.length) +1

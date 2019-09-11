@@ -49,8 +49,8 @@ class Note extends React.Component {
     return staffLineOffset.map(l=>{
       let lineSegPos = this.center[1]+l*10;
       let lineKey = "staffSeg"+l;
-      return <div className='staffLineSeg' key={lineKey} style={{top:lineSegPos}}></div>
-    })
+      return <div className="staffLineSeg" key={lineKey} style={{top:lineSegPos}} />;
+    });
   }
   drawAugment(){
     // find sfIdx value if it is even, meaning it lies on the staff line, the augment dot should be higher
@@ -63,7 +63,7 @@ class Note extends React.Component {
       } else {
         augmentPosY -= 5;
       }
-      return <div className="noteAugmentDot" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}></div>
+      return <div className="noteAugmentDot" style={{top:augmentPosY+"px", left:augmentPosX+"px"}} />;
     } else {
       return null;
     }
@@ -73,12 +73,12 @@ class Note extends React.Component {
       let augmentPosY = this.center[1]-3;
       let augmentPosX = this.center[0]-20;
       if (this.descriptor.scale==Syms.FLAT_TYPE){
-        return <div className="noteScaleLeft" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.FLAT}</div>
+        return <div className="noteScaleLeft" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.FLAT}</div>;
       } else if(this.descriptor.scale==Syms.SHARP_TYPE)
       {
-        return <div className="noteScaleLeft" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.SHARP}</div>
+        return <div className="noteScaleLeft" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.SHARP}</div>;
       } else if(this.descriptor.scale==Syms.NATURAL_TYPE){
-        return <div className="noteScaleLeft" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.NATURAL}</div>
+        return <div className="noteScaleLeft" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.NATURAL}</div>;
       } else {
         return null;
       }
@@ -87,7 +87,7 @@ class Note extends React.Component {
     }
   }
   render(){
-    const NoteTag = Notes[this.noteClass]
+    const NoteTag = Notes[this.noteClass];
     this.center = NoteTag.center;
     return (
       <div className="note" style={{top: -this.center[1]+'px'}}>
@@ -96,8 +96,7 @@ class Note extends React.Component {
         {this.drawAugment()}
         {this.drawScale()}
         {this.props.showLabel && <span className="noteLabel">{this.props.label}</span>}
-      </div>
-    );
+      </div>);
   }
 }
 
@@ -113,7 +112,8 @@ Note.propTypes = {
   // 2. flat or shart, on the note left side
   // 3. whether extend, on the note right side
   // 4. wheter show the staff segment line
-  descriptors:PropTypes.object 
+  descriptor: PropTypes.object,
+  type: PropTypes.string
 };
 
 Note.center = [14, 70];

@@ -28,7 +28,7 @@ class AudioDisplay extends React.Component{
                   <h2>{this.props.peakEnergy}</h2>
                 </div>
               </td>
-              <td></td>
+              <td />
             </tr>
             <tr>
               <td>
@@ -65,7 +65,7 @@ function mapStateToProps(state){
     peakFreq: state.audio.peakFreq,
     noteName: state.audio.noteName,
     noteFreq: state.audio.noteFreq
-  }
+  };
 }
 
 AudioDisplay.propTypes = {

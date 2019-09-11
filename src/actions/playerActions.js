@@ -1,8 +1,8 @@
 import * as types from './actionTypes';
 
 export const play = () => {
-    return {type: types.PLAY}
-}
+    return {type: types.PLAY};
+};
 
 export const pause = () => {
     return {type: types.PAUSE};
@@ -14,8 +14,8 @@ export const backward = () => {
 
 export const forward = () => {
     return {type: types.FORWARD};
-}
+};
 
 export const resetSeek = () => {
-    return {type: types.RESET_SEEK}
-}
+    return {type: types.RESET_SEEK};
+};
