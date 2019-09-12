@@ -93,8 +93,8 @@ class MusicStaffPage extends React.Component {
 MusicStaffPage.propTypes = {
   notes: PropTypes.array,
   scaleHead: PropTypes.array,
-  signature: PropTypes.object,
-  scale: PropTypes.object,
+  signature: PropTypes.string,
+  scale: PropTypes.string,
   dragInfo: PropTypes.object,
   musicInfo: PropTypes.object,
   scoreName: PropTypes.string,

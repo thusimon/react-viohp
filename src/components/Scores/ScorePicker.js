@@ -54,7 +54,7 @@ function mapDispatchToProps(dispatch) {
 ScorePicker.propTypes = {
   setScoreName: PropTypes.func,
   initPlayerScore: PropTypes.func,
-  scoreList: PropTypes.func
+  scoreList: PropTypes.array
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScorePicker);
