@@ -10,8 +10,6 @@ import AudioDisplay from './AudioDisplay';
 import ToggleButton from '../common/ToggleButton';
 import AudioControls from '../audio/AudioControls';
 import * as audioActions from '../../actions/audioActions';
-import {NotesFullArr} from '../musicStaff/Constants';
-import * as musicActions from '../../actions/musicActions';
 import {multiplyVectors} from '../../math/basicMatrix';
 
 class AudioAnalyzer extends React.Component{

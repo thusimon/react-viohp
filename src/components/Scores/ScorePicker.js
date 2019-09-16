@@ -15,7 +15,6 @@ class ScorePicker extends React.Component {
   onSelectChange(evt){
     let scoreName = evt.target.value;
     this.props.setScoreName(scoreName);
-    this.props.initPlayerScore(scoreName);
   }
   render(){
     let scoreList = this.props.scoreList;
@@ -53,7 +52,6 @@ function mapDispatchToProps(dispatch) {
 
 ScorePicker.propTypes = {
   setScoreName: PropTypes.func,
-  initPlayerScore: PropTypes.func,
   scoreList: PropTypes.array
 };
 

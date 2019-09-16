@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import * as Sym from './Symbols';
 import {connect} from 'react-redux';
 
-const baseTime = 400; // eigth note is 200ms
-
+const baseTime = 200; // eigth note is 200ms
 const getTimeoutFromNoteType = (note) => {
   let time = baseTime;
   switch (note.type) {
@@ -44,20 +43,37 @@ const getNoteState = (noteIter) => {
   return {top, left, row, time, note:note.note};
 };
 
-const MusicStaffPlayerArrow = ({noteIter, staffRef, playing, seek}) => {
+const MusicStaffPlayerArrow = ({noteIter, staffRef, audioOscillator, playing, seek}) => {
   const noteState = getNoteState(noteIter);
   if (!noteState) {
+    audioOscillator.mute();
     return;
   }
   const {top, left, row, time, note} = noteState;
   const timer = useRef(null);
-  const [arrowState, setArrowState] = useState({top, left});
+  const [arrowState, setArrowState] = useState({top, left, playing: -1});
   if (playing == 1) {
     timer.current = setTimeout(() => {
-      setArrowState({top, left});
+      setArrowState({top, left, playing: 1});
+      if (note.freq) {
+        audioOscillator.setFrequency(1);
+        /*
+        setTimeout(() => {
+          audioOscillator.setFrequency(freq);
+        }, 40);
+        */
+      }
     }, time);
+    if (note.freq) {
+      setTimeout(() => {
+        audioOscillator.setFrequency(note.freq);
+      }, 30);
+    }
+    arrowState.playing !==1 && audioOscillator.start();
+    audioOscillator.unmute();
   } else if (playing == 0){
     clearTimeout(timer.current);
+    audioOscillator.mute();
   }
   if (row % 3==0 && staffRef.current) {
     //it is time to scroll
@@ -70,7 +86,8 @@ MusicStaffPlayerArrow.propTypes = {
   noteIter: PropTypes.object,
   staffRef: PropTypes.object,
   playing: PropTypes.number,
-  seek: PropTypes.number
+  seek: PropTypes.number,
+  audioOscillator: PropTypes.object
 };
 
 function mapStateToProps(state, ownProps){

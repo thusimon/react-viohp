@@ -13,6 +13,7 @@ import TopControls from './TopControls';
 import * as musicActions from '../../actions/musicActions';
 import * as Symbols from './Symbols';
 import MusicStaffHead from './MusicStaffHead';
+import AudioOscillator from '../audio/AudioOscillator';
 
 class MusicStaffPage extends React.Component {
   constructor(props, context){
@@ -34,7 +35,7 @@ class MusicStaffPage extends React.Component {
     };
     this.staffPageRef = React.createRef();
     this.staffRef = React.createRef();
-    this.noteIter = Utils.getNextNoteInfo(this.props.pureNotes);
+    this.audioOscillator = new AudioOscillator();
   }
 
   static getDerivedStateFromProps(nextProps, state){
@@ -69,6 +70,7 @@ class MusicStaffPage extends React.Component {
   render(){
     let {dragStatus, dragNoteName, startOffSet, noteShift} = this.state.dragInfo;
     let dragNotePos = [noteShift[0]-startOffSet[0], noteShift[1]-startOffSet[1]];
+    this.noteIter = Utils.getNextNoteInfo(this.props.pureNotes);
     return (
       <div style={{position:'relative', width:"100%", height:"100%"}}
            ref={this.staffPageRef}
@@ -85,7 +87,7 @@ class MusicStaffPage extends React.Component {
         }
         <MusicStaffHead musicInfo={this.state.musicInfo}/>
         <div style={{height:"900px", overflowX:"hidden", overflowY:"auto", position:"relative"}} ref={this.staffRef}>
-          <MusicStaffPlayerArrow noteIter={this.noteIter} staffRef = {this.staffRef} />
+          <MusicStaffPlayerArrow noteIter={this.noteIter} staffRef = {this.staffRef} audioOscillator = {this.audioOscillator}/>
           {Array.from(Array(this.state.staffNum).keys()).map(n =>
               <MusicStaff key={n.toString()} idx={n} />
           )}
