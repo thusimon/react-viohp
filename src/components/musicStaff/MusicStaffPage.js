@@ -6,6 +6,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import MusicStaff from './MusicStaff';
+import MusicStaffPlayerArrow from './MusicStaffPlayerArrow';
 import * as Constants from './Constants';
 import * as Utils from './Utils';
 import TopControls from './TopControls';
@@ -32,10 +33,12 @@ class MusicStaffPage extends React.Component {
       scoreName:this.props.scoreName
     };
     this.staffPageRef = React.createRef();
+    this.staffRef = React.createRef();
+    this.noteIter = Utils.getNextNoteInfo(this.props.pureNotes);
   }
 
   static getDerivedStateFromProps(nextProps, state){
-    let {signature, scale, dragInfo, notes, musicInfo, scoreName} = nextProps;
+    let {signature, scale, dragInfo, notes, pureNotes, musicInfo, scoreName} = nextProps;
     let staffNum = notes.length;
     if (signature != state.signature || scale != state.scale){
       // need to update the scaleHead
@@ -81,7 +84,8 @@ class MusicStaffPage extends React.Component {
           </span>
         }
         <MusicStaffHead musicInfo={this.state.musicInfo}/>
-        <div style={{height:"900px", overflowX:"hidden", overflowY:"auto"}}>
+        <div style={{height:"900px", overflowX:"hidden", overflowY:"auto", position:"relative"}} ref={this.staffRef}>
+          <MusicStaffPlayerArrow noteIter={this.noteIter} staffRef = {this.staffRef} />
           {Array.from(Array(this.state.staffNum).keys()).map(n =>
               <MusicStaff key={n.toString()} idx={n} />
           )}
@@ -92,6 +96,7 @@ class MusicStaffPage extends React.Component {
 
 MusicStaffPage.propTypes = {
   notes: PropTypes.array,
+  pureNotes: PropTypes.array,
   scaleHead: PropTypes.array,
   signature: PropTypes.string,
   scale: PropTypes.string,

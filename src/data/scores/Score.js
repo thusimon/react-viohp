@@ -57,6 +57,16 @@ class Score {
     }
     this.notes=processedNotes;
   }
+  // this will filter all the uncessary symbols
+  getPureNotes() {
+    const pureNotes = [];
+    const disallowedType = [Symbols.BARLINE_TYPE];
+    this.notes.forEach(line => {
+      const filteredLine = Object.values(line).filter(sym => !disallowedType.includes(sym.type));
+      pureNotes.push(filteredLine);
+    });
+    return pureNotes;
+  }
 }
 
 export default Score;

@@ -3,6 +3,7 @@
  */
 import * as Constant from './Constants';
 import * as Symbols from './Symbols';
+import 'babel-polyfill';
 
 export const noteShift = (note, offSet) => {};
 
@@ -196,4 +197,15 @@ export const getNoteClassByType = (noteType) => {
       break;
   }
   return noteClass;
+};
+
+export const getNextNoteInfo = function* (notes) {
+  let row = 0, col = 0;
+  for (row = 0; row<notes.length; row++){
+    const curRow = notes[row];
+    for (col = 0; col<curRow.length; col++) {
+      const curNote = notes[row][col];
+      yield {note: curNote, row, col};
+    }
+  }
 };
