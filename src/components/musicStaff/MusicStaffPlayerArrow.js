@@ -1,4 +1,4 @@
-import React, {useState, useRef } from 'react';
+import React, {useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as Sym from './Symbols';
 import {connect} from 'react-redux';
@@ -45,26 +45,30 @@ const getNoteState = (noteIter) => {
 
 const MusicStaffPlayerArrow = ({noteIter, staffRef, audioOscillator, playing, seek}) => {
   const noteState = getNoteState(noteIter);
+  const [arrowState, setArrowState] = useState({});
+  const [playState, setPlayState] = useState({playing, seek});
+  let top, left, row, time, note, timer;
   if (!noteState) {
     audioOscillator.mute();
-    return;
+    useEffect(() => {
+      playing = 0;
+    })
+  } else {
+    top = noteState.top;
+    left = noteState.left;
+    row = noteState.row;
+    time = noteState.time;
+    note = noteState.note;
+    timer = useRef(null);
   }
-  const {top, left, row, time, note} = noteState;
-  const timer = useRef(null);
-  const [arrowState, setArrowState] = useState({top, left, playing: -1});
-  if (playing == 1) {
+  if (playing == 1 && timer) {
     timer.current = setTimeout(() => {
       setArrowState({top, left, playing: 1});
-      if (note.freq) {
+      if (note && note.freq) {
         audioOscillator.setFrequency(1);
-        /*
-        setTimeout(() => {
-          audioOscillator.setFrequency(freq);
-        }, 40);
-        */
       }
     }, time);
-    if (note.freq) {
+    if (note && note.freq) {
       setTimeout(() => {
         audioOscillator.setFrequency(note.freq);
       }, 30);
@@ -72,14 +76,18 @@ const MusicStaffPlayerArrow = ({noteIter, staffRef, audioOscillator, playing, se
     arrowState.playing !==1 && audioOscillator.start();
     audioOscillator.unmute();
   } else if (playing == 0){
-    clearTimeout(timer.current);
+    if (timer) {
+      clearTimeout(timer.current); 
+    }
     audioOscillator.mute();
   }
-  if (row % 3==0 && staffRef.current) {
+  if (row && row % 3==0 && staffRef.current) {
     //it is time to scroll
     staffRef.current.scroll(0, row*200);
   }
-  return (<div className="triangle-down" style={{position:'absolute', top: top+'px', left:left+'px'}}/>);
+  const y = top ? top : arrowState.top;
+  const x = left ? left : arrowState.left;
+  return (<div className="triangle-down" style={{position:'absolute', top: y+'px', left:x+'px'}}/>);
 };
 
 MusicStaffPlayerArrow.propTypes = {
