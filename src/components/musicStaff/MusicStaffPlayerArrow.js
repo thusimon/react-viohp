@@ -46,13 +46,12 @@ const getNoteState = (noteIter) => {
 const MusicStaffPlayerArrow = ({noteIter, staffRef, audioOscillator, playing, seek}) => {
   const noteState = getNoteState(noteIter);
   const [arrowState, setArrowState] = useState({});
-  const [playState, setPlayState] = useState({playing, seek});
   let top, left, row, time, note, timer;
   if (!noteState) {
     audioOscillator.mute();
     useEffect(() => {
       playing = 0;
-    })
+    });
   } else {
     top = noteState.top;
     left = noteState.left;
