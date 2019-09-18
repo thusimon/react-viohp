@@ -29,10 +29,13 @@ class MusicAudioPage extends React.Component{
     return (
       <div style={{marginTop:"20px", display:"flex"}}>
         <div style={{flex:"auto"}}>
-          <div style={{display:"flex", flexDirection:"column"}}>
-            <ScorePicker />
-            <br />
-            <AudioPlayer />
+          <div style={{display:"flex", flexDirection:"column", height: "100%"}}>
+            <div style={{flexBasis: "30%"}}>
+              <ScorePicker />
+            </div>
+            <div style={{flexBasis: "20%"}}>
+              <AudioPlayer />
+            </div>
           </div>
         </div>
         <div style={{flex:"auto"}}>

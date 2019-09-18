@@ -7,11 +7,10 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import MusicStaff from './MusicStaff';
 import MusicStaffPlayerArrow from './MusicStaffPlayerArrow';
+import MusicStaffPlayerVolume from './MusicStaffPlayerVolume';
 import * as Constants from './Constants';
 import * as Utils from './Utils';
-import TopControls from './TopControls';
 import * as musicActions from '../../actions/musicActions';
-import * as Symbols from './Symbols';
 import MusicStaffHead from './MusicStaffHead';
 import AudioOscillator from '../audio/AudioOscillator';
 
@@ -76,18 +75,10 @@ class MusicStaffPage extends React.Component {
            ref={this.staffPageRef}
            onMouseMove={this.onMusicStaffPageMouseMove}
            onMouseUp={this.onMusicStaffPageMouseUp}>
-        <div>
-          <TopControls />
-        </div>
-        {
-          dragStatus == 1 &&
-          <span name={dragNoteName} style={{position:"absolute", top:dragNotePos[1]+"px", left:dragNotePos[0]+"px", fontSize:"72px"}}>
-            {Symbols[dragNoteName]}
-          </span>
-        }
         <MusicStaffHead musicInfo={this.state.musicInfo}/>
-        <div style={{height:"900px", overflowX:"hidden", overflowY:"auto", position:"relative"}} ref={this.staffRef}>
+        <div style={{height:"1000px", overflowX:"hidden", overflowY:"auto", position:"relative", borderTop:"1px solid black"}} ref={this.staffRef}>
           <MusicStaffPlayerArrow noteIter={this.noteIter} staffRef = {this.staffRef} audioOscillator = {this.audioOscillator}/>
+          <MusicStaffPlayerVolume audioOscillator = {this.audioOscillator} />
           {Array.from(Array(this.state.staffNum).keys()).map(n =>
               <MusicStaff key={n.toString()} idx={n} />
           )}

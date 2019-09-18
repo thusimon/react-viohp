@@ -9,8 +9,8 @@ class AudioOscillator {
         //this.oscillator.frequency.setValueAtTime(440, this.audioCtx.currentTime); // value in hertz
         this.gainNode.connect(this.audioCtx.destination);
         this.oscillator.connect(this.gainNode);
-        const initialVol = 0.2;
-        this.gainNode.gain.value = initialVol;
+        this.vol = 0.1;
+        this.gainNode.gain.value = this.vol;
         //this.gainNode.gain.minValue = initialVol;
         //this.gainNode.gain.maxValue = initialVol;
     }
@@ -30,7 +30,11 @@ class AudioOscillator {
         //this.gainNode.gain.maxValue = 0;
     }
     unmute() {
-        this.gainNode.gain.value = 0.2;
+        this.gainNode.gain.value = this.vol;
+    }
+    setVolume(vol) {
+        this.vol = vol;
+        this.gainNode.gain.value = this.vol;
     }
     stop() {
         this.oscillator.stop();

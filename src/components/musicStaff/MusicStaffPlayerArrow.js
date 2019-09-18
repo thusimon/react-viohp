@@ -98,7 +98,8 @@ MusicStaffPlayerArrow.propTypes = {
 };
 
 function mapStateToProps(state, ownProps){
-  return state.player;
+  const {playing, seek} = state.player;
+  return {playing, seek};
 }
 
 export default connect(mapStateToProps)(MusicStaffPlayerArrow);

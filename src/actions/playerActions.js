@@ -19,3 +19,7 @@ export const forward = () => {
 export const resetSeek = () => {
     return {type: types.RESET_SEEK};
 };
+
+export const changeVolume = (vol) => {
+    return {type: types.CHANGE_VOLUME, vol};
+};

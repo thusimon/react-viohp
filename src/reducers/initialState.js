@@ -39,5 +39,6 @@ export const scoreInitState = {
 
 export const playerInitState = {
   playing: -1,
-  seek: 0
+  seek: 0,
+  vol: 0.1
 };

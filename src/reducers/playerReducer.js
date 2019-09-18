@@ -23,6 +23,11 @@ export default function playerReducer(state=initState, action={}){
     {
       return Object.assign({}, state, {seek: 0});  
     }
+    case types.CHANGE_VOLUME:
+    {
+      const {vol} = action;
+      return Object.assign({}, state, {vol});
+    }
     default:
       return state;
   }

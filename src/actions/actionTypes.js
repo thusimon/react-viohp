@@ -40,3 +40,4 @@ export const BACKWARD = 'BACKWARD';
 export const FORWARD = 'FORWARD';
 export const RESET_SEEK = 'RESET_SEEK';
 export const PAUSE = 'PAUSE';
+export const CHANGE_VOLUME = 'CHANGE_VOLUME';
