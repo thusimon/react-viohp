@@ -8,9 +8,9 @@ import HomePage from './home/HomePage';
 import AboutPage from './about/AboutPage';
 import MusicAudioPage from './musicStaff/MusicAudioPage';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSpinner, faPlay, faPause, faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faPlay, faPause, faBackward, faForward, faVolumeUp, faVolumeMute} from '@fortawesome/free-solid-svg-icons';
 
-library.add(faSpinner, faPlay, faPause, faBackward, faForward);
+library.add(faSpinner, faPlay, faPause, faBackward, faForward, faVolumeUp, faVolumeMute);
 
 class App extends React.Component {
   render() {

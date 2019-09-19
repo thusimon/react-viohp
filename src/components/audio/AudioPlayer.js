@@ -15,8 +15,10 @@ const PlayerState = {
 
 const AudioPlayer = (props) => {
   const [playerState, setPlayerState] = useState(PlayerState.init);
+  const [volumeState, setVolumeState] = useState(props.vol>0);
   const playClass = playerState === PlayerState.playing ? 'playerColorBtn' : '';
   const pauseClass = playerState === PlayerState.pause ? 'playerColorBtn' : '';
+  const volumeIcon = volumeState ? <FontAwesomeIcon icon="volume-up" size="lg" /> : <FontAwesomeIcon icon="volume-mute" size="lg" />;
   return (
     <div>
       <span className="badge badge-info" style={{fontSize:'12px'}}>Music Player</span>
@@ -31,8 +33,16 @@ const AudioPlayer = (props) => {
         </button>
         <SelfClearBtn baseClass={'btn btn-secondary'} activeClass={'playerColorBtn'} icon={'forward'} clickCallBack = {() => {props.forward();}} isClear />
       </div>
-      <div style={{width: "80%", marginTop:"15px"}}>
-        <Slider start={0} end={100} showValue={1} initVal={props.vol} onSlide={(val) => props.changeVol(val)}/>
+      <div style={{width: "90%", marginTop:"15px", verticalAlign: "middle", position:"relative"}}>
+        <div style={{position: "absolute", left: "0px"}}>
+          {volumeIcon}
+        </div>
+        <div style={{position: "absolute", left: "14%"}}>
+          <Slider start={0} end={100} showValue={1} initVal={props.vol} onSlide={(val) => {
+            props.changeVol(val);
+            setVolumeState(val);
+          }}/>
+        </div>
       </div>
     </div>
   );
