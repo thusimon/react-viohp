@@ -9,7 +9,9 @@ const Header = () => {
     <nav>
       <NavLink to="/home" activeClassName="active">Home</NavLink>
       {" | "}
-      <NavLink to="/musicstaff" activeClassName="active">Music Staff</NavLink>
+      <NavLink to="/musicstaff" activeClassName="active">Scores</NavLink>
+      {" | "}
+      <NavLink to="/musicEditor" activeClassName="active">Compose</NavLink>
       {" | "}
       <NavLink to="/about" activeClassName="active">About</NavLink>
     </nav>

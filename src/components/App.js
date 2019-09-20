@@ -6,7 +6,8 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import Header from './common/Header';
 import HomePage from './home/HomePage';
 import AboutPage from './about/AboutPage';
-import MusicAudioPage from './musicStaff/MusicAudioPage';
+import MusicAudioPage from './page/MusicAudioPage';
+import MusicEditorPage from './page/MusicEditorPage';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner, faPlay, faPause, faBackward, faForward, faVolumeUp, faVolumeMute} from '@fortawesome/free-solid-svg-icons';
 
@@ -21,6 +22,7 @@ class App extends React.Component {
           <Route exact path="/" component={HomePage} />
           <Route path="/home" component={HomePage} />
           <Route path="/musicstaff" component={MusicAudioPage} />
+          <Route path="/musicEditor" component={MusicEditorPage} />
           <Route path="/about" component={AboutPage} />
         </Switch>
       </div>
