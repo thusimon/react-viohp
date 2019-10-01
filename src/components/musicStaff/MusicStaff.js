@@ -236,8 +236,8 @@ MusicStaff.defaultProps = {
 function mapStateToProps(state){
   return {
     freqLineVal:state.music.freqLineVal,
-    signature:state.music.signature,
-    scale:state.music.scale,
+    signature:state.music.musicInfo.signature,
+    scale:state.music.musicInfo.scale,
     notes:state.music.notes,
     dragInfo:state.music.dragInfo
   };

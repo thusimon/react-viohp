@@ -22,6 +22,7 @@ export const NOTE_DRAG = 'NOTE_DRAG';
 export const SHOW_FREQLINE = "SHOW_FREQLINE";
 export const SET_SCORE_NAME = 'SET_SCORE_NAME';
 export const SET_SCORE_LIST = 'SET_SCORE_LIST';
+export const UPDATE_SCORE_INFO = 'UPDATE_SCORE_INFO';
 
 //audio action types
 export const DISPLAY_INFO = 'DISPLAY_INFO';

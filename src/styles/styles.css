@@ -254,3 +254,10 @@ td.hide {
   background: #6c757d;
   cursor: pointer;
 }
+
+/* codemirror customization */
+.CodeMirror {
+  height: 700px;
+  width: 650px;
+  border: 1px solid black;
+}

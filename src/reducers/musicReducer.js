@@ -44,10 +44,9 @@ const musicReducer = (state=initState, action={}) => {
       let score = getScoreByName(scoreName);
       if (score){
         // find the score
-        let musicInfo = {title:score.title, author:score.author};
-        let {signature, scale} = score;
+        let musicInfo = {title:score.title, author:score.author, signature: score.signature, scale: score.scale};
         const pureNotes = score.getPureNotes();
-        return Object.assign({}, state, {scoreName, musicInfo, notes:score.notes, pureNotes, signature, scale});
+        return Object.assign({}, state, {scoreName, musicInfo, notes:score.notes, pureNotes});
       } else {
         // no score
         return Object.assign({}, state, {scoreName});
@@ -55,6 +54,12 @@ const musicReducer = (state=initState, action={}) => {
     }
     case types.SET_SCORE_LIST:
       return Object.assign({}, state, {scoreList:action.scoreList});
+    case types.UPDATE_SCORE_INFO:
+    {
+      let {name, value} = action;
+      let musicInfo = Object.assign({}, state.musicInfo, {[name]: value});
+      return Object.assign({}, state, {musicInfo});  
+    }
     default:
       return state;
   }

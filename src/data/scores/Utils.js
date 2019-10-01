@@ -2,8 +2,8 @@
  * Created by Lu on 11/10/2018.
  */
 /*eslint import/namespace: ['error', { allowComputed: true }]*/
-//import * as scores from './Score_fav';
 import * as scores from './Score_fav_v2';
+import * as scoresTemplate from './Score_template';
 import Score from './Score';
 
 export const getAllScoreList = () => {
@@ -17,8 +17,10 @@ export const getAllScoreList = () => {
 };
 
 export const getScoreByName = (scoreName)=>{
-  for (let key in scores){
-    let curScore = scores[key];
+  // extend scores and scoresTempate
+  const allScores = Object.assign({}, scores, scoresTemplate);
+  for (let key in allScores){
+    let curScore = allScores[key];
     let {name, title, author} = curScore;
     if (name==scoreName){
       return new Score(curScore);
