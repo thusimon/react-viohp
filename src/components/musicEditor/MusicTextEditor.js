@@ -5,16 +5,12 @@ require('codemirror/theme/neat.css');
 require('codemirror/mode/xml/xml.js');
 require('codemirror/mode/javascript/javascript.js');
 
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {ConvertNotesToText} from './Utils';
+import {ConvertNotesToText, ConvertTextToNotes} from './Utils';
 import {connect} from 'react-redux';
 import * as musicActions from '../../actions/musicActions';
 import {UnControlled as CodeMirror} from 'react-codemirror2';
-
-const editorChange = (editor, data, value) => {
-  console.log(value);
-};
 
 const codeMirrorOptions = {
   mode: 'javascript',
@@ -36,9 +32,9 @@ const MusicTextEditor = (props) => {
     const updatedState = Object.assign(editorInfo, {[infoName]: infoValue});
     setEditorInfo(updatedState);
   };
-  useEffect(() => {
-    console.log(props);
-  });
+  const editorChange = (editor, data, value) => {
+    const notes = ConvertTextToNotes(value);
+  };
   return (
   <div style={{display:"flex", flexDirection:"column", height: "100%"}}>
     <div className="input-group mb-3">
@@ -57,13 +53,34 @@ const MusicTextEditor = (props) => {
       <div className="input-group-prepend">
         <span className="input-group-text">Signature</span>
       </div>
-      <input type="text" className="form-control" id="signature" name="signature" value={editorInfo.signature} onChange={infoChange}/>
+      <select className="form-control" id="signature" name="signature" onChange={infoChange} defaultValue="Major">
+        <option value="Major">Major</option>
+        <option value="Minor">Minor</option>
+      </select>
     </div>
     <div className="input-group mb-3">
       <div className="input-group-prepend">
         <span className="input-group-text">Scale</span>
       </div>
-      <input type="text" className="form-control" id="scale" name="scale" value={editorInfo.scale} onChange={infoChange}/>
+      <select className="form-control" id="scale" name="scale" onChange={infoChange} defaultValue="C">
+        <option value="C">C</option>
+        <option value="CS">C#</option>
+        <option value="DF">{'D\u266d'}</option>
+        <option value="D">D</option>
+        <option value="DS">D#</option>
+        <option value="EF">{'E\u266d'}</option>
+        <option value="E">E</option>
+        <option value="F">F</option>
+        <option value="FS">F#</option>
+        <option value="GF">{'G\u266d'}</option>
+        <option value="G">G</option>
+        <option value="GS">G#</option>
+        <option value="AF">{'A\u266d'}</option>
+        <option value="A">A</option>
+        <option value="AS">A#</option>
+        <option value="BF">{'B\u266d'}</option>
+        <option value="B">B</option>
+      </select>
     </div>
     <div className="input-group">
       <div className="input-group">
@@ -91,6 +108,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     updateScoreInfo: (name, value) => {
       dispatch(musicActions.updateScoreInfo(name, value));
+    },
+    updateScoreNotes: (notes) => {
+      dispatch(musicActions.updateScoreNote(notes));
     }
   };
 };

@@ -12,7 +12,7 @@ import ScorePicker from '../Scores/ScorePicker';
 import AudioPlayer from '../audio/AudioPlayer';
 import AudioFilter from '../audio/AudioFilter';
 import ToggleButton from '../common/ToggleButton';
-import {getAllScoreList, getScoreByName} from '../../data/scores/Utils';
+import {getAllScoreList} from '../../data/scores/Utils';
 import * as musicActions from '../../actions/musicActions';
 
 class MusicAudioPage extends React.Component{
