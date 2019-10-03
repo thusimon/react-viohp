@@ -6,6 +6,7 @@
  * ]
  *
 */
+import * as Sym from '../../components/musicStaff/Symbols';
 
 export const ConvertNotesToText = (notes) => {
 
@@ -16,18 +17,105 @@ export const ConvertNotesToText = (notes) => {
 };
 
 /**
+ * ((w|h|q|e|s)|(R))|(r(w|h|q|e|s))|(|)
+ * (f|s|n).
+ * example hR f. => half reverse flat augment
+ * @param {string} symText 
+ */
+const ConvertTextToSym = (symText) => {
+  const noteSym = {};
+  if (!symText) {
+    return noteSym;
+  }
+  const symTextSplit = symText.split(' ');
+  const [symTypeText, descriptorText] = symTextSplit;
+  let symType = Sym.BARLINE_TYPE;
+  switch (symTypeText) {
+    case 'w':
+      symType = Sym.NOTE_WHOLE;
+      break;
+    case 'h':
+      symType = Sym.NOTE_HALF;
+      break;
+    case 'hR':
+      symType = Sym.NOTE_HALF_REVERSE;
+      break;
+    case 'q':
+      symType = Sym.NOTE_QUARTER;
+      break;
+    case 'qR':
+      symType = Sym.NOTE_QUARTER_REVERSE;
+      break;
+    case 'e':
+      symType = Sym.NOTE_EIGHTH;
+      break;
+    case 'eR':
+      symType = Sym.NOTE_EIGHTH_REVERSE;
+      break;
+    case '|':
+      symType = Sym.BARLINE_TYPE;
+      break;
+    case 'rw':
+      symType = Sym.WHOLEREST_TYPE;
+      break;
+    case 'rh':
+      symType = Sym.HALFREST_TYPE;
+      break;
+    case 'rq':
+      symType = Sym.QUARTERREST_TYPE;
+      break;
+    case 're':
+      symType = Sym.EIGTHREST_TYPE;
+      break;
+    default:
+      break;
+  }
+  noteSym.type = symType;
+  if (descriptorText) {
+    let descriptor = {};
+    if (descriptorText.includes('.')){
+      descriptor.augment = true;
+    } else if (descriptorText.includes('f')){
+      descriptor.scale=Sym.FLAT_TYPE;
+    } else if (descriptorText.includes('s')){
+      descriptor.scale=Sym.SHARP_TYPE;
+    } else if (descriptorText.includes('n')){
+      descriptor.scale=Sym.NATURAL_TYPE;
+    }
+    noteSym.descriptor = descriptor;
+  }
+  return noteSym;
+};
+
+export const ConvertTextToNote = (noteText) => {
+  if (!noteText) {
+    return {};
+  }
+  noteText = noteText.trim();
+  const [noteSym, pitch, x] = noteText.split(',');
+  const note = ConvertTextToSym(noteSym);
+  note.pitch = pitch || 'A4';
+  return note;
+};
+/**
  * @param {string} text 
  * noteLine: [<sym type>, <pitch name>, <x>;]
- * 'QF.R', 'A3', 20: A quarter note with Flat scale, augment, and reversed symbol, pitch name is A3, x position is 20
+ * qR, A3, 20: A quarter note with Flat scale, augment, and reversed symbol, pitch name is A3, x position is 20
  */
 export const ConvertTextToNotes = (text) => {
-  const textSplit = text.split('\n');
-  const notesRaw = textSplit.map(textLine=>{
+  const res = text.split('\n').map(textLine=>{
     if (!textLine) {
       return [];
     } else {
-      return textLine.split(';');
+      return textLine.trim().split(';').map(noteRaw => {
+        if (!noteRaw) {
+          return {};
+        } else {
+          return ConvertTextToNote(noteRaw);
+        }
+      });
     }
   });
-  console.log(notesRaw);
+  console.log(res);
+  return res;
 };

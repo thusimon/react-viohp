@@ -5,6 +5,7 @@ import * as types from '../actions/actionTypes';
 import {musicInitState as initState} from './initialState';
 import {getScoreByName} from '../data/scores/Utils';
 import {updateMarkNote} from '../components/musicStaff/Utils';
+import Score from '../data/scores/Score';
 
 const musicReducer = (state=initState, action={}) => {
   switch (action.type) {
@@ -59,6 +60,13 @@ const musicReducer = (state=initState, action={}) => {
       let {name, value} = action;
       let musicInfo = Object.assign({}, state.musicInfo, {[name]: value});
       return Object.assign({}, state, {musicInfo});  
+    }
+    case types.UPDATE_SCORE_NOTES:
+    {
+      const {notes} = action;
+      const {signature, scale, author, title} = state.musicInfo;
+      const score = new Score({signature, scale, author, title, notes});
+      return Object.assign({}, state, {notes: score.notes});
     }
     default:
       return state;

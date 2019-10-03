@@ -22,8 +22,6 @@ const codeMirrorOptions = {
 
 const MusicTextEditor = (props) => {
   const [editorInfo, setEditorInfo] = useState(props.musicInfo);
-  const [editorNote, setEditorNote] = useState(props.notes);
-  const notesText = ConvertNotesToText(editorNote);
   const infoChange = (evt) => {
     const target = evt.target;
     const infoName = target.id;
@@ -34,6 +32,7 @@ const MusicTextEditor = (props) => {
   };
   const editorChange = (editor, data, value) => {
     const notes = ConvertTextToNotes(value);
+    props.updateScoreNotes(notes);
   };
   return (
   <div style={{display:"flex", flexDirection:"column", height: "100%"}}>
@@ -88,7 +87,7 @@ const MusicTextEditor = (props) => {
       </div>
       <br />
       <div style={{textAlign: "left"}}>
-        <CodeMirror value={notesText} options={codeMirrorOptions} onChange={editorChange} />
+        <CodeMirror defaultValue={ConvertNotesToText(props.notes)} options={codeMirrorOptions} onChange={editorChange} />
       </div>
     </div>
   </div>);
@@ -97,7 +96,8 @@ const MusicTextEditor = (props) => {
 MusicTextEditor.propTypes = {
   musicInfo: PropTypes.object,
   notes: PropTypes.array,
-  updateScoreInfo: PropTypes.func
+  updateScoreInfo: PropTypes.func,
+  updateScoreNotes: PropTypes.func
 };
 
 const mapStateToProps = (state) => {
@@ -110,7 +110,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(musicActions.updateScoreInfo(name, value));
     },
     updateScoreNotes: (notes) => {
-      dispatch(musicActions.updateScoreNote(notes));
+      dispatch(musicActions.updateScoreNotes(notes));
     }
   };
 };

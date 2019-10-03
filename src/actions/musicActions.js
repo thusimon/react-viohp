@@ -40,6 +40,6 @@ export const updateScoreInfo = (name, value) => {
   return {type: types.UPDATE_SCORE_INFO, name, value};
 };
 
-export const updateScoreNote = (notes) => {
-  return {type: types.UPDATE_SCORE_NOTE, notes};
+export const updateScoreNotes = (notes) => {
+  return {type: types.UPDATE_SCORE_NOTES, notes};
 };
