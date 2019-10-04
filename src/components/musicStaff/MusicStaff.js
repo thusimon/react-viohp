@@ -156,13 +156,18 @@ class MusicStaff extends React.Component {
       default:
       {
         // here they are all notes by default:
-        const curSymYPos = sfIdx + this.staffStart;
-        const initOffset = [x,curSymYPos*halfSpace]; //[x, y]
-        const adjustedOffset = [initOffset[0]-symCenter[0], initOffset[1]];
-        let curNote = <Note type={type} showLabel label={label} sfIdx={sfIdx} name={name} mark={mark} descriptor={descriptor} />;
-        sym = (<div key={"NT_"+idx} style={{position:'absolute', top: adjustedOffset[1]+'px', left:adjustedOffset[0]+'px'}}>
-          {curNote}
-        </div>);
+        if (!type) {
+          // type is not defined
+          sym = null;
+        } else {
+          const curSymYPos = sfIdx + this.staffStart;
+          const initOffset = [x,curSymYPos*halfSpace]; //[x, y]
+          const adjustedOffset = [initOffset[0]-symCenter[0], initOffset[1]];
+          let curNote = <Note type={type} showLabel label={label} sfIdx={sfIdx} name={name} mark={mark} descriptor={descriptor} />;
+          sym = (<div key={"NT_"+idx} style={{position:'absolute', top: adjustedOffset[1]+'px', left:adjustedOffset[0]+'px'}}>
+            {curNote}
+            </div>);
+        }
         break;
       }
     }
@@ -193,7 +198,6 @@ class MusicStaff extends React.Component {
     // return table with 10 cells, 4 visible cells form five lines with a clef at left
     let staffLineKey = 0;
     let staffWholeHeight = this.LineLayout.length * this.LineSpace;
-    let freqLine = this.state.freqLineVal>0 ? this.displayFreqLine():null;
     return (
       <div ref={this.staffRef}
            className="staffLines"

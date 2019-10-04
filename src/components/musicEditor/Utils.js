@@ -29,7 +29,7 @@ const ConvertTextToSym = (symText) => {
   }
   const symTextSplit = symText.split(' ');
   const [symTypeText, descriptorText] = symTextSplit;
-  let symType = Sym.BARLINE_TYPE;
+  let symType = null;
   switch (symTypeText) {
     case 'w':
       symType = Sym.NOTE_WHOLE;
@@ -37,19 +37,19 @@ const ConvertTextToSym = (symText) => {
     case 'h':
       symType = Sym.NOTE_HALF;
       break;
-    case 'hR':
+    case 'Rh':
       symType = Sym.NOTE_HALF_REVERSE;
       break;
     case 'q':
       symType = Sym.NOTE_QUARTER;
       break;
-    case 'qR':
+    case 'Rq':
       symType = Sym.NOTE_QUARTER_REVERSE;
       break;
     case 'e':
       symType = Sym.NOTE_EIGHTH;
       break;
-    case 'eR':
+    case 'Re':
       symType = Sym.NOTE_EIGHTH_REVERSE;
       break;
     case '|':
@@ -107,15 +107,8 @@ export const ConvertTextToNotes = (text) => {
     if (!textLine) {
       return [];
     } else {
-      return textLine.trim().split(';').map(noteRaw => {
-        if (!noteRaw) {
-          return {};
-        } else {
-          return ConvertTextToNote(noteRaw);
-        }
-      });
+      return textLine.trim().split(';').map(noteRaw => ConvertTextToNote(noteRaw));
     }
   });
-  console.log(res);
   return res;
 };
