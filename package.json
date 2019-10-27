@@ -6,7 +6,6 @@
   "license": "MIT",
   "scripts": {
     "build-babel": "babel -d toolsTranspile tools/*.js -s",
-    "start": "npm run build",
     "start:dev": "npm-run-all --parallel open:server lint:watch test:watch",
     "open:server": "node toolsTranspile/srcServer.js",
     "lint": "node_modules/.bin/esw webpack.config.* src tools",
