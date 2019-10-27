@@ -37,3 +37,7 @@ dist
 
 # node package lock
 package-lock.json
+
+.npmrc
+
+toolsTranspile

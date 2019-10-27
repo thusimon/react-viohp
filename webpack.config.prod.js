@@ -1,15 +1,15 @@
 /**
  * Created by Lu on 8/12/2018.
  */
-import webpack from 'webpack';
-import path from 'path';
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
+const webpack = require('webpack');
+const path = require('path');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const GLOBALS = {
   'process.env.NODE_ENV': JSON.stringify('production')
 };
 
-export default {
+module.exports = {
   mode: "production",
   devtool: 'source-map',
   entry: [

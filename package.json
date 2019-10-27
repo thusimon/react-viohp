@@ -5,22 +5,24 @@
   "author": "Lu Xu",
   "license": "MIT",
   "scripts": {
-    "prestart": "babel-node tools/startMessage.js",
+    "build-babel": "babel -d toolsTranspile tools/*.js -s",
     "start": "npm run build",
     "start:dev": "npm-run-all --parallel open:server lint:watch test:watch",
-    "open:server": "babel-node tools/srcServer.js",
+    "open:server": "node toolsTranspile/srcServer.js",
     "lint": "node_modules/.bin/esw webpack.config.* src tools",
     "lint:watch": "npm run lint -- --watch",
-    "test": "mocha --reporter spec tools/testSetup.js \"src/**/*.test.js\"",
+    "test": "mocha --reporter spec toolsTranspile/testSetup.js \"src/**/*.test.js\"",
     "test:watch": "npm run test -- --watch",
     "clean-dist": "npm run remove-dist && mkdir dist",
     "remove-dist": "node_modules/.bin/rimraf ./dist",
-    "build:html": "babel-node tools/buildHtml.js",
-    "prebuild": "npm-run-all clean-dist lint build:html",
-    "build": "babel-node tools/build.js",
-    "postbuild": "babel-node tools/distServer.js"
+    "build:html": "node toolsTranspile/buildHtml.js",
+    "prebuild": "npm-run-all clean-dist build-babel lint build:html",
+    "build": "node toolsTranspile/build.js",
+    "postbuild": "node toolsTranspile/distServer.js"
   },
   "dependencies": {
+    "@babel/cli": "^7.6.2",
+    "@babel/core": "^7.6.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.12",
     "@fortawesome/free-solid-svg-icons": "^5.6.3",
     "@fortawesome/react-fontawesome": "^0.1.4",
@@ -42,9 +44,6 @@
     "toastr": "^2.1.4"
   },
   "devDependencies": {
-    "@babel/cli": "^7.6.2",
-    "@babel/core": "^7.6.2",
-    "@babel/node": "^7.6.2",
     "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.0.0",
