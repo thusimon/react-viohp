@@ -2,8 +2,6 @@
 import webpack from 'webpack';
 import webpackConfig from '../webpack.config.prod';
 
-process.env.NODE_ENV = 'production';
-
 console.log('Generating minified bundle for production via webpack, please wait...');
 
 webpack(webpackConfig).run((err, stats) => {
