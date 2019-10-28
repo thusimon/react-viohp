@@ -1,0 +1,19 @@
+@import '../../styles/variables.scss';
+.appNav {
+  font-size: 18pt;
+  background: $dark-color;
+  padding:0px;
+  height: 60px;
+  a {
+    color: $color-0;
+    line-height: 60px;
+    margin: 0 15px;
+    text-align: center;
+  }
+  a:hover {
+    color: $color-1
+  }
+  a:active, a:focus {
+    color: $color-2
+  }
+}

@@ -1,9 +1,9 @@
 /**
  * Created by Lu on 8/12/2018.
  */
-import express from 'express';
-import path from 'path';
-import compression from 'compression';
+const express = require('express');
+const path = require('path');
+const compression = require('compression');
 
 /* eslint-disable no-console */
 

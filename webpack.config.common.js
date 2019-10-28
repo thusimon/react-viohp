@@ -31,7 +31,14 @@ module.exports = {
   ],
   module: {
     rules: [
-      {test: /\.js$/, include: path.join(__dirname, 'src'), loader: 'babel-loader'},
+      {
+        test: /\.jsx?$/, 
+        include: path.join(__dirname, 'src'), 
+        loader: 'babel-loader',
+        options: {
+          presets: ["@babel/preset-react"]
+        }
+      },
       {
         test: [/.css$|.scss$/],
         use:[

@@ -9,9 +9,11 @@ import AboutPage from './about/AboutPage';
 import MusicAudioPage from './page/MusicAudioPage';
 import MusicEditorPage from './page/MusicEditorPage';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSpinner, faPlay, faPause, faBackward, faForward, faVolumeUp, faVolumeMute} from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faPlay, faPause, faBackward, faForward, faVolumeUp, faVolumeMute
+  , faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faSpinner, faPlay, faPause, faBackward, faForward, faVolumeUp, faVolumeMute);
+library.add(faSpinner, faPlay, faPause, faBackward, faForward, faVolumeUp, faVolumeMute
+  , faUserCircle);
 
 class App extends React.Component {
   render() {

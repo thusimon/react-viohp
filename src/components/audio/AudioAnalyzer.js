@@ -186,6 +186,10 @@ function mapDispatchToProps(dispatch){
 }
 
 AudioAnalyzer.propTypes = {
+  threshold: PropTypes.number,
+  tolerance: PropTypes.number,
+  freqRange: PropTypes.array,
+  appliedFilter: PropTypes.array,
   displayInfo: PropTypes.func,
   setAudioParam: PropTypes.func
 };

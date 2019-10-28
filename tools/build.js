@@ -1,6 +1,6 @@
 /*eslint-disable no-console */
-import webpack from 'webpack';
-import webpackConfig from '../webpack.config.prod';
+const webpack = require('webpack');
+const webpackConfig = require('../webpack.config.prod');
 
 console.log('Generating minified bundle for production via webpack, please wait...');
 

@@ -8,6 +8,7 @@ import {Provider} from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from './components/App';
 import './styles/styles.css';
+import './index.scss';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/toastr/build/toastr.min.css';
 
