@@ -1,12 +1,17 @@
-const express = require('express');
 const webpack = require('webpack');
-const path = require('path');
 const config = require('../../webpack.config.dev');
-const open = require('open');
-
-/* eslint-disable no-console */
-const port = process.env.PORT || '3000';
+const express = require('express');
 const app = express();
+const userRouter = require('./routers/user');
+
+// connect db
+require('./db/mongoose');
+
+app.use(express.json());
+
+// use routers
+app.use(userRouter);
+
 const compiler = webpack(config);
 
 app.use(require('webpack-dev-middleware')(compiler, {
@@ -14,16 +19,7 @@ app.use(require('webpack-dev-middleware')(compiler, {
   publicPath: config.output.publicPath
 }));
 
+
 app.use(require('webpack-hot-middleware')(compiler));
 
-app.get('*', function(req, res) {
-  res.sendFile(path.join( __dirname, '../src/index.html'));
-});
-
-app.listen(port, function(err) {
-  if (err) {
-    console.log(err);
-  } else {
-    open(`http://localhost:${port}`);
-  }
-});
+module.exports = app;

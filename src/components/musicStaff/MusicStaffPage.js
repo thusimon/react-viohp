@@ -1,7 +1,6 @@
 /**
  * Created by Lu on 8/12/2018.
  */
-/*eslint import/namespace: ['error', { allowComputed: true }]*/
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
