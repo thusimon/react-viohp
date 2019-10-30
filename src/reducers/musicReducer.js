@@ -12,7 +12,6 @@ const musicReducer = (state=initState, action={}) => {
     case types.ADD_NOTE:
     {
       let staffIdx = action.idx;
-      let newNote = action.note;
       let curNotes = [...state.notes];
       let curStaffNotes = Object.assign({},curNotes[staffIdx]);
       let noteKeys = Object.keys(curStaffNotes);

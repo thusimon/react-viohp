@@ -17,7 +17,7 @@ class Violin extends React.Component {
   }
   render(){
     const markNotes = this.props.markNotes;
-    const freqNote = {noteName:this.props.noteName,noteColor:this.props.noteColor};
+    //const freqNote = {noteName:this.props.noteName,noteColor:this.props.noteColor};
     return(
       <table className="violinT" align="center">
         <tbody>
@@ -57,7 +57,7 @@ Violin.propTypes = {
   noteColor: PropTypes.string
 };
 
-function mapStateToProps(state, ownProps){
+function mapStateToProps(state){
   return {
     markNotes: state.music.markNotes,
     peakEnergy: state.audio.peakFreq,

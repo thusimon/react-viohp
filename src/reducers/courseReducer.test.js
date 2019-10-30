@@ -28,13 +28,6 @@ describe('Course Reducer Test', ()=>{
       {id: 'C', title: 'Course C'}
     ];
     const updateCourse = {id: 'B', title:'new Course B'};
-    const expectedCourses = initCourses.map(course => {
-      if (course.id != updateCourse.id){
-        return course;
-      } else {
-        return updateCourse;
-      }
-    });
     const updatedCourses = courseReducer(initCourses, actions.updateCourseSuccess(updateCourse));
     expect(updatedCourses.length).toEqual(3);
     expect(updatedCourses.find(a=>a.id=='B').title).toEqual('new Course B');

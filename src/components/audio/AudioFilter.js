@@ -5,7 +5,6 @@ import TwoDPDisp from '../common/TwoDPoints';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {generateConsecutiveFilterData, getFreqRange} from './Utils';
-import Modal from '../common/Modal';
 
 class AudioFilter extends React.Component {
     constructor(props, context) {
@@ -54,12 +53,11 @@ class AudioFilter extends React.Component {
     listBoxClick(filterName){
         this.setState({selectedFilterName:filterName, selectedFilter:this.props.filters[filterName]});
     }
-    modalBtnHandler(evt){
+    modalBtnHandler(){
         this.setState({showModal:false});
     }
     render(){
         // should return two inputs and a add button
-        let infoLabelClass = "label label-default";
         let {selectedFilter, selectedFilterName} = this.state;
         let builtInFilters = Object.values(this.props.filters).filter(f=>f.edit==false);
         let editBtnDisable = builtInFilters.includes(selectedFilter).toString();

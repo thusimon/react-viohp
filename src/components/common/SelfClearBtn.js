@@ -8,7 +8,7 @@ const SelfClearBtn = ({baseClass, activeClass, icon, clickCallBack, isClear}) =>
 
   const className = btnState.active ? [baseClass, activeClass].join(' ') : baseClass;
 
-  const clickBtn = (evt) => {
+  const clickBtn = () => {
     if (clickCallBack) {
       clickCallBack.call(this); 
     }

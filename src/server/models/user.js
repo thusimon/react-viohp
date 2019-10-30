@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const tokenSchema = require('./token');
 
 const activateTimeout = 60*60*24*7; //1 week
-const activateLongTimeout = activateTimeout*12; //12 weeks, 3 month 
+//const activateLongTimeout = activateTimeout*12; //12 weeks, 3 month 
 
 // mongoose use model name, convert to lowercase and pluralize it
 // so User will go to collection users
@@ -103,8 +103,6 @@ userSchema.pre('save', async function(next) {
 });
 
 userSchema.pre('remove', async function(next) {
-  const user = this;
-  await Task.deleteMany({owner: user._id});
   next();
 })
 

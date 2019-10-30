@@ -37,7 +37,7 @@ class MusicStaffPage extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, state){
-    let {signature, scale, dragInfo, notes, pureNotes, musicInfo, scoreName} = nextProps;
+    let {signature, scale, dragInfo, notes, musicInfo, scoreName} = nextProps;
     let staffNum = notes.length;
     if (signature != state.signature || scale != state.scale){
       // need to update the scaleHead
@@ -59,15 +59,13 @@ class MusicStaffPage extends React.Component {
     }
   }
 
-  onMusicStaffPageMouseUp(event){
-    let {dragStatus, dragNoteName, startOffSet} = this.state.dragInfo;
+  onMusicStaffPageMouseUp(){
+    let {dragStatus, dragNoteName} = this.state.dragInfo;
     dragStatus = -1;
     this.props.dragStatusChange({dragStatus, dragNoteName, startOffSet:[0,0],noteShift:[0,0]});
   }
 
   render(){
-    let {dragStatus, dragNoteName, startOffSet, noteShift} = this.state.dragInfo;
-    let dragNotePos = [noteShift[0]-startOffSet[0], noteShift[1]-startOffSet[1]];
     this.noteIter = Utils.getNextNoteInfo(this.props.pureNotes);
     return (
       <div style={{position:'relative', width:"100%", height:"100%"}}
@@ -98,7 +96,7 @@ MusicStaffPage.propTypes = {
   dragStatusChange: PropTypes.func
 };
 
-function mapStateToProps(state, ownProps){
+function mapStateToProps(state){
   return state.music;
 }
 

@@ -136,7 +136,3 @@ export const generateConsecutiveFilterData = (freqDataIdxMax, filter)=>{
   }
   return consecutiveFilter;
 };
-
-export const applyFilterOnData = (freqData, filter)=>{
-  const fDataLen = freqData.length;
-};

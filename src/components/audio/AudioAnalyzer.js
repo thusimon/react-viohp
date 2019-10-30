@@ -23,7 +23,7 @@ class AudioAnalyzer extends React.Component{
     this.defaultInfo = {noteColor: "#00FF00", peakFreq: "0", noteName: "--", noteFreq: '--'};
     this.state = Object.assign({}, this.props, {showSettings: false});
   }
-  static getDerivedStateFromProps(nextProps, state){
+  static getDerivedStateFromProps(nextProps){
     let {threshold, tolerance, freqRange,appliedFilter} = nextProps;
     return {threshold, tolerance, freqRange,appliedFilter};
   }

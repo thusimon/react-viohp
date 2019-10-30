@@ -59,7 +59,6 @@ class MusicStaff extends React.Component {
   }
 
   positionNoteOnStaff(noteName, noteCords){
-    let shiftNoise = 5;
     //staff line space is 20px, only allow Y [0, 200]
     let [x, y] = noteCords;
     // calculate sfIdx

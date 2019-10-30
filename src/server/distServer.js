@@ -9,10 +9,12 @@ const app = require('./app');
 /* eslint-disable no-console */
 
 app.use(compression());
-app.use(express.static('dist'));
+app.use(express.static(path.join(__dirname, '../../dist')));
 
+console.log(11, __dirname, path.join(__dirname, '../../dist'));
 app.get('*', function(req, res){
-  res.sendFile(path.join(__dirname, '../dist/index.html'));
+  console.log(path.join(__dirname, '../../dist/index.html'));
+  res.sendFile(path.join(__dirname, '../../dist/index.html'));
 });
 
 const port = process.env.PORT || '3000';

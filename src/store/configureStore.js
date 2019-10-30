@@ -1,8 +1,10 @@
 /**
  * Created by Lu on 8/12/2018.
  */
+let store;
 if (process.env.NODE_ENV === 'production'){
-  module.exports = require('./configureStore.prod');
+  store = require('./configureStore.prod');
 } else {
-  module.exports = require('./configureStore.dev');
+  store = require('./configureStore.dev');
 }
+module.exports = store;

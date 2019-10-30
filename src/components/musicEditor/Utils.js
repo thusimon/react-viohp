@@ -92,7 +92,7 @@ export const ConvertTextToNote = (noteText) => {
     return {};
   }
   noteText = noteText.trim();
-  const [noteSym, pitch, x] = noteText.split(',');
+  const [noteSym, pitch] = noteText.split(',');
   const note = ConvertTextToSym(noteSym);
   note.pitch = pitch || 'A4';
   return note;

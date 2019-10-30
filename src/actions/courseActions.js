@@ -33,7 +33,7 @@ export function loadCourses() {
 }
 
 export function saveCourse(course){
-  return function(dispatch, getState){
+  return function(dispatch){
     dispatch(beginAjaxCall());
     return courseApi.saveCourse(course).then(savedCourse => {
       course.id ? dispatch(updateCourseSuccess(savedCourse)) :

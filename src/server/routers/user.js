@@ -1,12 +1,11 @@
 const express = require('express');
 const router = new express.Router();
-const auth = require('./middleware/auth');
+//const auth = require('./middleware/auth');
 const User = require('../models/user');
 
 router.get('/api/user/me',  async (req, res) => {
   try {
-    await user.populate('tasks').execPopulate();
-    return res.status(200).send({user, tasks: user.tasks});
+    return res.status(200).send({email:'test@lu.com'});
   } catch (err) {
     return res.status(400).send(err.toString());
   }

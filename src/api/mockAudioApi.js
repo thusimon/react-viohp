@@ -4,7 +4,7 @@ import * as AudioFilters from '../data/audioFilters/filters';
 
 class AudioApi {
     static getAllFilters(){
-        return new Promise((resolve, reject)=>{
+        return new Promise((resolve)=>{
             setTimeout(function(){
                 let audioFilters = Object.assign({}, AudioFilters);
                 resolve(audioFilters);

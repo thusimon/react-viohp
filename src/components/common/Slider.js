@@ -2,7 +2,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
-const Slider = ({start, end, showValue, onSlide, initVal = 0}) => {
+const Slider = ({start, end, onSlide, initVal = 0}) => {
   const [sliderState, setSliderState] = useState({val: initVal*(end-start)+start});
   const sliderOnInput = (evt) => {
     const val = evt.target.value;
@@ -21,7 +21,6 @@ const Slider = ({start, end, showValue, onSlide, initVal = 0}) => {
 Slider.propTypes = {
   start: PropTypes.number,
   end: PropTypes.number,
-  showValue: PropTypes.number,
   initVal: PropTypes.number,
   onSlide: PropTypes.func
 };

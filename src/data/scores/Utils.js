@@ -20,7 +20,7 @@ export const getScoreByName = (scoreName)=>{
   const allScores = Object.assign({}, scores, scoresTemplate);
   for (let key in allScores){
     let curScore = allScores[key];
-    let {name, title, author} = curScore;
+    let {name} = curScore;
     if (name==scoreName){
       return new Score(curScore);
     }

@@ -5,7 +5,7 @@ import * as Constant from './Constants';
 import * as Symbols from './Symbols';
 import 'babel-polyfill';
 
-export const noteShift = (note, offSet) => {};
+export const noteShift = () => {};
 
 //return notes from lowest to highest
 export const getExtendScales = (srcScale=Constant.SCALE_INTERVAL,range=[1,0]) => {
@@ -114,7 +114,7 @@ export const getNoteFromPosition = (scaleNoteFull, sfIdx)=>{
  * @param range
  * return a two dimensional array
  */
-export const generateVirtualBoardNotes = (markNotes=[]) =>{
+export const generateVirtualBoardNotes = () =>{
   let fullNotes = Constant.SCALE_FULL;
 
   let allStringNotes = [], startIdx = 0;

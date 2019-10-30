@@ -21,7 +21,7 @@ class NoteBase extends React.Component {
     this.state = {mark,name,sfIdx};
     this.noteClick = this.noteClick.bind(this);
   }
-  noteClick(event) {
+  noteClick() {
     let {mark,name,sfIdx} = this.state;
     mark = !mark;
     this.setState({mark});

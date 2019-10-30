@@ -3,8 +3,6 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import * as Syms from './Symbols';
-import PropTypes from 'prop-types';
 import Note from './Note';
 import * as musicActions from '../../actions/musicActions';
 

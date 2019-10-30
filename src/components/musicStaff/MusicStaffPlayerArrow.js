@@ -43,7 +43,7 @@ const getNoteState = (noteIter) => {
   return {top, left, row, time, note:note.note};
 };
 
-const MusicStaffPlayerArrow = ({noteIter, staffRef, audioOscillator, playing, seek}) => {
+const MusicStaffPlayerArrow = ({noteIter, staffRef, audioOscillator, playing}) => {
   const noteState = getNoteState(noteIter);
   const [arrowState, setArrowState] = useState({});
   let top, left, row, time, note, timer;
@@ -97,7 +97,7 @@ MusicStaffPlayerArrow.propTypes = {
   audioOscillator: PropTypes.object
 };
 
-function mapStateToProps(state, ownProps){
+function mapStateToProps(state){
   const {playing, seek} = state.player;
   return {playing, seek};
 }

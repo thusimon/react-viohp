@@ -12,6 +12,9 @@
   button:hover .fa-user-circle {
     color:$color-1;
   }
+  button.selected .fa-user-circle {
+    color:$color-2;
+  }
   button:focus {
     outline:0;
   }
