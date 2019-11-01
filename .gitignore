@@ -39,4 +39,4 @@ dist
 package-lock.json
 
 .npmrc
-server/config
+src/server/config
