@@ -1,30 +1,27 @@
 import React, {useState, useEffect} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {fetchWithAccessToken} from '../../auth/utils';
 import './account.scss';
 
-const Account = ({status}) => {
-  //const [displayAccount, setDisplayAccount] = useState(false);
+const Account = () => {
   const [account, setAccount] = useState(null);
   const [accountDisplayState, setAccountDisplayState] = useState(false);
-  const accountDisplay = accountDisplayState ? 'block' : 'none';
 
   useEffect(() => {
     const fetchAccount = async () => {
-      const resp = await fetch('/api/user/me?auth=true');
-      const account = await resp.json();
-      if (account && account.email) {
-        setAccount(account);
-      } else {
+      const {err, user} = await fetchWithAccessToken('/api/user/me');
+      if (err) {
         setAccount(null);
+      } else {
+        setAccount(user);
       }
-      console.log(2222, account)
+      console.log(err, user);
     }
     fetchAccount();
   }, []);
 
   const navAccountClick = (evt) => {
-    console.log('account clicked', evt);
-    setAccountDisplayState(!accountDisplayState)
+    evt.preventDefault();
   }
   const accountBtnClass = accountDisplayState ? 'selected' : '';
   return (

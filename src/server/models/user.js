@@ -3,9 +3,10 @@ const Schema = mongoose.Schema;
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const tokenSchema = require('./token');
 
-const activateTimeout = 60*60*24*7; //1 week
+const accessTokenExp = 60*60*24*30; // 1 month
+const activeTokenExp = 60*60*24; // 1 day
+const clientId = 'viohelper';
 //const activateLongTimeout = activateTimeout*12; //12 weeks, 3 month 
 
 // mongoose use model name, convert to lowercase and pluralize it
@@ -37,10 +38,6 @@ const userSchema = new Schema({
   status: {
     type: Number //0 not activated, 1 activated
   },
-  tokens: {
-    type: [tokenSchema],
-    default: []
-  },
   avatar: {
     type: Buffer
   }
@@ -51,20 +48,35 @@ const userSchema = new Schema({
 
 userSchema.methods.generateAuthToken = function() {
   const user = this;
-  const token = jwt.sign({id: user._id.toString()}, process.env.JWT_PRIVATE_KEY);
+  const token = jwt.sign(
+    {
+      id: user._id.toString()
+    }, 
+    process.env.JWT_PRIVATE_KEY,
+    {
+      expiresIn: accessTokenExp,
+      subject: clientId
+    });
   return token;
 }
 
 userSchema.methods.generateActivationToken = function() {
   const user = this;
-  const token = jwt.sign({id: user._id.toString()}, process.env.JWT_PRIVATE_KEY);
+  const token = jwt.sign(
+    {
+      id: user._id.toString()
+    }, 
+    process.env.JWT_PRIVATE_KEY,
+    {
+      expiresIn: activeTokenExp,
+      subject: clientId
+    });
   return token;
 }
 
 userSchema.methods.toJSON = function() {
   const user = this.toObject();
   delete user.password;
-  delete user.tokens;
   delete user.avatar;
   return user;
 }
