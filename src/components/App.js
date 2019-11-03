@@ -8,10 +8,11 @@ import HomePage from './home/HomePage';
 import AboutPage from './about/AboutPage';
 import MusicAudioPage from './page/MusicAudioPage';
 import MusicEditorPage from './page/MusicEditorPage';
-import Account from './account/register.jsx';
+import AccountPage from './account/account-page.jsx';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner, faPlay, faPause, faBackward, faForward, faVolumeUp, faVolumeMute
   , faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import './App.scss';
 
 library.add(faSpinner, faPlay, faPause, faBackward, faForward, faVolumeUp, faVolumeMute
   , faUserCircle);
@@ -26,7 +27,7 @@ class App extends React.Component {
           <Route path="/home" component={HomePage} />
           <Route path="/musicstaff" component={MusicAudioPage} />
           <Route path="/musicEditor" component={MusicEditorPage} />
-          <Route path="/account" component={Account} />
+          <Route path="/account" component={AccountPage} />
           <Route path="/about" component={AboutPage} />
         </Switch>
       </div>

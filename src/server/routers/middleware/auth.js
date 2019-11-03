@@ -1,12 +1,16 @@
-//const jwt = require('jsonwebtoken');
-//const User = require('../../models/user');
-/*
-const auth = async function (req, res, next) {
+const jwt = require('jsonwebtoken');
+const User = require('../../models/user');
 
+const auth = async (req, res, next) => {
   try {
-    const token = req.header('Authorization').replace('Bearer ', '');
+    const authorizationHeader = req.header('Authorization') || '';
+    const token = authorizationHeader.replace('Bearer', '').trim();
+    if (!token) {
+      throw new Error('please authenticate');
+    }
     const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
-    const user = await User.findOne({_id:decoded.id, 'tokens.token': token});
+    console.log('in auth middleware', decoded);
+    const user = await User.findById(decoded.id);
     if (!user) {
       throw new Error('please authenticate');
     }
@@ -14,11 +18,10 @@ const auth = async function (req, res, next) {
     req.user = user;
     next();
   } catch (err) {
-    return res.status(401).send('please authenticate');
+    return res.status(401).send({err: err.message});
   }
 
   next();
 }
 
 module.exports = auth;
-*/

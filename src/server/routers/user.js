@@ -1,24 +1,40 @@
 const express = require('express');
 const router = new express.Router();
-//const auth = require('./middleware/auth');
+const auth = require('./middleware/auth');
 const User = require('../models/user');
 
 // register user
-router.post('/api/user', async (req, res) => {
-  const user = new User(req.body);
+router.post('/api/user/register', async (req, res) => {
+  const {email, password, remember} = req.body;
+  const user = new User({email, password});
   try {
-    const accessToken = user.generateAuthToken();
+    const accessToken = user.generateAuthToken(remember);
     await user.save();
-    return res.status(200).send({accessToken});
+    return res.status(200).send({user, accessToken});
   } catch(err) {
     return res.status(400).send({err: err.message});
   }
 })
-router.get('/api/user/me',  async (req, res) => {
+// login user
+router.post('/api/user/login', async (req, res) => {
   try {
-    return res.status(200).send({email:'test@lu.com'});
+    const user = await User.findByCredentials(req.body.email, req.body.password);
+    const token = user.generateAuthToken(req.body.remember);
+    console.log('login user!', user, token);
+    return res.status(200).send({user, accessToken: token});
   } catch (err) {
-    return res.status(400).send(err.toString());
+    return res.status(400).send({err: err.message});
+  }
+});
+
+router.get('/api/user/me', auth, async (req, res) => {
+  try {
+    return res.status(200).send({
+      user: req.user,
+      accessToken: req.token
+    });
+  } catch (err) {
+    return res.status(401).send({err: err.message});
   }
 });
 

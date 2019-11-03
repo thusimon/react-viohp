@@ -4,8 +4,9 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const accessTokenExp = 60*60*24*30; // 1 month
-const activeTokenExp = 60*60*24; // 1 day
+const accessTokenExp = 60*60*24*7; // 1 week
+const accessTokenExpLong = 60*60*24*30; //1 month
+const activeTokenExp = 60*60; // 1 hour
 const clientId = 'viohelper';
 //const activateLongTimeout = activateTimeout*12; //12 weeks, 3 month 
 
@@ -28,7 +29,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
     trim: true,
-    minlength: 5,
+    minlength: 4,
     validate(value) {
       if(value.toLowerCase().includes('password')){
         throw new Error('password should NOT contain "password"');
@@ -46,7 +47,7 @@ const userSchema = new Schema({
 });
 
 
-userSchema.methods.generateAuthToken = function() {
+userSchema.methods.generateAuthToken = function(isLongExp) {
   const user = this;
   const token = jwt.sign(
     {
@@ -54,7 +55,7 @@ userSchema.methods.generateAuthToken = function() {
     }, 
     process.env.JWT_PRIVATE_KEY,
     {
-      expiresIn: accessTokenExp,
+      expiresIn: isLongExp ? accessTokenExpLong : accessTokenExp,
       subject: clientId
     });
   return token;

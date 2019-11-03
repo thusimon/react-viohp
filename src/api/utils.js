@@ -1,4 +1,6 @@
-export const fetchData = async (url = '', method = 'GET', data = {}) => {
+import {getAccessToken, storeAccessToken} from '../storage/utils';
+
+export const fetchDataWithAccessToken = async (url = '', method = 'GET', data = {}) => {
   // Default options are marked with *
   const fetchOptions = {
     method,
@@ -6,8 +8,8 @@ export const fetchData = async (url = '', method = 'GET', data = {}) => {
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
     credentials: 'same-origin', // include, *same-origin, omit
     headers: {
-      'Content-Type': 'application/json'
-      // 'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${getAccessToken()}`
     },
     redirect: 'follow', // manual, *follow, error
     referrer: 'no-referrer', // no-referrer, *client
@@ -17,6 +19,19 @@ export const fetchData = async (url = '', method = 'GET', data = {}) => {
     fetchOptions.body = JSON.stringify(data); // body data type must match "Content-Type" header
   }
 
-  const response = await fetch(url, fetchOptions);
-  return await response.json(); // parses JSON response into native JavaScript objects
+  try {
+    const resp = await fetch(url, fetchOptions);
+    const respJson = await resp.json();
+    if (resp.status == 401) {
+      throw new Error(respJson.err);
+    }
+    const updatedAccessToken = respJson.accessToken;
+    if (updatedAccessToken) {
+      // store the accessToken, the accesss token should have a extended expiration
+      storeAccessToken(updatedAccessToken);
+    }
+    return respJson;
+  } catch (err) {
+    return {err: err.message};
+  }
 }
