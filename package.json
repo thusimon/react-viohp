@@ -5,7 +5,8 @@
   "author": "Lu Xu",
   "license": "MIT",
   "scripts": {
-    "start": "npm run prebuild && npm run build && env-cmd -f ./src/server/config/prod.env node src/server/distServer.js",
+    "start": "npm run prebuild && npm run build && node src/server/distServer.js",
+    "start:prod": "npm run prebuild && npm run build && env-cmd -f ./src/server/config/prod.env node src/server/distServer.js",
     "start:dev": "npm-run-all --parallel open:server lint:watch",
     "open:server": "env-cmd -f ./src/server/config/dev.env nodemon src/server/srcServer.js -e js,jsx",
     "lint": "./node_modules/.bin/eslint webpack.config.*.js src tools",
