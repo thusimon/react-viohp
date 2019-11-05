@@ -73,6 +73,66 @@ export const NotesFullMap = {
   "B5"  : {name:'B5',   label:'B5', scale:"B",  sfIdx:-3, freq:988}
 };
 
+export const NotesFullMapV2 = {
+  "g3"  : {label:'G3', scale:"G",  sfIdx:13, freq:196},
+  "g3+" : {label:'G3#', scale:"GS",  sfIdx:13, freq:208},
+
+  "a3-" : {label:'A3b', scale:"AF",  sfIdx:12, freq:208},
+  "a3"  : {label:'A3', scale:"A",  sfIdx:12, freq:220},
+  "a3+" : {label:'A3#',scale:"AS",  sfIdx:12, freq:233},
+
+  "b3-" : {label:'B3b',scale:"BF",  sfIdx:11, freq:233},
+  "b3"  : {label:'B3', scale:"B",  sfIdx:11, freq:245},
+
+  "c4"  : {label:'C4', scale:"C",  sfIdx:10, freq:262},
+  "c4+" : {label:'C4#',scale:"CS",  sfIdx:10, freq:277},
+
+  "d4-" : {abel:'D4b', scale:"DF",  sfIdx:9, freq:277},
+  "d4"  : {label:'D4', scale:"D",  sfIdx:9, freq:294},
+  "d4+" : {label:'D4#',scale:"D",  sfIdx:9, freq:311},
+
+  "e4-" : {label:'E4b',scale:"EF",  sfIdx:8, freq:311},
+  "e4"  : {label:'E4', scale:"E",  sfIdx:8, freq:330},
+
+  "f4"  : {label:'F4', scale:"F",  sfIdx:7, freq:349},
+  "f4+" : {label:'F4#',scale:"FS",  sfIdx:7, freq:370},
+
+  "g4-" : {label:'G4b',scale:"GF",  sfIdx:6, freq:370},
+  "g4"  : {label:'G4', scale:"G",  sfIdx:6, freq:392},
+  "g4+" : {label:'G4#',scale:"GS",  sfIdx:6, freq:415},
+
+  "a4-" : {label:'A4b',scale:"AF",  sfIdx:5, freq:415},
+  "a4"  : {label:'A4', scale:"A",  sfIdx:5, freq:440},
+  "a4+" : {label:'A4#',scale:"AS",  sfIdx:5, freq:466},
+
+  "b4-" : {label:'B4b',scale:"BF",  sfIdx:4, freq:466},
+  "b4"  : {label:'B4', scale:"B",  sfIdx:4, freq:494},
+
+  "c5"  : {label:'C5', scale:"C",  sfIdx:3, freq:523},
+  "c5+" : {label:'C5#',scale:"CS",  sfIdx:3, freq:554},
+
+  "d5-" : {label:'D5b',scale:"DF",  sfIdx:2, freq:554},
+  "d5"  : {label:'D5', scale:"D",  sfIdx:2, freq:587},
+  "d5+" : {label:'D5#',scale:"DS",  sfIdx:2, freq:622},
+
+  "e5-" : {label:'E5b',scale:"EF",  sfIdx:1, freq:622},
+  "e5"  : {label:'E5', scale:"E",  sfIdx:1, freq:659},
+
+  "f5"  : {label:'F5', scale:"F",  sfIdx:0, freq:698},
+  "f5+" : {label:'F5#',scale:"FS",  sfIdx:0, freq:740},
+
+  "g5-" : {label:'G5b',scale:"GF",  sfIdx:-1, freq:740},
+  "g5"  : {label:'G5', scale:"G",  sfIdx:-1, freq:784},
+  "g5+" : {label:'G5#',scale:"GS",  sfIdx:-1, freq:830},
+
+  "a5-" : {label:'A5b',scale:"AF",  sfIdx:-2, freq:830},
+  "a5"  : {label:'A5', scale:"A",  sfIdx:-2, freq:880},
+  "a5+" : {label:'A5#',scale:"AS",  sfIdx:-2, freq:932},
+
+  "b5-" : {label:'B5b',scale:"BF",  sfIdx:-3, freq:932},
+  "b5"  : {label:'B5', scale:"B",  sfIdx:-3, freq:988}
+};
+
 export const NotesFullArr = Object.values(NotesFullMap);
 
 export const SCALE_FULL = [
