@@ -23,8 +23,8 @@ class MusicAudioPage extends React.Component{
     props.setScoreList(scoreList);
     let firstScore = scoreList[0];
     if (firstScore){
-      let scoreName = firstScore.name;
-      props.setScore(scoreName);
+      let scoreId = firstScore.id;
+      props.setScore(scoreId);
     }
   }
   toggleFilter(){
@@ -94,8 +94,8 @@ const mapDispatchToProps = (dispatch) => {
     setScoreList:(scoreList) => {
       dispatch(musicActions.setScoreList(scoreList));
     },
-    setScore: (scoreName) => {
-      dispatch(musicActions.setScore(scoreName)); 
+    setScore: (id) => {
+      dispatch(musicActions.setScore(id)); 
     }
   };
 };

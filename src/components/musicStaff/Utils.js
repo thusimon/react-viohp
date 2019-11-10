@@ -3,7 +3,6 @@
  */
 import * as Constant from './Constants';
 import * as Symbols from './Symbols';
-import 'babel-polyfill';
 
 export const noteShift = () => {};
 
@@ -205,6 +204,9 @@ export const getNextNoteInfo = function* (notes) {
     const curRow = notes[row];
     for (col = 0; col<curRow.length; col++) {
       const curNote = notes[row][col];
+      if (curNote.type == Symbols.BARLINE_TYPE) {
+        continue;
+      }
       yield {note: curNote, row, col};
     }
   }

@@ -78,7 +78,7 @@ class Note extends React.Component {
       {
         return <div className="noteScaleLeft" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.SHARP}</div>;
       } else if(this.descriptor.scale==Syms.NATURAL_TYPE){
-        return <div className="noteScaleLeft" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.NATURAL}</div>;
+        return <div className="noteScaleLeft" style={{top:augmentPosY+"px", left:augmentPosX-6+"px"}}>{Syms.NATURAL}</div>;
       } else {
         return null;
       }

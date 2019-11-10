@@ -3,7 +3,7 @@
  */
 import * as types from '../actions/actionTypes';
 import {musicInitState as initState} from './initialState';
-import {getScoreByName} from '../data/scores/Utils';
+import {getScoreById} from '../data/scores/Utils';
 import {updateMarkNote} from '../components/musicStaff/Utils';
 import Score from '../data/scores/Score';
 
@@ -38,18 +38,17 @@ const musicReducer = (state=initState, action={}) => {
       return Object.assign({}, state, {dragInfo: action.dragInfo});
     case types.SHOW_FREQLINE:
       return Object.assign({}, state, {freqLineVal: action.freqLineVal});
-    case types.SET_SCORE_NAME:
+    case types.SET_SCORE_ID:
     {
-      let scoreName = action.scoreName;
-      let score = getScoreByName(scoreName);
+      let {id} = action;
+      let score = getScoreById(id);
       if (score){
         // find the score
         let musicInfo = {title:score.title, author:score.author, signature: score.signature, scale: score.scale};
-        const pureNotes = score.getPureNotes();
-        return Object.assign({}, state, {scoreName, musicInfo, notes:score.notes, pureNotes});
+        return Object.assign({}, state, {id, musicInfo, notes:score.notes});
       } else {
         // no score
-        return Object.assign({}, state, {scoreName});
+        return Object.assign({}, state, {id});
       }
     }
     case types.SET_SCORE_LIST:

@@ -13,16 +13,16 @@ class ScorePicker extends React.Component {
     this.onSelectChange = this.onSelectChange.bind(this);
   }
   onSelectChange(evt){
-    let scoreName = evt.target.value;
-    this.props.setScoreName(scoreName);
+    let scoreId = evt.target.value;
+    this.props.setScoreId(scoreId);
   }
   render(){
     let scoreList = this.props.scoreList;
     let options = scoreList.map(score=>{
-      let {name, title, author} = score;
+      let {id, title, author} = score;
       let optionText = `${title} - ${author}`;
       return (
-       <option key={name} value={name} title={optionText}>{optionText}</option>
+       <option key={id} value={id} title={optionText}>{optionText}</option>
       );
     });
     return (
@@ -44,14 +44,14 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    setScoreName: (scoreName)=> {
-      dispatch(musicActions.setScore(scoreName));
+    setScoreId: (scoreId)=> {
+      dispatch(musicActions.setScore(scoreId));
     }
   };
 }
 
 ScorePicker.propTypes = {
-  setScoreName: PropTypes.func,
+  setScoreId: PropTypes.func,
   scoreList: PropTypes.array
 };
 

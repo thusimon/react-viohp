@@ -1,7 +1,7 @@
 /**
  * Created by Lu on 11/10/2018.
  */
-import * as scores from './Score_fav_v2';
+import * as scores from './Score_fav';
 import * as scoresTemplate from './Score_template';
 import Score from './Score';
 
@@ -9,19 +9,19 @@ export const getAllScoreList = () => {
   let scoreList = [];
   for (let key in scores){
     let curScore = scores[key];
-    let {name, title, author} = curScore;
-    scoreList.push({name, title, author});
+    let {id, title, author} = curScore;
+    scoreList.push({id, title, author});
   }
   return scoreList;
 };
 
-export const getScoreByName = (scoreName)=>{
+export const getScoreById = (scoreId)=>{
   // extend scores and scoresTempate
   const allScores = Object.assign({}, scores, scoresTemplate);
   for (let key in allScores){
     let curScore = allScores[key];
-    let {name} = curScore;
-    if (name==scoreName){
+    let {id} = curScore;
+    if (id==scoreId){
       return new Score(curScore);
     }
   }

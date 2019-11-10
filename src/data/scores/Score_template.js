@@ -1,8 +1,7 @@
 export const newScore={
-  name:"newScore",
   signature:"Major",
   scale:"C",
-  title:"Enter score title here",
-  author:"Enter score author here",
+  title:"Score Title",
+  author:"Score Author",
   notes:[[],[],[],[]]
 };

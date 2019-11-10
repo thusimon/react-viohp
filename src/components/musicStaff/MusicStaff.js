@@ -199,7 +199,7 @@ class MusicStaff extends React.Component {
     return (
       <div ref={this.staffRef}
            className="staffLines"
-           style={{height:staffWholeHeight+'px',width:"1200px"}}
+           style={{height:staffWholeHeight+'px',width:"100%"}}
            onMouseUp={this.onMusicStaffMouseUp}>
         <div className="staffLinesContent">
           <table>

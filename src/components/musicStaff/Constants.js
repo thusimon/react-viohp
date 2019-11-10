@@ -14,157 +14,97 @@
  */
 
 export const NotesFullMap = {
-  "G3"  : {name:'G3',   label:'G3', scale:"G",  sfIdx:13, freq:196},
-  "G3S" : {name:'G3S',  label:'G3#', scale:"GS",  sfIdx:13, freq:208},
+  "g3"  : {name: 'g3', label:'G3', scale:"G",  sfIdx:13, freq:196},
+  "g3s" : {name: 'g3s', label:'G3#', scale:"GS",  sfIdx:13, freq:208},
 
-  "A3b" : {name:'A3b',  label:'A3b', scale:"AF",  sfIdx:12, freq:208},
-  "A3"  : {name:'A3',   label:'A3', scale:"A",  sfIdx:12, freq:220},
-  "A3S" : {name:'A3S',  label:'A3#',scale:"AS",  sfIdx:12, freq:233},
+  "a3b" : {name: 'a3b', label:'A3b', scale:"AF",  sfIdx:12, freq:208},
+  "a3"  : {name: 'a3', label:'A3', scale:"A",  sfIdx:12, freq:220},
+  "a3s" : {name: 'a3s', label:'A3#',scale:"AS",  sfIdx:12, freq:233},
 
-  "B3b" : {name:'B3b',  label:'B3b',scale:"BF",  sfIdx:11, freq:233},
-  "B3"  : {name:'B3',   label:'B3', scale:"B",  sfIdx:11, freq:245},
+  "b3b" : {name: 'b3b', label:'B3b',scale:"BF",  sfIdx:11, freq:233},
+  "b3"  : {name: 'b3', label:'B3', scale:"B",  sfIdx:11, freq:245},
 
-  "C4"  : {name:'C4',   label:'C4', scale:"C",  sfIdx:10, freq:262},
-  "C4S" : {name:'C4S',  label:'C4#',scale:"CS",  sfIdx:10, freq:277},
+  "c4"  : {name: 'c4', label:'C4', scale:"C",  sfIdx:10, freq:262},
+  "c4s" : {name: 'c4s', label:'C4#',scale:"CS",  sfIdx:10, freq:277},
 
-  "D4b" : {name:'D4b',  label:'D4b', scale:"DF",  sfIdx:9, freq:277},
-  "D4"  : {name:'D4',   label:'D4', scale:"D",  sfIdx:9, freq:294},
-  "D4S" : {name:'D4S',  label:'D4#',scale:"D",  sfIdx:9, freq:311},
+  "d4b" : {name: 'd4b', label:'D4b', scale:"DF",  sfIdx:9, freq:277},
+  "d4"  : {name: 'd4', label:'D4', scale:"D",  sfIdx:9, freq:294},
+  "d4s" : {name: 'd4s', label:'D4#',scale:"D",  sfIdx:9, freq:311},
 
-  "E4b" : {name:'E4b',  label:'E4b',scale:"EF",  sfIdx:8, freq:311},
-  "E4"  : {name:'E4',   label:'E4', scale:"E",  sfIdx:8, freq:330},
+  "e4b" : {name: 'e4b', label:'E4b',scale:"EF",  sfIdx:8, freq:311},
+  "e4"  : {name: 'e4', label:'E4', scale:"E",  sfIdx:8, freq:330},
 
-  "F4"  : {name:'F4',   label:'F4', scale:"F",  sfIdx:7, freq:349},
-  "F4S" : {name:'F4S',  label:'F4#',scale:"FS",  sfIdx:7, freq:370},
+  "f4"  : {name: 'f4', label:'F4', scale:"F",  sfIdx:7, freq:349},
+  "f4s" : {name: 'f4s', label:'F4#',scale:"FS",  sfIdx:7, freq:370},
 
-  "G4b" : {name:'G4b',  label:'G4b',scale:"GF",  sfIdx:6, freq:370},
-  "G4"  : {name:'G4',   label:'G4', scale:"G",  sfIdx:6, freq:392},
-  "G4S" : {name:'G4S',  label:'G4#',scale:"GS",  sfIdx:6, freq:415},
+  "g4b" : {name: 'g4b', label:'G4b',scale:"GF",  sfIdx:6, freq:370},
+  "g4"  : {name: 'g4', label:'G4', scale:"G",  sfIdx:6, freq:392},
+  "g4s" : {name: 'g4s', label:'G4#',scale:"GS",  sfIdx:6, freq:415},
 
-  "A4b" : {name:'A4b',  label:'A4b',scale:"AF",  sfIdx:5, freq:415},
-  "A4"  : {name:'A4',   label:'A4', scale:"A",  sfIdx:5, freq:440},
-  "A4S" : {name:'A4S',  label:'A4#',scale:"AS",  sfIdx:5, freq:466},
+  "a4b" : {name: 'a4b', label:'A4b',scale:"AF",  sfIdx:5, freq:415},
+  "a4"  : {name: 'a4', label:'A4', scale:"A",  sfIdx:5, freq:440},
+  "a4s" : {name: 'a4s', label:'A4#',scale:"AS",  sfIdx:5, freq:466},
 
-  "B4b" : {name:'B4b',  label:'B4b',scale:"BF",  sfIdx:4, freq:466},
-  "B4"  : {name:'B4',   label:'B4', scale:"B",  sfIdx:4, freq:494},
+  "b4b" : {name: 'b4b', label:'B4b',scale:"BF",  sfIdx:4, freq:466},
+  "b4"  : {name: 'b4', label:'B4', scale:"B",  sfIdx:4, freq:494},
 
-  "C5"  : {name:'C5',   label:'C5', scale:"C",  sfIdx:3, freq:523},
-  "C5S" : {name:'C5S',  label:'C5#',scale:"CS",  sfIdx:3, freq:554},
+  "c5"  : {name: 'c5', label:'C5', scale:"C",  sfIdx:3, freq:523},
+  "c5s" : {name: 'c5s', label:'C5#',scale:"CS",  sfIdx:3, freq:554},
 
-  "D5b" : {name:'D5b',  label:'D5b',scale:"DF",  sfIdx:2, freq:554},
-  "D5"  : {name:'D5',   label:'D5', scale:"D",  sfIdx:2, freq:587},
-  "D5S" : {name:'D5S',  label:'D5#',scale:"DS",  sfIdx:2, freq:622},
+  "d5b" : {name: 'd5b', label:'D5b',scale:"DF",  sfIdx:2, freq:554},
+  "d5"  : {name: 'd5', label:'D5', scale:"D",  sfIdx:2, freq:587},
+  "d5s" : {name: 'd5s', label:'D5#',scale:"DS",  sfIdx:2, freq:622},
 
-  "E5b" : {name:'E5b',  label:'E5b',scale:"EF",  sfIdx:1, freq:622},
-  "E5"  : {name:'E5',   label:'E5', scale:"E",  sfIdx:1, freq:659},
+  "e5b" : {name: 'e5b', label:'E5b',scale:"EF",  sfIdx:1, freq:622},
+  "e5"  : {name: 'e5', label:'E5', scale:"E",  sfIdx:1, freq:659},
 
-  "F5"  : {name:'F5',   label:'F5', scale:"F",  sfIdx:0, freq:698},
-  "F5S" : {name:'F5S',  label:'F5#',scale:"FS",  sfIdx:0, freq:740},
+  "f5"  : {name: 'f5', label:'F5', scale:"F",  sfIdx:0, freq:698},
+  "f5s" : {name: 'f5s', label:'F5#',scale:"FS",  sfIdx:0, freq:740},
 
-  "G5b" : {name:'G5b',  label:'G5b',scale:"GF",  sfIdx:-1, freq:740},
-  "G5"  : {name:'G5',   label:'G5', scale:"G",  sfIdx:-1, freq:784},
-  "G5S" : {name:'G5S',  label:'G5#',scale:"GS",  sfIdx:-1, freq:830},
+  "g5b" : {name: 'g5b', label:'G5b',scale:"GF",  sfIdx:-1, freq:740},
+  "g5"  : {name: 'g5', label:'G5', scale:"G",  sfIdx:-1, freq:784},
+  "g5s" : {name: 'g5s', label:'G5#',scale:"GS",  sfIdx:-1, freq:830},
 
-  "A5b" : {name:'A5b',  label:'A5b',scale:"AF",  sfIdx:-2, freq:830},
-  "A5"  : {name:'A5',   label:'A5', scale:"A",  sfIdx:-2, freq:880},
-  "A5S" : {name:'A5S',  label:'A5#',scale:"AS",  sfIdx:-2, freq:932},
+  "a5b" : {name: 'a5b', label:'A5b',scale:"AF",  sfIdx:-2, freq:830},
+  "a5"  : {name: 'a5', label:'A5', scale:"A",  sfIdx:-2, freq:880},
+  "a5s" : {name: 'a5s', label:'A5#',scale:"AS",  sfIdx:-2, freq:932},
 
-  "B5b" : {name:'B5b',  label:'B5b',scale:"BF",  sfIdx:-3, freq:932},
-  "B5"  : {name:'B5',   label:'B5', scale:"B",  sfIdx:-3, freq:988}
-};
-
-export const NotesFullMapV2 = {
-  "g3"  : {label:'G3', scale:"G",  sfIdx:13, freq:196},
-  "g3+" : {label:'G3#', scale:"GS",  sfIdx:13, freq:208},
-
-  "a3-" : {label:'A3b', scale:"AF",  sfIdx:12, freq:208},
-  "a3"  : {label:'A3', scale:"A",  sfIdx:12, freq:220},
-  "a3+" : {label:'A3#',scale:"AS",  sfIdx:12, freq:233},
-
-  "b3-" : {label:'B3b',scale:"BF",  sfIdx:11, freq:233},
-  "b3"  : {label:'B3', scale:"B",  sfIdx:11, freq:245},
-
-  "c4"  : {label:'C4', scale:"C",  sfIdx:10, freq:262},
-  "c4+" : {label:'C4#',scale:"CS",  sfIdx:10, freq:277},
-
-  "d4-" : {abel:'D4b', scale:"DF",  sfIdx:9, freq:277},
-  "d4"  : {label:'D4', scale:"D",  sfIdx:9, freq:294},
-  "d4+" : {label:'D4#',scale:"D",  sfIdx:9, freq:311},
-
-  "e4-" : {label:'E4b',scale:"EF",  sfIdx:8, freq:311},
-  "e4"  : {label:'E4', scale:"E",  sfIdx:8, freq:330},
-
-  "f4"  : {label:'F4', scale:"F",  sfIdx:7, freq:349},
-  "f4+" : {label:'F4#',scale:"FS",  sfIdx:7, freq:370},
-
-  "g4-" : {label:'G4b',scale:"GF",  sfIdx:6, freq:370},
-  "g4"  : {label:'G4', scale:"G",  sfIdx:6, freq:392},
-  "g4+" : {label:'G4#',scale:"GS",  sfIdx:6, freq:415},
-
-  "a4-" : {label:'A4b',scale:"AF",  sfIdx:5, freq:415},
-  "a4"  : {label:'A4', scale:"A",  sfIdx:5, freq:440},
-  "a4+" : {label:'A4#',scale:"AS",  sfIdx:5, freq:466},
-
-  "b4-" : {label:'B4b',scale:"BF",  sfIdx:4, freq:466},
-  "b4"  : {label:'B4', scale:"B",  sfIdx:4, freq:494},
-
-  "c5"  : {label:'C5', scale:"C",  sfIdx:3, freq:523},
-  "c5+" : {label:'C5#',scale:"CS",  sfIdx:3, freq:554},
-
-  "d5-" : {label:'D5b',scale:"DF",  sfIdx:2, freq:554},
-  "d5"  : {label:'D5', scale:"D",  sfIdx:2, freq:587},
-  "d5+" : {label:'D5#',scale:"DS",  sfIdx:2, freq:622},
-
-  "e5-" : {label:'E5b',scale:"EF",  sfIdx:1, freq:622},
-  "e5"  : {label:'E5', scale:"E",  sfIdx:1, freq:659},
-
-  "f5"  : {label:'F5', scale:"F",  sfIdx:0, freq:698},
-  "f5+" : {label:'F5#',scale:"FS",  sfIdx:0, freq:740},
-
-  "g5-" : {label:'G5b',scale:"GF",  sfIdx:-1, freq:740},
-  "g5"  : {label:'G5', scale:"G",  sfIdx:-1, freq:784},
-  "g5+" : {label:'G5#',scale:"GS",  sfIdx:-1, freq:830},
-
-  "a5-" : {label:'A5b',scale:"AF",  sfIdx:-2, freq:830},
-  "a5"  : {label:'A5', scale:"A",  sfIdx:-2, freq:880},
-  "a5+" : {label:'A5#',scale:"AS",  sfIdx:-2, freq:932},
-
-  "b5-" : {label:'B5b',scale:"BF",  sfIdx:-3, freq:932},
-  "b5"  : {label:'B5', scale:"B",  sfIdx:-3, freq:988}
+  "b5b" : {name: 'b5b', label:'B5b',scale:"BF",  sfIdx:-3, freq:932},
+  "b5"  : {name: 'b5', label:'B5', scale:"B",  sfIdx:-3, freq:988}
 };
 
 export const NotesFullArr = Object.values(NotesFullMap);
 
 export const SCALE_FULL = [
-  [NotesFullMap.G3],
-  [NotesFullMap.G3S, NotesFullMap.A3b],
-  [NotesFullMap.A3],
-  [NotesFullMap.A3S, NotesFullMap.B3b],
-  [NotesFullMap.B3],
-  [NotesFullMap.C4],
-  [NotesFullMap.C4S, NotesFullMap.D4b],
-  [NotesFullMap.D4],
-  [NotesFullMap.D4S, NotesFullMap.E4b],
-  [NotesFullMap.E4],
-  [NotesFullMap.F4],
-  [NotesFullMap.F4S, NotesFullMap.G4b],
-  [NotesFullMap.G4],
-  [NotesFullMap.G4S, NotesFullMap.A4b],
-  [NotesFullMap.A4],
-  [NotesFullMap.A4S, NotesFullMap.B4b],
-  [NotesFullMap.B4],
-  [NotesFullMap.C5],
-  [NotesFullMap.C5S, NotesFullMap.D5b],
-  [NotesFullMap.D5],
-  [NotesFullMap.D5S, NotesFullMap.E5b],
-  [NotesFullMap.E5],
-  [NotesFullMap.F5],
-  [NotesFullMap.F5S, NotesFullMap.G5b],
-  [NotesFullMap.G5],
-  [NotesFullMap.G5S, NotesFullMap.A5b],
-  [NotesFullMap.A5],
-  [NotesFullMap.A5S, NotesFullMap.B5b],
-  [NotesFullMap.B5]
+  [NotesFullMap.g3],
+  [NotesFullMap.g3s, NotesFullMap.a3b],
+  [NotesFullMap.a3],
+  [NotesFullMap.a3s, NotesFullMap.b3b],
+  [NotesFullMap.b3],
+  [NotesFullMap.c4],
+  [NotesFullMap.c4s, NotesFullMap.d4b],
+  [NotesFullMap.d4],
+  [NotesFullMap.d4s, NotesFullMap.e4b],
+  [NotesFullMap.e4],
+  [NotesFullMap.f4],
+  [NotesFullMap.f4s, NotesFullMap.g4b],
+  [NotesFullMap.g4],
+  [NotesFullMap.g4s, NotesFullMap.a4b],
+  [NotesFullMap.a4],
+  [NotesFullMap.a4s, NotesFullMap.b4b],
+  [NotesFullMap.b4],
+  [NotesFullMap.c5],
+  [NotesFullMap.c5s, NotesFullMap.d5b],
+  [NotesFullMap.d5],
+  [NotesFullMap.d5s, NotesFullMap.e5b],
+  [NotesFullMap.e5],
+  [NotesFullMap.f5],
+  [NotesFullMap.f5s, NotesFullMap.g5b],
+  [NotesFullMap.g5],
+  [NotesFullMap.g5s, NotesFullMap.a5b],
+  [NotesFullMap.a5],
+  [NotesFullMap.a5s, NotesFullMap.b5b],
+  [NotesFullMap.b5]
 ];
 
 export const Notes = {
@@ -263,3 +203,7 @@ export const ViolinFinger_POS1 = [
   {finger:"3/4",notes: [Notes.CS,Notes.GS,Notes.EF,Notes.BF]},
   {finger: "4", notes: [Notes.D, Notes.A, Notes.E, Notes.B]},
 ];
+
+export const STAFF_SYM_START = 0.1;
+export const STAFF_SYM_END = 0.98;
+export const STAFF_WIDTH = 1200;

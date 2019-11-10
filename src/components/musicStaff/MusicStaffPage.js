@@ -29,7 +29,7 @@ class MusicStaffPage extends React.Component {
       activeStaff:0,
       staffNum:this.props.notes.length,
       musicInfo:this.props.musicInfo,
-      scoreName:this.props.scoreName
+      scoreId:this.props.scoreId
     };
     this.staffPageRef = React.createRef();
     this.staffRef = React.createRef();
@@ -37,14 +37,14 @@ class MusicStaffPage extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, state){
-    let {signature, scale, dragInfo, notes, musicInfo, scoreName} = nextProps;
+    let {signature, scale, dragInfo, notes, musicInfo, scoreId} = nextProps;
     let staffNum = notes.length;
     if (signature != state.signature || scale != state.scale){
       // need to update the scaleHead
-      return {signature, scale, dragInfo, staffNum, musicInfo,scoreName};
+      return {signature, scale, dragInfo, staffNum, musicInfo, scoreId};
     } else {
       // signature and scale is not changed
-      return {dragInfo, staffNum, musicInfo,scoreName};
+      return {dragInfo, staffNum, musicInfo, scoreId};
     }
   }
 
@@ -66,14 +66,14 @@ class MusicStaffPage extends React.Component {
   }
 
   render(){
-    this.noteIter = Utils.getNextNoteInfo(this.props.pureNotes);
+    this.noteIter = Utils.getNextNoteInfo(this.props.notes);
     return (
       <div style={{position:'relative', width:"100%", height:"100%"}}
            ref={this.staffPageRef}
            onMouseMove={this.onMusicStaffPageMouseMove}
            onMouseUp={this.onMusicStaffPageMouseUp}>
         <MusicStaffHead musicInfo={this.state.musicInfo}/>
-        <div style={{height:"1000px", overflowX:"hidden", overflowY:"auto", position:"relative", borderTop:"1px solid black"}} ref={this.staffRef}>
+        <div style={{height:"1000px", width: "1200px", overflowX:"hidden", overflowY:"auto", position:"relative", borderTop:"1px solid black"}} ref={this.staffRef}>
           <MusicStaffPlayerArrow noteIter={this.noteIter} staffRef = {this.staffRef} audioOscillator = {this.audioOscillator}/>
           <MusicStaffPlayerVolume audioOscillator = {this.audioOscillator} />
           {Array.from(Array(this.state.staffNum).keys()).map(n =>
@@ -86,13 +86,12 @@ class MusicStaffPage extends React.Component {
 
 MusicStaffPage.propTypes = {
   notes: PropTypes.array,
-  pureNotes: PropTypes.array,
   scaleHead: PropTypes.array,
   signature: PropTypes.string,
   scale: PropTypes.string,
   dragInfo: PropTypes.object,
   musicInfo: PropTypes.object,
-  scoreName: PropTypes.string,
+  scoreId: PropTypes.string,
   dragStatusChange: PropTypes.func
 };
 

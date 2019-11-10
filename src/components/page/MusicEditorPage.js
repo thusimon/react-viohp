@@ -55,8 +55,8 @@ const mapDispatchToProps = (dispatch) => {
     setScoreList:(scoreList) => {
       dispatch(musicActions.setScoreList(scoreList));
     },
-    setScoreName: (scoreName) => {
-      dispatch(musicActions.setScore(scoreName));
+    setScoreName: (id) => {
+      dispatch(musicActions.setScore(id));
     }
   };
 };

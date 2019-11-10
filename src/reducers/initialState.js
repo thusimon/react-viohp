@@ -18,7 +18,7 @@ export const musicInitState = {
     title: 'Enter score title here',
     author: 'Enter score author here'
   },
-  scoreName:""
+  scoreId:""
 };
 
 export const audioInitState = {
