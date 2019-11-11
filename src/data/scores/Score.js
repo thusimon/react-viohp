@@ -13,8 +13,8 @@ class Score {
    * @param notes, would be a 2D array [[staffline1],[staffline2]];
    */
   constructor(score){
-    let {id, signature, scale, title, author, notes=[]} = score;
-    this.id = id;
+    let {_id, signature, scale, title, author, notes=[]} = score;
+    this.id = _id;
     this.signature = signature;
     this.scale = scale;
     this.title = title;
@@ -28,17 +28,8 @@ class Score {
    */
   static filterNonPositionedSymbols(notes){
     return notes.filter(note=>{
-      return note.type!='|';
+      return note.type!=Syms.BARLINE_TYPE;
     })
-  }
-
-  /**
-   * 
-   * @param {*} noteLine: would be a string splitted by semi-colon
-   */
-  static parseNoteLine(noteLine) {
-    let noteL = noteLine || '';
-    return noteL.split(';').filter(note=>!!note);
   }
 
   static convertRawTypeToSymType(type) {
@@ -126,26 +117,27 @@ class Score {
     //staff start 0.1, staff end 0.95
     const countNoteLen = Score.filterNonPositionedSymbols(notes).length
     const incStep = (STAFF_SYM_END - STAFF_SYM_START)/countNoteLen;
-    const positionedNotes = notes.map((note, idx)=>{
+    let symPos = STAFF_SYM_START;
+    notes.forEach((note) => {
       if(note.type == Syms.BARLINE_TYPE){
         // do not assign bar line x first
       } else if (note.x) {
         note.x *= STAFF_WIDTH;
       }
       else {
-        note.x = Math.round((STAFF_SYM_START+idx*incStep)*STAFF_WIDTH);
+        note.x = Math.round(symPos*STAFF_WIDTH);
+        symPos += incStep;
       }
       // merge the properties from NotesFullMap
       if (note.name) {
         const moreProps = NotesFullMap[note.name];
         note = Object.assign(note, moreProps);
       }
-      return note;
     });
-    return positionedNotes.map((note, idx)=> {
+    return notes.map((note, idx)=> {
       if (note.type == Syms.BARLINE_TYPE && !note.x) {
-        const prevNote = positionedNotes[idx-1];
-        const nextNote = positionedNotes[idx+1];
+        const prevNote = notes[idx-1];
+        const nextNote = notes[idx+1];
         const prevNoteX = prevNote && prevNote.x ? prevNote.x : null;
         const nextNoteX = nextNote && nextNote.x ? nextNote.x : null;
         const incStepLen = incStep*STAFF_WIDTH;
@@ -161,17 +153,11 @@ class Score {
     });
   }
 
-  /**
-   * 
-   * @param {*} notes line array
-   */
-  static parseNotesLine(notesLine) {
-    const parsedNotes = notesLine.map(note=>Score.parseNote(note));
-    return Score.repositionNotes(parsedNotes);
-  }
-  
   static parseAllNotes(notes){
-    return notes.map(notesLine=>Score.parseNotesLine(notesLine))
+    return notes.map(notesLine=>{
+      const parsedNotes = notesLine.map(note=>Score.parseNote(note));
+      return Score.repositionNotes(parsedNotes);
+    });
   }
 }
 

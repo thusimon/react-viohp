@@ -23,6 +23,9 @@ const scoreSchema = new Schema({
     type: Schema.Types.ObjectId,
     required: true,
     ref: 'User'
+  },
+  order: {
+    type: Number
   }
 }, {
   timestamps:true

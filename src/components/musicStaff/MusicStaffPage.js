@@ -73,7 +73,7 @@ class MusicStaffPage extends React.Component {
            onMouseMove={this.onMusicStaffPageMouseMove}
            onMouseUp={this.onMusicStaffPageMouseUp}>
         <MusicStaffHead musicInfo={this.state.musicInfo}/>
-        <div style={{height:"1000px", width: "1200px", overflowX:"hidden", overflowY:"auto", position:"relative", borderTop:"1px solid black"}} ref={this.staffRef}>
+        <div style={{height:"1000px", width: Constants.STAFF_WIDTH+'px', overflowX:"auto", overflowY:"auto", position:"relative", borderTop:"1px solid black"}} ref={this.staffRef}>
           <MusicStaffPlayerArrow noteIter={this.noteIter} staffRef = {this.staffRef} audioOscillator = {this.audioOscillator}/>
           <MusicStaffPlayerVolume audioOscillator = {this.audioOscillator} />
           {Array.from(Array(this.state.staffNum).keys()).map(n =>

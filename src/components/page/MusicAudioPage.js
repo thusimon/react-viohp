@@ -11,7 +11,7 @@ import ScorePicker from '../Scores/ScorePicker';
 import AudioPlayer from '../audio/AudioPlayer';
 import AudioFilter from '../audio/AudioFilter';
 import ToggleButton from '../common/ToggleButton';
-import {getAllScoreList} from '../../data/scores/Utils';
+import {fetchDataWithAccessToken} from '../../api/utils';
 import * as musicActions from '../../actions/musicActions';
 
 class MusicAudioPage extends React.Component{
@@ -19,12 +19,13 @@ class MusicAudioPage extends React.Component{
     super(props);
     this.toggleFilter=this.toggleFilter.bind(this);
     this.state = {showFilter: false};
-    let scoreList = getAllScoreList();
-    props.setScoreList(scoreList);
-    let firstScore = scoreList[0];
-    if (firstScore){
-      let scoreId = firstScore.id;
-      props.setScore(scoreId);
+  }
+  async componentDidMount() {
+    const {scores} = await fetchDataWithAccessToken('/api/score/me', 'GET');
+    if (scores && scores.length>0) {
+      this.props.setScoreList(scores);
+      const scoreId = scores[0]._id;
+      this.props.setScore(scoreId);
     }
   }
   toggleFilter(){

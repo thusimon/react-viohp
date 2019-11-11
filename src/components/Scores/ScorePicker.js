@@ -17,12 +17,12 @@ class ScorePicker extends React.Component {
     this.props.setScoreId(scoreId);
   }
   render(){
-    let scoreList = this.props.scoreList;
+    let scoreList = this.props.scoreList || [];
     let options = scoreList.map(score=>{
-      let {id, title, author} = score;
-      let optionText = `${title} - ${author}`;
+      let {_id, title} = score;
+      let optionText = `${title}`;
       return (
-       <option key={id} value={id} title={optionText}>{optionText}</option>
+       <option key={_id} value={_id} title={optionText}>{optionText}</option>
       );
     });
     return (

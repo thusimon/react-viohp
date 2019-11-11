@@ -3,7 +3,6 @@
  */
 import * as types from '../actions/actionTypes';
 import {musicInitState as initState} from './initialState';
-import {getScoreById} from '../data/scores/Utils';
 import {updateMarkNote} from '../components/musicStaff/Utils';
 import Score from '../data/scores/Score';
 
@@ -41,9 +40,10 @@ const musicReducer = (state=initState, action={}) => {
     case types.SET_SCORE_ID:
     {
       let {id} = action;
-      let score = getScoreById(id);
-      if (score){
-        // find the score
+      const scoreList = state.scoreList|| [];
+      const scoreData = scoreList.filter(score=>score._id==id)[0];
+      if (scoreData){
+        const score = new Score(scoreData);
         let musicInfo = {title:score.title, author:score.author, signature: score.signature, scale: score.scale};
         return Object.assign({}, state, {id, musicInfo, notes:score.notes});
       } else {
@@ -52,7 +52,9 @@ const musicReducer = (state=initState, action={}) => {
       }
     }
     case types.SET_SCORE_LIST:
-      return Object.assign({}, state, {scoreList:action.scoreList});
+    {
+      return Object.assign({}, state, {scoreList:action.scoreList}); 
+    }
     case types.UPDATE_SCORE_INFO:
     {
       let {name, value} = action;

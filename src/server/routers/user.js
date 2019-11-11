@@ -1,6 +1,6 @@
 const express = require('express');
 const router = new express.Router();
-const auth = require('./middleware/auth');
+const {userAuth} = require('./middleware/auth');
 const User = require('../models/user');
 
 // register user
@@ -26,7 +26,7 @@ router.post('/api/user/login', async (req, res) => {
   }
 });
 
-router.get('/api/user/me', auth, async (req, res) => {
+router.get('/api/user/me', userAuth, async (req, res) => {
   try {
     return res.status(200).send({
       user: req.user,
@@ -46,7 +46,7 @@ router.get('/api/users', async (req, res) => {
       return res.status(200).send(users)
     }
   } catch (err) {
-    return res.status(401).send('error when getting users ' + err.message);
+    return res.status(401).send({err: err.message});
   }
 })
 
