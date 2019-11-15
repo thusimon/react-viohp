@@ -39,8 +39,8 @@ const musicReducer = (state=initState, action={}) => {
       return Object.assign({}, state, {freqLineVal: action.freqLineVal});
     case types.SET_SCORE_ID:
     {
-      let {id} = action;
-      const scoreList = state.scoreList|| [];
+      let {category, id} = action;
+      const scoreList = state.scoreList ? state.scoreList[category] : [];
       const scoreData = scoreList.filter(score=>score._id==id)[0];
       if (scoreData){
         const score = new Score(scoreData);
@@ -53,7 +53,10 @@ const musicReducer = (state=initState, action={}) => {
     }
     case types.SET_SCORE_LIST:
     {
-      return Object.assign({}, state, {scoreList:action.scoreList}); 
+      return Object.assign({}, state, {scoreList:{
+        ...state.scoreList,
+        ...action.scoreList
+      }}); 
     }
     case types.UPDATE_SCORE_INFO:
     {

@@ -11,8 +11,6 @@ import ScorePicker from '../Scores/ScorePicker';
 import AudioPlayer from '../audio/AudioPlayer';
 import AudioFilter from '../audio/AudioFilter';
 import ToggleButton from '../common/ToggleButton';
-import {fetchDataWithAccessToken} from '../../api/utils';
-import * as musicActions from '../../actions/musicActions';
 
 class MusicAudioPage extends React.Component{
   constructor(props){
@@ -20,14 +18,7 @@ class MusicAudioPage extends React.Component{
     this.toggleFilter=this.toggleFilter.bind(this);
     this.state = {showFilter: false};
   }
-  async componentDidMount() {
-    const {scores} = await fetchDataWithAccessToken('/api/score/me', 'GET');
-    if (scores && scores.length>0) {
-      this.props.setScoreList(scores);
-      const scoreId = scores[0]._id;
-      this.props.setScore(scoreId);
-    }
-  }
+
   toggleFilter(){
     let curShowFilter = this.state.showFilter;
     this.setState({showFilter:!curShowFilter});
@@ -80,8 +71,6 @@ class MusicAudioPage extends React.Component{
 
 MusicAudioPage.propTypes = {
   appliedFiltername: PropTypes.string,
-  setScoreList: PropTypes.func,
-  setScore: PropTypes.func
 };
 
 const mapStateToProps = (state) => {
@@ -90,15 +79,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setScoreList:(scoreList) => {
-      dispatch(musicActions.setScoreList(scoreList));
-    },
-    setScore: (id) => {
-      dispatch(musicActions.setScore(id)); 
-    }
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MusicAudioPage);
+export default connect(mapStateToProps)(MusicAudioPage);

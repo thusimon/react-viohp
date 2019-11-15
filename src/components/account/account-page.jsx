@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {AccountProvider} from './account-context';
-import Account from './account.jsx';
+import Account from './account';
 import {fetchDataWithAccessToken} from '../../api/utils';
 
 const accountPage = () => {

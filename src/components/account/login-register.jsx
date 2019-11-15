@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import validator from 'validator';
-import Profile from './profile.jsx';
+import Profile from './profile';
 
 import {fetchDataWithAccessToken} from '../../api/utils';
 const login = () => {

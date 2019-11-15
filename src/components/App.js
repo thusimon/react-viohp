@@ -8,7 +8,7 @@ import HomePage from './home/HomePage';
 import AboutPage from './about/AboutPage';
 import MusicAudioPage from './page/MusicAudioPage';
 import MusicEditorPage from './page/MusicEditorPage';
-import AccountPage from './account/account-page.jsx';
+import AccountPage from './account/account-page';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner, faPlay, faPause, faBackward, faForward, faVolumeUp, faVolumeMute
   , faUserCircle } from '@fortawesome/free-solid-svg-icons';

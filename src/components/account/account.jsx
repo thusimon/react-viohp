@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import LoginRegister from './login-register.jsx';
-import Profile from './profile.jsx';
+import LoginRegister from './login-register';
+import Profile from './profile';
 import './account.scss';
 import {AccountConsumer} from './account-context';
 

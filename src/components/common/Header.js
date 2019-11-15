@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import Account from '../nav/account.jsx';
+import Account from '../nav/account';
 import './Header.scss';
 
 const Header = () => {

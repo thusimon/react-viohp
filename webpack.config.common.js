@@ -52,5 +52,8 @@ module.exports = {
       {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream'},
       {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, use: {loader: 'svg-inline-loader'}}
     ]
+  },
+  resolve: {
+    extensions: ['.js', '.jsx'],
   }
 };
