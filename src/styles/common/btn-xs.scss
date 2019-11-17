@@ -1,0 +1,13 @@
+@import "../../../node_modules/bootstrap/scss/functions";
+@import '../../../node_modules/bootstrap/scss/variables';
+@import '../../../node_modules/bootstrap/scss/mixins';
+
+$btn-padding-x-xs:  .20rem !default;
+$btn-padding-y-xs:  .12rem !default;
+$input-btn-line-height-xs: 1.1 !default;
+
+.btn.btn-xs {
+   @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-sm, $input-btn-line-height-xs, $btn-border-radius-sm);
+}
+
+.btn-group-sm > .btn { @extend .btn-xs; }

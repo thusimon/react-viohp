@@ -5,11 +5,13 @@ import {combineReducers} from 'redux';
 import musicReducer from './musicReducer';
 import audioReducer from './audioReducer';
 import playerReducer from './playerReducer';
+import modalReducer from './modalReducer';
 
 const rootReducer = combineReducers({
   music: musicReducer,
   audio: audioReducer,
-  player: playerReducer
+  player: playerReducer,
+  modal: modalReducer
 });
 
 export default rootReducer;

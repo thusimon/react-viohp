@@ -1,0 +1,14 @@
+.score-list {
+  height: 400px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  .score-item {
+    padding: 2px 8px;
+  }
+}
+
+.score-list-empty {
+  height: 400px;
+  text-align: center;
+  vertical-align: middle;
+}

@@ -12,6 +12,7 @@ import * as Utils from './Utils';
 import * as musicActions from '../../actions/musicActions';
 import MusicStaffHead from './MusicStaffHead';
 import AudioOscillator from '../audio/AudioOscillator';
+import './music-staff-page.scss';
 
 class MusicStaffPage extends React.Component {
   constructor(props, context){
@@ -68,12 +69,12 @@ class MusicStaffPage extends React.Component {
   render(){
     this.noteIter = Utils.getNextNoteInfo(this.props.notes);
     return (
-      <div style={{position:'relative', width:"100%", height:"100%"}}
+      <div className='music-staff-page'
            ref={this.staffPageRef}
            onMouseMove={this.onMusicStaffPageMouseMove}
            onMouseUp={this.onMusicStaffPageMouseUp}>
         <MusicStaffHead musicInfo={this.state.musicInfo}/>
-        <div style={{height:"1000px", width: Constants.STAFF_WIDTH+'px', overflowX:"auto", overflowY:"auto", position:"relative", borderTop:"1px solid black"}} ref={this.staffRef}>
+        <div className='music-staff-section' ref={this.staffRef}>
           <MusicStaffPlayerArrow noteIter={this.noteIter} staffRef = {this.staffRef} audioOscillator = {this.audioOscillator}/>
           <MusicStaffPlayerVolume audioOscillator = {this.audioOscillator} />
           {Array.from(Array(this.state.staffNum).keys()).map(n =>

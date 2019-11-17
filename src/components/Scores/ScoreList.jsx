@@ -3,6 +3,7 @@ import {useDispatch } from 'react-redux';
 import * as musicActions from '../../actions/musicActions';
 import {fetchDataWithAccessToken} from '../../api/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import './score-list.scss';
 
 const ScoreList = ({category, reqPath}) => {
   const dispatch = useDispatch();
@@ -33,11 +34,18 @@ const ScoreList = ({category, reqPath}) => {
     <div className="list-group score-list" onClick={scoreListClick}>
       {
         scoreState.scores.map(score=>{
-          let {_id, title} = score;
-          return <button key={_id} id={_id} type="button" className="list-group-item list-group-item-action">{title}</button>
+          let {_id, title, author, notes} = score;
+          let notesLineNum = notes ? notes.length : 0;
+          return <button key={_id} id={_id} type="button"
+            className="list-group-item list-group-item-action score-item"
+            title={`${title}-${author} (${notesLineNum} lines)`}
+            >{title}</button>
         })
       }
-    </div> : <div className="score-list-empty">No scores at present</div>;
+    </div> :
+    <div className="score-list-empty">
+      <span>No scores at present</span>
+    </div>;
   return (
     <div>
       <div>

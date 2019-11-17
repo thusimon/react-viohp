@@ -43,3 +43,6 @@ export const FORWARD = 'FORWARD';
 export const RESET_SEEK = 'RESET_SEEK';
 export const PAUSE = 'PAUSE';
 export const CHANGE_VOLUME = 'CHANGE_VOLUME';
+
+//modal action types
+export const SCORE_PICKER_TOGGLE = 'SCORE_PICKER_TOGGLE';

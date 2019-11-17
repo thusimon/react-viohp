@@ -37,7 +37,7 @@ export const audioInitState = {
 
 export const scoreInitState = {
   name:"",
-  scoreList:[]
+  scoreList:{}
 };
 
 export const playerInitState = {
@@ -45,3 +45,7 @@ export const playerInitState = {
   seek: 0,
   vol: 0.1
 };
+
+export const modalInitState = {
+  scorePickerDisplay: false
+}

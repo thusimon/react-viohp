@@ -6,6 +6,8 @@ import * as playerActions from '../../actions/playerActions';
 import PropTypes from 'prop-types';
 import SelfClearBtn from '../common/SelfClearBtn';
 import Slider from '../common/Slider';
+import '../../styles/common/btn-xs.scss';
+import './audio-player.scss';
 
 const PlayerState = {
   init: 0,
@@ -16,33 +18,29 @@ const PlayerState = {
 const AudioPlayer = (props) => {
   const [playerState, setPlayerState] = useState(PlayerState.init);
   const [volumeState, setVolumeState] = useState(props.vol>0);
-  const playClass = playerState === PlayerState.playing ? 'playerColorBtn' : '';
-  const pauseClass = playerState === PlayerState.pause ? 'playerColorBtn' : '';
-  const volumeIcon = volumeState ? <FontAwesomeIcon icon="volume-up" size="lg" /> : <FontAwesomeIcon icon="volume-mute" size="lg" />;
+  const playClass = playerState === PlayerState.playing ? 'player-btn-color-bg' : '';
+  const pauseClass = playerState === PlayerState.pause ? 'player-btn-color-bg' : '';
+  const volumeIcon = volumeState ? <FontAwesomeIcon icon="volume-up" size="sm" /> : <FontAwesomeIcon icon="volume-mute" size="sm" />;
   return (
-    <div>
-      <span className="badge badge-info" style={{fontSize:'12px'}}>Music Player</span>
-      <br /><br />
-      <div className="btn-group" role="group" aria-label="player-buttons">
-        <SelfClearBtn baseClass={'btn btn-secondary'} activeClass={'playerColorBtn'} icon={'backward'} clickCallBack={() => {props.backward();}} isClear />
-        <button type="button" className={'btn btn-secondary ' + playClass} onClick = {() => {props.play(); setPlayerState(PlayerState.playing);}}>
+    <div className="audio-player-container">
+      <div className="btn-group btn-group-xs player-btn-group" role="group" aria-label="player-buttons">
+        <SelfClearBtn baseClass={'btn btn-secondary btn-xs'} activeClass={'player-btn-color-bg'} icon={'backward'} clickCallBack={() => {props.backward();}} isClear />
+        <button type="button" className={'btn btn-secondary btn-xs ' + playClass} onClick = {() => {props.play(); setPlayerState(PlayerState.playing);}}>
           <FontAwesomeIcon icon="play" />
         </button>
-        <button type="button" className={'btn btn-secondary ' + pauseClass} onClick = {() => {props.pause(); setPlayerState(PlayerState.pause);}}>
+        <button type="button" className={'btn btn-secondary btn-xs ' + pauseClass} onClick = {() => {props.pause(); setPlayerState(PlayerState.pause);}}>
           <FontAwesomeIcon icon="pause" />
         </button>
-        <SelfClearBtn baseClass={'btn btn-secondary'} activeClass={'playerColorBtn'} icon={'forward'} clickCallBack = {() => {props.forward();}} isClear />
+        <SelfClearBtn baseClass={'btn btn-secondary btn-xs'} activeClass={'player-btn-color-bg'} icon={'forward'} clickCallBack = {() => {props.forward();}} isClear />
       </div>
-      <div style={{width: "90%", marginTop:"15px", verticalAlign: "middle", position:"relative"}}>
-        <div style={{position: "absolute", left: "0px"}}>
+      <div className="player-volumn">
+        <span>
           {volumeIcon}
-        </div>
-        <div style={{position: "absolute", left: "14%"}}>
-          <Slider start={0} end={100} showValue={1} initVal={props.vol} onSlide={(val) => {
+        </span>
+        <Slider start={0} end={100} showValue={1} initVal={props.vol} onSlide={(val) => {
             props.changeVol(val);
             setVolumeState(val);
-          }}/>
-        </div>
+        }}/>
       </div>
     </div>
   );
