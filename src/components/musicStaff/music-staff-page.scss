@@ -1,15 +1,16 @@
 .music-staff-page {
-  position: "relative";
-  //width: "100%";
-  //height:"100%";
-
+  position: relative;
+  margin-right: 2px;
+  .music-staff-head-container {
+    height:45px;
+  }
   .music-staff-section {
-    //height: "1000px";
-    //width: "1200px";
-    overflow-x: "hidden";
-    overflow-y: "auto";
-    position: "relative";
-    border-top: "1px solid black";
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    border-top: 1px solid rgb(248, 222, 116);
+    border-bottom: 1px solid rgb(248, 222, 116);
     margin-left:3px;
+    max-height: calc(100vh - 135px);
   }
 }

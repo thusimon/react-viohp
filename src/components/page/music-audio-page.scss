@@ -8,6 +8,8 @@
     "score audio";
   justify-items: stretch;
   align-items: stretch;
+  width: 100vw;
+  height: 100%;
   .control-section {
     grid-area: control;
     display: flex;
@@ -15,14 +17,26 @@
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: center;
+    height: 30px;
     .score-picker-button {
       order: 0;
       flex-basis: auto;
-      margin: 0px 20px;
+      margin: 0px 10px 0px 20px;
     }
-    .player-section {
+    .filter-picker-button {
       order: 1;
       flex-basis: auto;
+      margin: 0px 10px;
+    }
+    .audio-setting-button {
+      order: 2;
+      flex-basis: auto;
+      margin: 0px 10px;
+    }
+    .player-section {
+      order: 3;
+      flex-basis: auto;
+      margin: 0px 10px;
     }
   }
   .score-section {

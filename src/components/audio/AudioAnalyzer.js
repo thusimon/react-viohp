@@ -7,8 +7,6 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import * as audioUtils from './Utils';
 import AudioDisplay from './AudioDisplay';
-import ToggleButton from '../common/ToggleButton';
-import AudioControls from '../audio/AudioControls';
 import * as audioActions from '../../actions/audioActions';
 import {multiplyVectors} from '../../math/basicMatrix';
 
@@ -159,14 +157,6 @@ class AudioAnalyzer extends React.Component{
         <div style={{flex:"auto"}}>
           <canvas id="audiocanvas" ref={this.canvasRef} width="500" height="300" />
           <AudioDisplay />
-        </div>
-        <div style={{flex:"auto"}}>
-          <div>
-            <ToggleButton text="Settings" toggle={this.state.showSettings} onclick={this.toggleSettings} />
-          </div>
-          <div className={audioSettingClass} style={{marginTop:"20px"}}>
-            <AudioControls />
-          </div>
         </div>
       </div>);
   }

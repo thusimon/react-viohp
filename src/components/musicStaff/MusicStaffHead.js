@@ -5,7 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 const MusicStaffHead = ({musicInfo})=>{
   return (
-    <div>
+    <div className="music-staff-head-container">
       <div style={{textAlign:"center", width:"100%", fontSize:"22px", fontWeight:"bold"}}>
         {musicInfo.title}
       </div>

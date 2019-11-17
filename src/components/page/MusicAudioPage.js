@@ -9,9 +9,10 @@ import MusicStaffPage from '../musicStaff/MusicStaffPage';
 import Violin from '../musicStaff/Violin';
 import AudioAnalyzer from '../audio/AudioAnalyzer';
 import AudioPlayer from '../audio/AudioPlayer';
-import AudioFilter from '../audio/AudioFilter';
 import ToggleButton from '../common/ToggleButton';
 import ScorePickerModal from '../modal/ScorePickerModal';
+import SpectrumFilterModal from '../modal/SpectrumFilterModal';
+import SpectrumSettingModal from '../modal/SpectrumSettingModal';
 
 import '../../styles/common/btn-xs.scss';
 import './music-audio-page.scss';
@@ -19,30 +20,42 @@ import './music-audio-page.scss';
 class MusicAudioPage extends React.Component{
   constructor(props){
     super(props);
-    this.toggleFilter=this.toggleFilter.bind(this);
     this.pickScore = this.pickScore.bind(this);
-    this.state = {showFilter: false};
+    this.pickSpectrumFilter = this.pickSpectrumFilter.bind(this);
+    this.pickSpectrumSetting = this.pickSpectrumSetting.bind(this);
   }
 
   toggleFilter(){
-    let curShowFilter = this.state.showFilter;
-    this.setState({showFilter:!curShowFilter});
   }
 
   pickScore() {
-    console.log('clicked pick score');
     this.props.toggleScorePicker();
   }
 
+  pickSpectrumFilter() {
+    this.props.toggleSpectrumFilter();
+  }
+
+  pickSpectrumSetting() {
+    this.props.toggleSpectrumSetting();
+  }
+
+
   render(){
-    let showFilterBtnText = this.props.appliedFiltername ? `You applied ${this.props.appliedFiltername} filter` : "Try filter?";
-    let audioSettingClass = this.state.showFilter ? "scrollUp scrollUpShow" : "scrollUp";
     return (
       <div className="music-audio-page">
         <div className="control-section">
           <div className="score-picker-button">
             <button type="button" className="btn btn-outline-primary btn-xs" onClick={this.pickScore}>Pick Score</button>
             <ScorePickerModal />
+          </div>
+          <div className="filter-picker-button">
+            <button type="button" className="btn btn-outline-primary btn-xs" onClick={this.pickSpectrumFilter}>Spectrum Filter</button>
+            <SpectrumFilterModal />
+          </div>
+          <div className="audio-setting-button">
+            <button type="button" className="btn btn-outline-primary btn-xs" onClick={this.pickSpectrumSetting}>Spectrum Setting</button>
+            <SpectrumSettingModal />
           </div>
           <div className="player-section">
             <AudioPlayer />
@@ -53,19 +66,10 @@ class MusicAudioPage extends React.Component{
         </div>
         <div className="audio-section">
           <div style={{textAlign:'center'}}>
-            <span className="badge badge-info" style={{fontSize:'18px', marginBottom:"10px"}}>Audio Analyse</span>
             <div style={{display:"flex",flexDirection: "row"}}>
               <div style={{marginRight:"5px"}}>
                 <AudioAnalyzer />
               </div>
-            </div>
-          </div>
-          <div>
-            <div style={{textAlign:'left'}}>
-              <ToggleButton text={showFilterBtnText} toggle={this.state.showFilter} onclick={this.toggleFilter} />
-            </div>
-            <div className={audioSettingClass} style={{textAlign:"center",marginLeft:"5px", marginTop:"10px", width:"100%"}}>
-              <AudioFilter />
             </div>
           </div>
           <br />
@@ -80,12 +84,15 @@ class MusicAudioPage extends React.Component{
 }
 
 MusicAudioPage.propTypes = {
-  appliedFiltername: PropTypes.string,
+  audio: PropTypes.object,
+  toggleScorePicker: PropTypes.func,
+  toggleSpectrumFilter: PropTypes.func,
+  toggleSpectrumSetting: PropTypes.func
 };
 
 const mapStateToProps = (state) => {
   return {
-    appliedFiltername:state.audio.appliedFiltername
+    audio:state.audio
   };
 };
 
@@ -93,6 +100,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     toggleScorePicker: () => {
       dispatch(modalActions.toggleScorePicker());
+    },
+    toggleSpectrumFilter: () => {
+      dispatch(modalActions.toggleSpectrumFilter());
+    },
+    toggleSpectrumSetting: () => {
+      dispatch(modalActions.toggleSpectrumSetting());
     }
   };
 }

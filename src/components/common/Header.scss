@@ -1,12 +1,12 @@
 @import '../../styles/variables.scss';
 .appNav {
-  font-size: 18pt;
+  font-size: 16pt;
   background: $dark-color;
   padding:0px;
-  height: 60px;
+  height: 40px;
   a {
     color: $color-0;
-    line-height: 60px;
+    line-height: 40px;
     margin: 0 15px;
     text-align: center;
   }

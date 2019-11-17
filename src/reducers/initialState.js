@@ -15,8 +15,8 @@ export const musicInitState = {
   musicInfo:{
     signature : 'Major', 
     scale : 'C',
-    title: 'Enter score title here',
-    author: 'Enter score author here'
+    title: 'Score Title',
+    author: 'author'
   },
   scoreId:""
 };
@@ -47,5 +47,7 @@ export const playerInitState = {
 };
 
 export const modalInitState = {
-  scorePickerDisplay: false
+  scorePickerDisplay: false,
+  spectrumFilterDisplay: false,
+  spectrumSettingDisplay: false
 }
