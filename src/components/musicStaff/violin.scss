@@ -1,0 +1,33 @@
+.violin-table {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  .violin-table-tr {
+    .violin-table-td {
+      width: 60px;
+      .board-note-container {
+        position:relative;
+        .violinBoardNote{
+          border:1px solid blue;
+          border-radius: 25px;
+          font-size: 12px;
+          position:absolute;
+          top: -24px;
+          left: 33px;
+          background-color: #b8daff;
+          color: #000000;
+          height:50px;
+          width:50px;
+          line-height: 50px;
+          text-align: center;
+        }
+        .violinBoardNoteSelect{
+          background-color: #e30ff7;
+        }
+      }
+    }
+    .violin-board {
+      background-color: #d5d5d5;
+    }
+  }
+}

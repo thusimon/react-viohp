@@ -4,6 +4,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import './audio-display.scss';
 
 class AudioDisplay extends React.Component{
   constructor(props, context){
@@ -12,43 +13,22 @@ class AudioDisplay extends React.Component{
   render(){
     return (
       //some basic info
-      <div>
-        <table style={{border:"none"}}>
+      <div className="audio-display-container">
+        <table>
+          <thead>
+            <tr>
+              <th title="The max value of Power Spectral Density">PSD(max)</th>
+              <th title="The frequency value(Hz) with the max PSD">Freq(max)</th>
+              <th title="The detected note name">Note</th>
+              <th title="The detected note frequence(Hz)">Freq</th>
+            </tr>
+          </thead>
           <tbody>
             <tr>
-              <td>
-                <div style={{display:"inline-block"}}>
-                  <label>Sample Rate(Hz)</label>
-                  <h2>{this.props.sampleRate}</h2>
-                </div>
-              </td>
-              <td>
-                <div style={{display:"inline-block"}}>
-                  <label>Peak Freq Energy(0-255)</label>
-                  <h2>{this.props.peakEnergy}</h2>
-                </div>
-              </td>
-              <td />
-            </tr>
-            <tr>
-              <td>
-                <div style={{display:"inline-block"}}>
-                  <label>Current Frequency(Hz)</label>
-                  <h2 style={{color:this.props.noteColor}}>{this.props.peakFreq}</h2>
-                </div>
-              </td>
-              <td>
-                <div style={{display:"inline-block"}}>
-                  <label>Note</label>
-                  <h2 style={{color:this.props.noteColor}}>{this.props.noteName}</h2>
-                </div>
-              </td>
-              <td>
-                <div style={{display:"inline-block"}}>
-                  <label>Frequency(Hz)</label>
-                  <h2>{this.props.noteFreq}</h2>
-                </div>
-              </td>
+              <td>{this.props.peakEnergy}</td>
+              <td style={{color:this.props.noteColor}}>{this.props.peakFreq}</td>
+              <td style={{color:this.props.noteColor}}>{this.props.noteName}</td>
+              <td>{this.props.noteFreq}</td>
             </tr>
           </tbody>
         </table>

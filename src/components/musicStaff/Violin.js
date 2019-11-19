@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import BoardNote from './ViolinBoardNote';
 import * as Constants from './Constants';
 import * as Utils from './Utils';
+import './violin.scss';
 
 class Violin extends React.Component {
   constructor(props, context){
@@ -19,12 +20,12 @@ class Violin extends React.Component {
     const markNotes = this.props.markNotes;
     //const freqNote = {noteName:this.props.noteName,noteColor:this.props.noteColor};
     return(
-      <table className="violinT" align="center">
+      <table className="violin-table">
         <tbody>
           {[...Array(this.rowNum).keys()].map(r=> {
-              return (<tr key={"brow"+r} className="violinTr">
+              return (<tr key={"brow"+r} className="violin-table-tr">
                 {[...Array(this.colNum).keys()].map(l=> {
-                  let boardClass = (r>0&&l>0) ? "violinBoard" : "";
+                  let boardClass = (r>0&&l>0) ? "violin-board" : "";
                   let chartContent = <div>&nbsp;</div>;
                   if (l==0){
                     //should show the finger position
@@ -36,12 +37,12 @@ class Violin extends React.Component {
                     const curNoteCIdx = l-1;
                     const curNote = this.boardNotes[curNoteCIdx%this.stringNum][curNoteRIdx];
                     chartContent = (
-                      <div style={{textAlign:'right',position:'relative'}}>
+                      <div className="board-note-container">
                         <BoardNote key={"BN"+r+l} note={curNote} markNotes={markNotes} noteName={this.props.noteName} noteColor={this.props.noteColor} />
                       </div>
                     );
                   }
-                  return <td key={"bcell" + l} className={"show violinTd "+boardClass}>{chartContent}</td>;
+                  return <td key={"bcell" + l} className={"show violin-table-td "+boardClass}>{chartContent}</td>;
                 })}
             </tr>);}
             )}

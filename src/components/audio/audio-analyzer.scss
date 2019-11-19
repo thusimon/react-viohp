@@ -1,0 +1,13 @@
+.audio-analyzer-container {
+  order: 0;
+  flex-basis: auto;
+  margin: 0px 3px 0px 0px;
+  .audio-spectrum-canvas-container {
+    width: 100%;
+    height: 150px;
+    #audio-canvas {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

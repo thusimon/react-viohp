@@ -8,7 +8,7 @@ export const courseInitState = {
 };
 
 export const musicInitState = {
-  notes:[{},{},{},{}],
+  notes:[{},{},{}],
   markNotes:[],
   dragInfo: {dragStatus:-1, dragNoteName:"C", startOffSet:[0,0], noteShift:[0,0]},
   freqLineVal:-1,

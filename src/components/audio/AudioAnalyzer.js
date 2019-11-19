@@ -9,6 +9,7 @@ import * as audioUtils from './Utils';
 import AudioDisplay from './AudioDisplay';
 import * as audioActions from '../../actions/audioActions';
 import {multiplyVectors} from '../../math/basicMatrix';
+import './audio-analyzer.scss';
 
 class AudioAnalyzer extends React.Component{
   constructor(props, context){
@@ -101,9 +102,9 @@ class AudioAnalyzer extends React.Component{
       let canvasCtx = canvasDom.getContext("2d");
       canvasCtx.fillStyle = 'rgb(220, 220, 220)';
       canvasCtx.fillRect(0, 0, canvasDom.width, canvasDom.height);
-      let axisW = 30;
+      let axisW = 25;
       let chartW = canvasDom.width-axisW-20;
-      let axisH = 30;
+      let axisH = 25;
       let chartH = canvasDom.height-axisH-20;
       let chartHTo255 = chartH/255;
       let dataArray = this.state.dataArray||[];
@@ -120,7 +121,7 @@ class AudioAnalyzer extends React.Component{
       // plot the y axises
       canvasCtx.strokeStyle="#000000";
       canvasCtx.fillStyle = "rgb(0,0,0)";
-      canvasCtx.font = "12px Arial";
+      canvasCtx.font = "10px Arial";
       canvasCtx.beginPath();
       canvasCtx.moveTo(axisW,20);
       canvasCtx.lineTo(axisW,chartH+20);
@@ -152,13 +153,15 @@ class AudioAnalyzer extends React.Component{
 
       canvasCtx.stroke();
     }
-    let audioSettingClass = this.state.showSettings ? "scrollUp scrollUpShow" : "scrollUp";
-    return (<div style={{display: "flex"}}>
-        <div style={{flex:"auto"}}>
-          <canvas id="audiocanvas" ref={this.canvasRef} width="500" height="300" />
-          <AudioDisplay />
+
+    return (
+      <div className="audio-analyzer-container">
+        <div className="audio-spectrum-canvas-container">
+          <canvas id="audio-canvas" ref={this.canvasRef} width="400" height="150" />
         </div>
-      </div>);
+        <AudioDisplay />
+      </div>
+    );
   }
 }
 function mapStateToProps(state){

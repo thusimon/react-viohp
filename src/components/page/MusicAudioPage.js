@@ -65,16 +65,9 @@ class MusicAudioPage extends React.Component{
           <MusicStaffPage />
         </div>
         <div className="audio-section">
-          <div style={{textAlign:'center'}}>
-            <div style={{display:"flex",flexDirection: "row"}}>
-              <div style={{marginRight:"5px"}}>
-                <AudioAnalyzer />
-              </div>
-            </div>
-          </div>
-          <br />
-          <div style={{textAlign:'center',flex:"auto"}}>
-            <span className="badge badge-info" style={{fontSize:'18px', marginBottom:"10px"}}>Violin(Position 1)</span>
+          <AudioAnalyzer />
+          <p className="badge badge-info violin-caption">Violin(Position 1)</p>
+          <div className="violin-container">
             <Violin />
           </div>
         </div>

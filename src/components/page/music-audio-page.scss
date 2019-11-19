@@ -1,5 +1,4 @@
 .music-audio-page {
-  margin:"20px 0px 0px 0px"; 
   display: grid;
   grid-template-rows: 30px auto;
   grid-template-columns: auto 400px;
@@ -44,6 +43,21 @@
   }
   .audio-section {
     grid-area: audio;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    .violin-container {
+      order: 1;
+      flex-basis: auto;
+      text-align: center;
+      height: 100%;
+    }
+    .violin-caption {
+      font-size: 14px;
+      margin: 5px 0px;
+    }
   }
 }
 
