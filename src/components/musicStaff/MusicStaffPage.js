@@ -12,6 +12,7 @@ import * as Utils from './Utils';
 import * as musicActions from '../../actions/musicActions';
 import MusicStaffHead from './MusicStaffHead';
 import AudioOscillator from '../audio/AudioOscillator';
+import AudioGenerator from '../audio/AudioGenerator';
 import './music-staff-page.scss';
 
 class MusicStaffPage extends React.Component {
@@ -35,6 +36,7 @@ class MusicStaffPage extends React.Component {
     this.staffPageRef = React.createRef();
     this.staffRef = React.createRef();
     this.audioOscillator = new AudioOscillator();
+    this.audioGenerator = new AudioGenerator();
   }
 
   static getDerivedStateFromProps(nextProps, state){
@@ -64,6 +66,7 @@ class MusicStaffPage extends React.Component {
     let {dragStatus, dragNoteName} = this.state.dragInfo;
     dragStatus = -1;
     this.props.dragStatusChange({dragStatus, dragNoteName, startOffSet:[0,0],noteShift:[0,0]});
+    this.audioGenerator.play('piano', 440, 2);
   }
 
   render(){
