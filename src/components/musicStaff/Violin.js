@@ -38,7 +38,8 @@ class Violin extends React.Component {
                     const curNote = this.boardNotes[curNoteCIdx%this.stringNum][curNoteRIdx];
                     chartContent = (
                       <div className="board-note-container">
-                        <BoardNote key={"BN"+r+l} note={curNote} markNotes={markNotes} noteName={this.props.noteName} noteColor={this.props.noteColor} />
+                        <BoardNote key={"BN"+r+l} note={curNote} markNotes={markNotes} 
+                          noteName={this.props.noteName} noteColor={this.props.noteColor} />
                       </div>
                     );
                   }

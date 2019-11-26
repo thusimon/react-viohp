@@ -205,5 +205,4 @@ export const ViolinFinger_POS1 = [
 ];
 
 export const STAFF_SYM_START = 0.1;
-export const STAFF_SYM_END = 1;
-export const STAFF_WIDTH = 1200;
+export const STAFF_SYM_END = 0.97;

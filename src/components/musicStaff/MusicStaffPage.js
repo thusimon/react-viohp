@@ -6,13 +6,10 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import MusicStaff from './MusicStaff';
 import MusicStaffPlayerArrow from './MusicStaffPlayerArrow';
-import MusicStaffPlayerVolume from './MusicStaffPlayerVolume';
 import * as Constants from './Constants';
 import * as Utils from './Utils';
 import * as musicActions from '../../actions/musicActions';
 import MusicStaffHead from './MusicStaffHead';
-import AudioOscillator from '../audio/AudioOscillator';
-import AudioGenerator from '../audio/AudioGenerator';
 import './music-staff-page.scss';
 
 class MusicStaffPage extends React.Component {
@@ -35,8 +32,6 @@ class MusicStaffPage extends React.Component {
     };
     this.staffPageRef = React.createRef();
     this.staffRef = React.createRef();
-    this.audioOscillator = new AudioOscillator();
-    this.audioGenerator = new AudioGenerator();
   }
 
   static getDerivedStateFromProps(nextProps, state){
@@ -66,11 +61,9 @@ class MusicStaffPage extends React.Component {
     let {dragStatus, dragNoteName} = this.state.dragInfo;
     dragStatus = -1;
     this.props.dragStatusChange({dragStatus, dragNoteName, startOffSet:[0,0],noteShift:[0,0]});
-    this.audioGenerator.play('piano', 440, 2);
   }
 
   render(){
-    this.noteIter = Utils.getNextNoteInfo(this.props.notes);
     return (
       <div className='music-staff-page'
            ref={this.staffPageRef}
@@ -78,10 +71,9 @@ class MusicStaffPage extends React.Component {
            onMouseUp={this.onMusicStaffPageMouseUp}>
         <MusicStaffHead musicInfo={this.state.musicInfo}/>
         <div className='music-staff-section' ref={this.staffRef}>
-          <MusicStaffPlayerArrow noteIter={this.noteIter} staffRef = {this.staffRef} audioOscillator = {this.audioOscillator}/>
-          <MusicStaffPlayerVolume audioOscillator = {this.audioOscillator} />
+          <MusicStaffPlayerArrow staffRef = {this.staffRef} />
           {Array.from(Array(this.state.staffNum).keys()).map(n =>
-              <MusicStaff key={n.toString()} idx={n} />
+              <MusicStaff key={n.toString()} idx={n} staffRef = {this.staffRef}/>
           )}
         </div>
       </div>);

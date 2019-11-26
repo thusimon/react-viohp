@@ -95,13 +95,6 @@ div.note-component>i>svg{
   left: 5px;
   line-height: 100%;
 }
-.triangle-down {
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 16px solid red;
-}
 table {
   width: 100%;
 }

@@ -197,17 +197,3 @@ export const getNoteClassByType = (noteType) => {
   }
   return noteClass;
 };
-
-export const getNextNoteInfo = function* (notes) {
-  let row = 0, col = 0;
-  for (row = 0; row<notes.length; row++){
-    const curRow = notes[row];
-    for (col = 0; col<curRow.length; col++) {
-      const curNote = notes[row][col];
-      if (curNote.type == Symbols.BARLINE_TYPE) {
-        continue;
-      }
-      yield {note: curNote, row, col};
-    }
-  }
-};

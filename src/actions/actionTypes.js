@@ -40,9 +40,10 @@ export const APPLY_FILTER = 'APPLY_FILTER';
 export const PLAY = 'PLAY';
 export const BACKWARD = 'BACKWARD';
 export const FORWARD = 'FORWARD';
-export const RESET_SEEK = 'RESET_SEEK';
 export const PAUSE = 'PAUSE';
+export const RESET = 'RESET';
 export const CHANGE_VOLUME = 'CHANGE_VOLUME';
+export const PLAY_NOTE = 'PLAY_NOTE';
 
 //modal action types
 export const SCORE_PICKER_TOGGLE = 'SCORE_PICKER_TOGGLE';

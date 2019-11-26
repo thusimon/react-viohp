@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import * as playerActions from '../../actions/playerActions';
+import {useDispatch } from 'react-redux';
 
 const ViolinBoardNote = ({note, markNotes, noteName, noteColor}) => {
+  const dispatch = useDispatch();
   let labels = note.map(n=>n.label);
   let label = labels.join("/");
   // we should decide whether this note is marked
@@ -13,19 +16,33 @@ const ViolinBoardNote = ({note, markNotes, noteName, noteColor}) => {
       break;
     }
   }
-  const boardNoteClassName = marked ? "violinBoardNote violinBoardNoteSelect" : "violinBoardNote";
+  const freq = note[0].freq;
+  const boradNoteClick = (e) => {
+    const element = e.target;
+    element.classList.add('violinBoardNoteClick');
+    dispatch(playerActions.playNote('piano', freq, 3));
+    setTimeout(() => {
+      element.classList.remove('violinBoardNoteClick');
+    }, 300)
+  }
+  let boardNoteClassName = marked ? "violinBoardNote violinBoardNoteSelect" : "violinBoardNote";
 
   // we should decide whether this note is detected by audio
-  let fontColor = marked ? "#e30ff7" : "#b8daff";
+  let audioClass = '';
   if (noteName=='--'){
     //show nothing
   } else if (labels.indexOf(noteName)<0){
     //show nothing
   } else {
-    fontColor = noteColor;
+    if (noteColor === '#FF0000') {
+      audioClass = ' violinBoardAudioHigh';
+    } else if (noteColor === '#00FF00') {
+      audioClass = ' violinBoardAudioLow';
+    }
   }
+  boardNoteClassName += audioClass;
   return (
-    <div className={boardNoteClassName} style={{backgroundColor:fontColor}}>{label}</div>
+    <div className={boardNoteClassName} title={`${freq}Hz`} onClick={boradNoteClick}>{label}</div>
   );
 };
 

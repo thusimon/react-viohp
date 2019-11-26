@@ -9,26 +9,19 @@ import Slider from '../common/Slider';
 import '../../styles/common/btn-xs.scss';
 import './audio-player.scss';
 
-const PlayerState = {
-  init: 0,
-  playing: 1,
-  pause: 2
-};
-
 const AudioPlayer = (props) => {
-  const [playerState, setPlayerState] = useState(PlayerState.init);
   const [volumeState, setVolumeState] = useState(props.vol>0);
-  const playClass = playerState === PlayerState.playing ? 'player-btn-color-bg' : '';
-  const pauseClass = playerState === PlayerState.pause ? 'player-btn-color-bg' : '';
+  const playClass = props.playing === 1 ? 'player-btn-color-bg' : '';
+  const pauseClass = props.playing === 0 ? 'player-btn-color-bg' : '';
   const volumeIcon = volumeState ? <FontAwesomeIcon icon="volume-up" size="sm" /> : <FontAwesomeIcon icon="volume-mute" size="sm" />;
   return (
     <div className="audio-player-container">
       <div className="btn-group btn-group-xs player-btn-group" role="group" aria-label="player-buttons">
         <SelfClearBtn baseClass={'btn btn-secondary btn-xs'} activeClass={'player-btn-color-bg'} icon={'backward'} clickCallBack={() => {props.backward();}} isClear />
-        <button type="button" className={'btn btn-secondary btn-xs ' + playClass} onClick = {() => {props.play(); setPlayerState(PlayerState.playing);}}>
+        <button type="button" className={'btn btn-secondary btn-xs ' + playClass} onClick = {() => {props.play();}}>
           <FontAwesomeIcon icon="play" />
         </button>
-        <button type="button" className={'btn btn-secondary btn-xs ' + pauseClass} onClick = {() => {props.pause(); setPlayerState(PlayerState.pause);}}>
+        <button type="button" className={'btn btn-secondary btn-xs ' + pauseClass} onClick = {() => {props.pause();}}>
           <FontAwesomeIcon icon="pause" />
         </button>
         <SelfClearBtn baseClass={'btn btn-secondary btn-xs'} activeClass={'player-btn-color-bg'} icon={'forward'} clickCallBack = {() => {props.forward();}} isClear />
@@ -47,8 +40,8 @@ const AudioPlayer = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  const {vol} = state.player;
-  return {vol};
+  const {vol, playing} = state.player;
+  return {vol, playing};
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -58,6 +51,9 @@ const mapDispatchToProps = (dispatch) => {
       },
       pause: () => {
         dispatch(playerActions.pause());
+      },
+      reset: () => {
+        dispatch(playerActions.reset());
       },
       forward: () => {
         dispatch(playerActions.forward());

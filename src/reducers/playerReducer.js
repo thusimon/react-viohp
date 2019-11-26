@@ -1,5 +1,8 @@
 import * as types from '../actions/actionTypes';
 import {playerInitState as initState} from './initialState';
+import AudioGenerator from '../components/audio/AudioGenerator';
+
+const audioGenerator = new AudioGenerator();
 
 export default function playerReducer(state=initState, action={}){
   switch (action.type){
@@ -19,14 +22,20 @@ export default function playerReducer(state=initState, action={}){
     {
       return Object.assign({}, state, {seek: 1});
     }
-    case types.RESET_SEEK:
+    case types.RESET:
     {
-      return Object.assign({}, state, {seek: 0});  
+      return Object.assign({}, state, {playing: -1, seek: 0});  
     }
     case types.CHANGE_VOLUME:
     {
       const {vol} = action;
+      audioGenerator.setVolume(vol);
       return Object.assign({}, state, {vol});
+    }
+    case types.PLAY_NOTE: {
+      const {sound, freq, time} = action;
+      audioGenerator.play(sound, freq, time);
+      return state;
     }
     default:
       return state;

@@ -1,9 +1,12 @@
-import React, {useState, useRef, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import * as Sym from './Symbols';
 import {connect} from 'react-redux';
+import * as playerActions from '../../actions/playerActions';
+import getNoteIterator from './NoteIterator';
+import './music-staff-player-arrow.scss';
 
-const baseTime = 200; // eigth note is 200ms
+const baseTime = 0.21; // eigth note is 210ms
 const getTimeoutFromNoteType = (note) => {
   let time = baseTime;
   switch (note.type) {
@@ -31,75 +34,127 @@ const getTimeoutFromNoteType = (note) => {
 
 const initState = [-8, 44]; //[x, y]
 
-const getNoteState = (noteIter) => {
+const getNoteState = (noteIter, staffWidth) => {
   const note = noteIter.next().value;
   if (!note) {
     return null;
   }
   const row = note.row;
   const top = initState[1] + row*200;
-  const left = note.note.x-8;
+  const left = Math.round(note.note.x*staffWidth-8);
   const time = getTimeoutFromNoteType(note.note);
   return {top, left, row, time, note:note.note};
 };
 
-const MusicStaffPlayerArrow = ({noteIter, staffRef, audioOscillator, playing}) => {
-  const noteState = getNoteState(noteIter);
-  const [arrowState, setArrowState] = useState({});
-  let top, left, row, time, note, timer;
-  if (!noteState) {
-    audioOscillator.mute();
-    useEffect(() => {
-      playing = 0;
-    });
-  } else {
-    top = noteState.top;
-    left = noteState.left;
-    row = noteState.row;
-    time = noteState.time;
-    note = noteState.note;
-    timer = useRef(null);
+class MusicStaffPlayerArrow extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+    this.staffRef = props.staffRef;
+    // the initial noteIter and score id is null
+    this.state = {noteIter: null, id: null, playing: -1};
+    this.startPlay = this.startPlay.bind(this);
+    this.resetArrow = this.resetArrow.bind(this);
   }
-  if (playing == 1 && timer) {
-    timer.current = setTimeout(() => {
-      setArrowState({top, left, playing: 1});
-      if (note && note.freq) {
-        audioOscillator.setFrequency(1);
+  static getDerivedStateFromProps(nextProps, state) {
+    let newState = null;
+    // if the notes are valid and score id is different
+    // will set new id, get a new note iter and reset the player state
+    if (nextProps.id != state.id && Array.isArray(nextProps.notes[0])) {
+      const noteIter = new getNoteIterator(nextProps.notes);
+      const nextNote = noteIter.getNextNoteInfo();
+      newState = {noteIter, nextNote, id: nextProps.id};
+    }
+    if (nextProps.playing === 1){
+      // start playing
+      newState = newState || {};
+      newState = {...newState, playing: 1}
+    } else if (nextProps.playing === 0){
+      // stop playing
+      newState = newState || {};
+      newState = {...newState, playing: 0}
+    }
+    return newState;
+  }
+  startPlay() {
+    // force to rerender
+    this.forceUpdate();
+  }
+  resetArrow() {
+    // reset player;
+    this.props.playerReset();
+    if (this.state.noteIter) {
+      this.state.noteIter.resetIdx();
+    }
+    this.state = Object.assign(this.state, {id: null, playing:-1});
+  }
+  render() {
+    // initial state
+    var top, left, row, time, note;
+    var staffWidth = this.staffRef.current ? this.staffRef.current.offsetWidth : 1200;
+    if (this.state.nextNote) {
+      const noteState = getNoteState(this.state.nextNote, staffWidth);
+      if (noteState) {
+        top = noteState.top;
+        left = noteState.left;
+        row = noteState.row;
+        time = noteState.time; // in second unit
+        note = noteState.note;
+      } else {
+        // noteState is null, probably reaches to the end to the score
+        this.resetArrow();
       }
-    }, time);
-    if (note && note.freq) {
-      setTimeout(() => {
-        audioOscillator.setFrequency(note.freq);
-      }, 30);
     }
-    arrowState.playing !==1 && audioOscillator.start();
-    audioOscillator.unmute();
-  } else if (playing == 0){
-    if (timer) {
-      clearTimeout(timer.current); 
+    if (this.state.playing == 1 && time) {
+      if (this.timer) {
+        clearTimeout(this.timer);
+      }
+      this.timer = setTimeout(() => {
+        this.startPlay();
+      }, time*1000);
+      if (note && note.freq) {
+        // here is a trick, AudioGenerator's audio is not long enough as time
+        // muitply by 3 to have a good acoustic effect
+        this.props.playNote('piano', note.freq, time*3);
+      }
+    } else if (this.state.playing == 0){
+      if (this.timer) {
+        clearTimeout(this.timer); 
+      }
     }
-    audioOscillator.mute();
-  }
-  if (row && row % 3==0 && staffRef.current) {
-    //it is time to scroll
-    staffRef.current.scroll(0, row*200);
-  }
-  const y = top ? top : arrowState.top;
-  const x = left ? left : arrowState.left;
-  return (<div className="triangle-down" style={{position:'absolute', top: y+'px', left:x+'px'}}/>);
-};
+    if (row && row % 3==0 && this.staffRef.current) {
+      //it is time to scroll
+      this.staffRef.current.scroll(0, row*200);
+    }
+    const y = top ? top : 0;
+    const x = left ? left : 0;
+    return (<div className="triangle-down" style={{position:'absolute', top: y+'px', left:x+'px'}}/>);
+    }
+}
 
 MusicStaffPlayerArrow.propTypes = {
-  noteIter: PropTypes.object,
   staffRef: PropTypes.object,
   playing: PropTypes.number,
   seek: PropTypes.number,
-  audioOscillator: PropTypes.object
+  notes: PropTypes.array,
+  playNote: PropTypes.func,
+  playerReset: PropTypes.func
 };
 
 function mapStateToProps(state){
   const {playing, seek} = state.player;
-  return {playing, seek};
+  const {notes, id} = state.music;
+  return {playing, seek, notes, id};
 }
 
-export default connect(mapStateToProps)(MusicStaffPlayerArrow);
+function mapDispatchToProps(dispatch) {
+  return {
+    playNote: (sound, freq, time) => {
+      dispatch(playerActions.playNote(sound, freq, time));
+    },
+    playerReset: () => {
+      dispatch(playerActions.reset());
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MusicStaffPlayerArrow);

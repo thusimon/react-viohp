@@ -1,5 +1,5 @@
 class AudioGenerator {
-  constructor(sampleRate=44100, channels=1, volume=0.2, bitsPerSample=16) {
+  constructor(sampleRate=44100, channels=1, volume=0.1, bitsPerSample=16) {
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     this._temp = {};
     this._sampleRate = this.audioCtx.sampleRate || sampleRate;
@@ -46,9 +46,7 @@ class AudioGenerator {
    * @param {*} v 0-1 
    */
   setVolume(v){
-    v = parseFloat(v); if(isNaN(v)) { v = 0; }
-		v = Math.round(v*32768);
-		this._volume = Math.max(Math.min(v|0,32768), 0);
+		this._volume = v;
 		return this._volume;
   }
 
@@ -89,12 +87,12 @@ class AudioGenerator {
       // This gives us the actual array that contains the data
       var nowBuffering = buffer.getChannelData(channel);
       for (var i = 0 | 0; i !== attackLen; i++) {
-        val = (i/(sampleRate*attack)) * waveFunc.call(waveBind, i, sampleRate, frequency, volume);
+        val = volume * (i/(sampleRate*attack)) * waveFunc.call(waveBind, i, sampleRate, frequency, volume);
         nowBuffering[i] = val;
         //nowBuffering[(i << 1) + 1] = (val >> 8)/255;
       }
       for (; i !== decayLen; i++) {
-        val = Math.pow((1-((i-(sampleRate*attack))/(sampleRate*(time-attack)))),dampen) * waveFunc.call(waveBind, i, sampleRate, frequency, volume);
+        val = volume * Math.pow((1-((i-(sampleRate*attack))/(sampleRate*(time-attack)))),dampen) * waveFunc.call(waveBind, i, sampleRate, frequency, volume);
         nowBuffering[i] = val;
         //nowBuffering[(i << 1) + 1] = (val >> 8)/255;
       }
@@ -102,6 +100,9 @@ class AudioGenerator {
     return buffer;
   }
 
+  endHandler(e) {
+    console.log('sound ended', e);
+  }
   play(sound, frequency, duration) {
     var buffer = this.generate(sound, frequency, duration);
     // Create an empty three-second stereo buffer at the sample rate of the AudioContext
@@ -110,6 +111,7 @@ class AudioGenerator {
     // This is the AudioNode to use when we want to play an AudioBuffer
     var source = this.audioCtx.createBufferSource();
 
+    source.addEventListener('ended', this.endHandler);
     // set the buffer in the AudioBufferSourceNode
     source.buffer = buffer;
 

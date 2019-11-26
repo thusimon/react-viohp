@@ -1,7 +1,7 @@
 /**
  * Created by Lu on 11/9/2018.
  */
-import {NotesFullMap, STAFF_SYM_START, STAFF_SYM_END, STAFF_WIDTH} from '../../components/musicStaff/Constants';
+import {NotesFullMap, STAFF_SYM_START, STAFF_SYM_END} from '../../components/musicStaff/Constants';
 import * as Syms from '../../components/musicStaff/Symbols';
 
 class Score {
@@ -114,7 +114,7 @@ class Score {
    * @param notes array from the score
    */
   static repositionNotes(notes){
-    //staff start 0.1, staff end 0.95
+    //staff start 0.1, staff end 1
     const countNoteLen = Score.filterNonPositionedSymbols(notes).length
     const incStep = (STAFF_SYM_END - STAFF_SYM_START)/countNoteLen;
     let symPos = STAFF_SYM_START;
@@ -122,10 +122,10 @@ class Score {
       if(note.type == Syms.BARLINE_TYPE){
         // do not assign bar line x first
       } else if (note.x) {
-        note.x *= STAFF_WIDTH;
+        // do not assign x if exists;
       }
       else {
-        note.x = Math.round(symPos*STAFF_WIDTH);
+        note.x = symPos;
         symPos += incStep;
       }
       // merge the properties from NotesFullMap
@@ -140,13 +140,12 @@ class Score {
         const nextNote = notes[idx+1];
         const prevNoteX = prevNote && prevNote.x ? prevNote.x : null;
         const nextNoteX = nextNote && nextNote.x ? nextNote.x : null;
-        const incStepLen = incStep*STAFF_WIDTH;
         if (prevNoteX && nextNoteX) {
-          note.x = Math.round((prevNoteX + nextNoteX)/2);
+          note.x = (prevNoteX + nextNoteX)/2;
         } else if (prevNoteX) {
-          note.x = Math.round((prevNoteX+incStepLen/2));
+          note.x = prevNoteX+incStep/2;
         } else {
-          note.x = Math.round((nextNoteX-incStepLen/2));
+          note.x = nextNoteY-incStep/2;
         }
       }
       return note;

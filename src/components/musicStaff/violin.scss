@@ -20,9 +20,19 @@
           width:50px;
           line-height: 50px;
           text-align: center;
+          cursor: pointer;
         }
         .violinBoardNoteSelect{
           background-color: #e30ff7;
+        }
+        .violinBoardNoteClick {
+          background-color: yellow;
+        }
+        .violinBoardAudioHigh {
+          background-color: red;
+        }
+        .violinBoardAudioLow {
+          background-color: green;
         }
       }
     }

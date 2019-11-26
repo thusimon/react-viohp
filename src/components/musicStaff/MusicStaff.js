@@ -32,17 +32,21 @@ class MusicStaff extends React.Component {
     let {scale, signature, freqLineVal, notes, dragInfo} = this.props;
     let fullScaleNotes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
     let scaleHead = SHARPFLATIDX[signature][scale];
-    this.state = {scale, signature, freqLineVal, fullScaleNotes, notes, scaleHead,dragInfo};
+    this.state = {staffWidth: 0, scale, signature, freqLineVal, fullScaleNotes, notes, scaleHead,dragInfo};
   }
 
   static getDerivedStateFromProps(nextProps, state){
-    let {scale, signature, freqLineVal, dragInfo, notes} = nextProps;
+    let {scale, signature, freqLineVal, dragInfo, notes, staffRef} = nextProps;
+    let staffWidth = 1200;
+    if (staffRef && staffRef.current && Number.isInteger(staffRef.current.offsetWidth)) {
+      staffWidth = staffRef.current.offsetWidth;
+    }
     if (scale !=state.scale || signature!=state.signature){
       let fullScaleNotes = Utils.getSetOfNoteFromSignatureScale(signature, scale);
       let scaleHead = SHARPFLATIDX[signature][scale];
-      return {scale, signature, freqLineVal, fullScaleNotes,scaleHead, dragInfo, notes};
+      return {scale, signature, freqLineVal, fullScaleNotes,scaleHead, dragInfo, notes, staffWidth};
     } else {
-      return {freqLineVal, dragInfo, notes};
+      return {freqLineVal, dragInfo, notes, staffWidth};
     }
   }
 
@@ -110,8 +114,9 @@ class MusicStaff extends React.Component {
     }
     return res;
   }
-  getSymByProperties(rawSym, idx){
+  getSymByProperties(rawSym, idx, width){
     let {type, name, label, sfIdx, x, mark, descriptor={}} = rawSym;
+    x = Math.round(x*width);
     const halfSpace = this.LineSpace / 2;
     const symCenter = Note.center;
     let sym;
@@ -179,7 +184,7 @@ class MusicStaff extends React.Component {
     }
     for (let keyi in curStaffNotes){
       const curSym = curStaffNotes[keyi];
-      let staffSym = this.getSymByProperties(curSym, keyi);
+      let staffSym = this.getSymByProperties(curSym, keyi, this.state.staffWidth);
       res.push(staffSym);
     }
     return res;
