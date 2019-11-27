@@ -24,6 +24,7 @@ export const SET_SCORE_ID = 'SET_SCORE_ID';
 export const SET_SCORE_LIST = 'SET_SCORE_LIST';
 export const UPDATE_SCORE_INFO = 'UPDATE_SCORE_INFO';
 export const UPDATE_SCORE_NOTES = 'UPDATE_SCORE_NOTES';
+export const RESET_SCORE = 'RESET_SCORE';
 
 //audio action types
 export const DISPLAY_INFO = 'DISPLAY_INFO';
@@ -49,3 +50,6 @@ export const PLAY_NOTE = 'PLAY_NOTE';
 export const SCORE_PICKER_TOGGLE = 'SCORE_PICKER_TOGGLE';
 export const SPECTRUM_FILTER_TOGGLE = 'SPECTRUM_FILTER_TOGGLE';
 export const SPECTRUM_SETTING_TOGGLE = 'SPECTRUM_SETTING_TOGGLE';
+
+//authentication action types
+export const SET_USER = 'SET_USER';

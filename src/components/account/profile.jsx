@@ -1,11 +1,13 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {deleteAccessToken} from '../../storage/utils';
 
-const profile = ({user}) => {
+const profile = ({user, setUser}) => {
 
   const logoutClick = () => {
     deleteAccessToken();
     window.location.reload();
+    setUser(null);
   }
   return (
     <div className="profile-container">
@@ -20,4 +22,12 @@ const profile = ({user}) => {
   )
 }
 
-export default profile;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUser: (user) => {
+      dispatch(authActions.setUser(user));
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(profile);

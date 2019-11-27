@@ -45,15 +45,18 @@ class MusicAudioPage extends React.Component{
       <div className="music-audio-page">
         <div className="control-section">
           <div className="score-picker-button">
-            <button type="button" className="btn btn-outline-primary btn-xs" onClick={this.pickScore}>Pick Score</button>
+            <button type="button" className="btn btn-outline-primary btn-xs" onClick={this.pickScore}
+               title='Select a score'>Pick Score</button>
             <ScorePickerModal />
           </div>
           <div className="filter-picker-button">
-            <button type="button" className="btn btn-outline-primary btn-xs" onClick={this.pickSpectrumFilter}>Spectrum Filter</button>
+            <button type="button" className="btn btn-outline-primary btn-xs" onClick={this.pickSpectrumFilter}
+              title='Select a spectrum filter to obtain a better audio analyses result, since the musical instruments frequency domain are different'>Spectrum Filter</button>
             <SpectrumFilterModal />
           </div>
           <div className="audio-setting-button">
-            <button type="button" className="btn btn-outline-primary btn-xs" onClick={this.pickSpectrumSetting}>Spectrum Setting</button>
+            <button type="button" className="btn btn-outline-primary btn-xs" onClick={this.pickSpectrumSetting}
+              title='Configure the audio analyses, such as frequence range, tolerance.'>Spectrum Setting</button>
             <SpectrumSettingModal />
           </div>
           <div className="player-section">

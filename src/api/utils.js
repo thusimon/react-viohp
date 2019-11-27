@@ -15,7 +15,7 @@ export const fetchDataWithAccessToken = async (url = '', method = 'GET', data = 
     referrer: 'no-referrer', // no-referrer, *client
   };
 
-  if (method == 'POST' || method == 'PUT') {
+  if (method == 'POST' || method == 'PUT' || method == 'PATCH') {
     fetchOptions.body = JSON.stringify(data); // body data type must match "Content-Type" header
   }
 

@@ -52,3 +52,7 @@ export const modalInitState = {
   spectrumFilterDisplay: false,
   spectrumSettingDisplay: false
 }
+
+export const authInitState = {
+  user: null
+}

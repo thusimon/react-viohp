@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
+import {connect} from 'react-redux';
+import * as authActions from '../../actions/authActions';
 import validator from 'validator';
 import Profile from './profile';
 
 import {fetchDataWithAccessToken} from '../../api/utils';
-const login = () => {
+const LoginRegister = (props) => {
   const [error, setError] = useState(null);
   const [formType, setFormType] = useState(0);
   const [user, setUser] = useState(null);
@@ -59,20 +61,24 @@ const login = () => {
     const {err, user, accessToken} = await fetchDataWithAccessToken('/api/user/login', 'POST', account);
     if (err) {
       setError(err);
+      props.setUser(null);
     } else {
       setUser(user);
       setError(null);
       setFormType(2);
+      props.setUser(user);
     }
   }
   const handleRegister = async (account) => {
     const {err, user, accessToken} = await fetchDataWithAccessToken('/api/user/register', 'POST', account);
     if (err) {
       setError(err);
+      props.setUser(null);
     } else {
       setUser(user);
       setError(null);
       setFormType(2);
+      props.setUser(user);
     }
   }
   const formSubmitText = formType == 0 ? "Login" : "Register";
@@ -114,4 +120,12 @@ const login = () => {
   );
 }
 
-export default login;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUser: (user) => {
+      dispatch(authActions.setUser(user));
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(LoginRegister);

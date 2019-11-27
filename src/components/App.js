@@ -9,6 +9,8 @@ import AboutPage from './about/AboutPage';
 import MusicAudioPage from './page/MusicAudioPage';
 import MusicEditorPage from './page/MusicEditorPage';
 import AccountPage from './account/account-page';
+import {fetchDataWithAccessToken} from '../api/utils';
+import * as authActions from '../actions/authActions';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner, faPlay, faPause, faBackward, faForward, faVolumeUp, faVolumeMute
   , faUserCircle } from '@fortawesome/free-solid-svg-icons';
@@ -18,6 +20,19 @@ library.add(faSpinner, faPlay, faPause, faBackward, faForward, faVolumeUp, faVol
   , faUserCircle);
 
 class App extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+    this.store = props.store;
+  }
+  async componentDidMount() {
+    // should try to get authentication status
+    const {err, user} = await fetchDataWithAccessToken('/api/user/me', 'GET');
+    if (err) {
+      this.store.dispatch(authActions.setUser(null));
+    } else {
+      this.store.dispatch(authActions.setUser(user));
+    }
+  }
   render() {
     return (
       <div className="container-fluid" >

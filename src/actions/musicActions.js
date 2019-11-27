@@ -32,6 +32,10 @@ export const setScore = (category, id)=>{
   return {type: types.SET_SCORE_ID, category, id};
 };
 
+export const resetScore = () => {
+  return {type: types.RESET_SCORE};
+};
+
 export const setScoreList = (scoreList)=>{
   return {type: types.SET_SCORE_LIST, scoreList};
 };
