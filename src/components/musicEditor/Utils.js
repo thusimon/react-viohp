@@ -7,13 +7,21 @@
  *
 */
 import * as Sym from '../../components/musicStaff/Symbols';
+import stringifyObj from 'stringify-object';
+import Score from '../../data/scores/Score';
 
 export const ConvertNotesToText = (notes) => {
-
-  return notes.map(noteLine=>{
-    return Object.values(noteLine).join(';');
-  }).join(`
-`);
+  const allNotesStr = notes.map(noteLine=>{
+    const noteLineStr = noteLine.map(note=>{
+      note = note||{};
+      return stringifyObj(note, {
+        indent: '',
+        inlineCharacterLimit:200
+      });
+    }).join(',');
+    return '[' + noteLineStr + ']';
+  }).join(',\n');
+  return `[\n${allNotesStr}\n]`;
 };
 
 /**
@@ -103,12 +111,11 @@ export const ConvertTextToNote = (noteText) => {
  * qR, A3, 20: A quarter note with Flat scale, augment, and reversed symbol, pitch name is A3, x position is 20
  */
 export const ConvertTextToNotes = (text) => {
-  const res = text.split('\n').map(textLine=>{
-    if (!textLine) {
-      return [];
-    } else {
-      return textLine.trim().split(';').map(noteRaw => ConvertTextToNote(noteRaw));
-    }
-  });
-  return res;
+  let notesArr;
+  try {
+    notesArr = eval(text);
+    return notesArr;
+  } catch (e){
+    throw {name: 'NOTE_EVAL_ERROR', message: e.message};
+  }
 };

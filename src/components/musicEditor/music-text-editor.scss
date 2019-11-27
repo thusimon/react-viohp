@@ -1,0 +1,15 @@
+.music-text-editor-main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: stretch;
+  .code-mirror-container {
+    text-align: left;
+    width: 100%;
+    height: 100%;
+    .CodeMirror {
+      width: 100%;
+      border: 1px solid #eee;
+    }
+  }
+}

@@ -17,7 +17,6 @@ class Note extends React.Component {
     this.descriptor = this.props.descriptor || {};
     // by default center is (14, 70), but if rotate, the center would change
     this.center=[14, 70];
-    this.noteClass = getNoteClassByType(this.props.type);
   }
 
   drawStaffline(){
@@ -87,6 +86,7 @@ class Note extends React.Component {
     }
   }
   render(){
+    this.noteClass = getNoteClassByType(this.props.type);
     const NoteTag = Notes[this.noteClass];
     this.center = NoteTag.center;
     return (

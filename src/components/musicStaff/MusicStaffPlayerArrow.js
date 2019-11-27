@@ -6,7 +6,7 @@ import * as playerActions from '../../actions/playerActions';
 import getNoteIterator from './NoteIterator';
 import './music-staff-player-arrow.scss';
 
-const baseTime = 0.21; // eigth note is 210ms
+const baseTime = 0.2; // eigth note is 200ms
 const getTimeoutFromNoteType = (note) => {
   let time = baseTime;
   switch (note.type) {
@@ -51,18 +51,22 @@ class MusicStaffPlayerArrow extends React.Component {
     super(props, context);
     this.staffRef = props.staffRef;
     // the initial noteIter and score id is null
-    this.state = {noteIter: null, id: null, playing: -1};
+    this.state = {noteIter: null, id: null, playing: -1, notes: []};
     this.startPlay = this.startPlay.bind(this);
     this.resetArrow = this.resetArrow.bind(this);
   }
   static getDerivedStateFromProps(nextProps, state) {
     let newState = null;
-    // if the notes are valid and score id is different
-    // will set new id, get a new note iter and reset the player state
-    if (nextProps.id != state.id && Array.isArray(nextProps.notes[0])) {
-      const noteIter = new getNoteIterator(nextProps.notes);
-      const nextNote = noteIter.getNextNoteInfo();
-      newState = {noteIter, nextNote, id: nextProps.id};
+    if (Array.isArray(nextProps.notes[0])) {
+      if (nextProps.id != state.id || nextProps.notes != state.notes) {
+        // if the score id is different or current notes are not same as previous notes
+        // will set new id, get a new note iter and reset the player state
+        const noteIter = new getNoteIterator(nextProps.notes);
+        const nextNote = noteIter.getNextNoteInfo();
+        newState = {noteIter, nextNote, id: nextProps.id};
+      }
+      // update the current notes
+      newState = {...newState, notes: nextProps.notes};
     }
     if (nextProps.playing === 1){
       // start playing

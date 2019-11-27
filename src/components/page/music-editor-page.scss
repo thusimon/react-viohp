@@ -1,0 +1,42 @@
+.music-editor-page {
+  display: grid;
+  grid-template-rows: 30px auto;
+  grid-template-columns: 40% 60%;
+  grid-template-areas: 
+    "control control" 
+    "editor score";
+  justify-items: stretch;
+  align-items: stretch;
+  width: 100vw;
+  height: 100%;
+  .control-section {
+    grid-area: control;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    height: 30px;
+    .score-picker-button {
+      order: 0;
+      flex-basis: auto;
+      margin: 0px 10px 0px 20px;
+    }
+    .player-section {
+      order: 3;
+      flex-basis: auto;
+      margin: 0px 10px;
+    }
+  }
+  .editor-section {
+    grid-area: editor;
+    .editor-section-container {
+      margin:2px 3px;
+      height: 100%;
+    }
+  }
+  .score-section {
+    grid-area: score;
+  }
+}
+

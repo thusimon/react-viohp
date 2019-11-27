@@ -45,7 +45,7 @@ const musicReducer = (state=initState, action={}) => {
       if (scoreData){
         const score = new Score(scoreData);
         let musicInfo = {title:score.title, author:score.author, signature: score.signature, scale: score.scale};
-        return Object.assign({}, state, {id, musicInfo, notes:score.notes});
+        return Object.assign({}, state, {id, musicInfo, notes:score.notes, originalNotes: score.originalNotes});
       } else {
         // no score
         return Object.assign({}, state, {id});

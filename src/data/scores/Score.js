@@ -19,6 +19,7 @@ class Score {
     this.scale = scale;
     this.title = title;
     this.author = author;
+    this.originalNotes = notes;
     this.notes = Score.parseAllNotes(notes);
   }
 
