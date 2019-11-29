@@ -1,0 +1,20 @@
+.about-page-main {
+  margin: 8px;
+  table {
+    font-size: 16px;
+    border-collapse: collapse;
+    tr{
+      text-align: left;
+    }
+    tr td:first-child {
+      font-weight: bold;
+      color: orange;
+    }
+    td {
+      border: 1px solid black;
+      white-space: pre;
+      word-wrap: break-word;
+      vertical-align: top;
+    }
+  }
+}
