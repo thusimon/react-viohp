@@ -1,5 +1,8 @@
 import * as types from './actionTypes';
 
+export const preplay = () => {
+    return {type: types.PREPARE_TIMER_TOGGLE};
+}
 export const play = () => {
     return {type: types.PLAY};
 };

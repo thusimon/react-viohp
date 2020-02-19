@@ -11,3 +11,7 @@ export const toggleSpectrumFilter = () => {
 export const toggleSpectrumSetting = () => {
   return {type:types.SPECTRUM_SETTING_TOGGLE};
 }
+
+export const togglePrepareTimer = () => {
+  return {type:types.PREPARE_TIMER_TOGGLE};
+}

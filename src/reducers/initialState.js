@@ -50,7 +50,8 @@ export const playerInitState = {
 export const modalInitState = {
   scorePickerDisplay: false,
   spectrumFilterDisplay: false,
-  spectrumSettingDisplay: false
+  spectrumSettingDisplay: false,
+  prepareTimerDisplay: false
 }
 
 export const authInitState = {

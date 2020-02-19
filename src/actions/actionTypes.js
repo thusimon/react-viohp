@@ -50,6 +50,7 @@ export const PLAY_NOTE = 'PLAY_NOTE';
 export const SCORE_PICKER_TOGGLE = 'SCORE_PICKER_TOGGLE';
 export const SPECTRUM_FILTER_TOGGLE = 'SPECTRUM_FILTER_TOGGLE';
 export const SPECTRUM_SETTING_TOGGLE = 'SPECTRUM_SETTING_TOGGLE';
+export const PREPARE_TIMER_TOGGLE = 'PREPARE_TIMER_TOGGLE';
 
 //authentication action types
 export const SET_USER = 'SET_USER';

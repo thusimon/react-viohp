@@ -15,6 +15,10 @@ const modalReducer = (state=initState, action={}) => {
       const toggled = !state.spectrumFilterDisplay;
       return {...state, ...{spectrumFilterDisplay: toggled}};
     }
+    case types.PREPARE_TIMER_TOGGLE: {
+      const toggled = !state.prepareTimerDisplay;
+      return {...state, ...{prepareTimerDisplay: toggled}};
+    }
     default:{
       return state;
     }

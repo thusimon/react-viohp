@@ -6,6 +6,7 @@ import * as playerActions from '../../actions/playerActions';
 import PropTypes from 'prop-types';
 import SelfClearBtn from '../common/SelfClearBtn';
 import Slider from '../common/Slider';
+import PrepareTimerModal from '../modal/PrepareTimerModal';
 import '../../styles/common/btn-xs.scss';
 import './audio-player.scss';
 
@@ -18,7 +19,7 @@ const AudioPlayer = (props) => {
     <div className="audio-player-container">
       <div className="btn-group btn-group-xs player-btn-group" role="group" aria-label="player-buttons">
         <SelfClearBtn baseClass={'btn btn-secondary btn-xs'} activeClass={'player-btn-color-bg'} icon={'backward'} clickCallBack={() => {props.backward();}} isClear />
-        <button type="button" className={'btn btn-secondary btn-xs ' + playClass} onClick = {() => {props.play();}}>
+        <button type="button" className={'btn btn-secondary btn-xs ' + playClass} onClick = {() => {props.preplay();}}>
           <FontAwesomeIcon icon="play" />
         </button>
         <button type="button" className={'btn btn-secondary btn-xs ' + pauseClass} onClick = {() => {props.pause();}}>
@@ -35,6 +36,7 @@ const AudioPlayer = (props) => {
             setVolumeState(val);
         }}/>
       </div>
+      <PrepareTimerModal />
     </div>
   );
 };
@@ -46,6 +48,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+      preplay: () => {
+        dispatch(playerActions.preplay());
+      },
       play: () => {
         dispatch(playerActions.play());
       },
