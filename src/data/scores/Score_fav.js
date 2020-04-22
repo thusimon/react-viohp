@@ -777,8 +777,34 @@ export const BlackHeart={
   ]
 };
 
-export const MajorCPractice={
+export const WarmupPracticePos1={
   id:'00000002',
+  signature:'Major',
+  scale:'C',
+  title:'Warmup practice position 1',
+  author:'Lu',
+  notes:[
+    [ {t:'h', n:'g3'}, {t:'h', n:'a3'}, {t:'h', n:'b3'}, {t:'h', n:'c4'}, {t:'h', n:'d4'}, {t:'h', n:'e4'},
+      {t:'h', n:'f4'}, {t:'h', n:'g4'}, {t:'h', n:'a4'}, {t:'h', n:'b4'}, {t:'h', n:'c5'}, {t:'h', n:'d5'},
+      {t:'h', n:'e5'}, {t:'h', n:'f5'}, {t:'h', n:'g5'}, {t:'h', n:'a5'}, {t:'h', n:'b5'}
+    ],
+    [ {t:'h', n:'g3'}, {t:'h', n:'a3'}, {t:'h', n:'b3'}, {t:'h', n:'c4'}, {t:'h', n:'d4'}, {t:'h', n:'e4'},
+      {t:'h', n:'f4'}, {t:'h', n:'g4'}, {t:'h', n:'a4'}, {t:'h', n:'b4'}, {t:'h', n:'c5'}, {t:'h', n:'d5'},
+      {t:'h', n:'e5'}, {t:'h', n:'f5'}, {t:'h', n:'g5'}, {t:'h', n:'a5'}, {t:'h', n:'b5'}
+    ],
+    [ {t:'h', n:'g3'}, {t:'h', n:'a3'}, {t:'h', n:'b3'}, {t:'h', n:'c4'}, {t:'h', n:'d4'}, {t:'h', n:'e4'},
+      {t:'h', n:'f4'}, {t:'h', n:'g4'}, {t:'h', n:'a4'}, {t:'h', n:'b4'}, {t:'h', n:'c5'}, {t:'h', n:'d5'},
+      {t:'h', n:'e5'}, {t:'h', n:'f5'}, {t:'h', n:'g5'}, {t:'h', n:'a5'}, {t:'h', n:'b5'}
+    ],
+    [ {t:'h', n:'g3'}, {t:'h', n:'a3'}, {t:'h', n:'b3'}, {t:'h', n:'c4'}, {t:'h', n:'d4'}, {t:'h', n:'e4'},
+      {t:'h', n:'f4'}, {t:'h', n:'g4'}, {t:'h', n:'a4'}, {t:'h', n:'b4'}, {t:'h', n:'c5'}, {t:'h', n:'d5'},
+      {t:'h', n:'e5'}, {t:'h', n:'f5'}, {t:'h', n:'g5'}, {t:'h', n:'a5'}, {t:'h', n:'b5'}
+    ]
+  ]
+};
+
+export const MajorCPractice={
+  id:'00000003',
   signature:'Major',
   scale:'C',
   title:'C Major Practice',
@@ -815,7 +841,7 @@ export const MajorCPractice={
 };
 
 export const MajorFPractice={
-  id:'00000003',
+  id:'00000004',
   signature:'Major',
   scale:'F',
   title:'F Major Practice',
@@ -852,7 +878,7 @@ export const MajorFPractice={
 };
 
 export const MajorBFPractice={
-  id:'00000004',
+  id:'00000005',
   signature:'Major',
   scale:'BF',
   title:'B Flat Major Practice',

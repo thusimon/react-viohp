@@ -773,6 +773,31 @@ exports.BlackHeart={
   order:0
 };
 
+exports.WarmupPracticePos1={
+  signature:'Major',
+  scale:'C',
+  title:'Warmup practice position 1',
+  author:'Lu',
+  notes:[
+    [ {t:'h', n:'g3'}, {t:'h', n:'a3'}, {t:'h', n:'b3'}, {t:'h', n:'c4'}, {t:'h', n:'d4'}, {t:'h', n:'e4'},
+      {t:'h', n:'f4'}, {t:'h', n:'g4'}, {t:'h', n:'a4'}, {t:'h', n:'b4'}, {t:'h', n:'c5'}, {t:'h', n:'d5'},
+      {t:'Rh', n:'e5'}, {t:'Rh', n:'f5'}, {t:'Rh', n:'g5'}, {t:'Rh', n:'a5'}, {t:'Rh', n:'b5'}
+    ],
+    [ {t:'h', n:'g3'}, {t:'h', n:'a3'}, {t:'h', n:'b3'}, {t:'h', n:'c4'}, {t:'h', n:'d4'}, {t:'h', n:'e4'},
+      {t:'h', n:'f4'}, {t:'h', n:'g4'}, {t:'h', n:'a4'}, {t:'h', n:'b4'}, {t:'h', n:'c5'}, {t:'h', n:'d5'},
+      {t:'Rh', n:'e5'}, {t:'Rh', n:'f5'}, {t:'Rh', n:'g5'}, {t:'Rh', n:'a5'}, {t:'Rh', n:'b5'}
+    ].reverse(),
+    [ {t:'h', n:'g3'}, {t:'h', n:'a3'}, {t:'h', n:'b3'}, {t:'h', n:'c4'}, {t:'h', n:'d4'}, {t:'h', n:'e4'},
+      {t:'h', n:'f4'}, {t:'h', n:'g4'}, {t:'h', n:'a4'}, {t:'h', n:'b4'}, {t:'h', n:'c5'}, {t:'h', n:'d5'},
+      {t:'Rh', n:'e5'}, {t:'Rh', n:'f5'}, {t:'Rh', n:'g5'}, {t:'Rh', n:'a5'}, {t:'Rh', n:'b5'}
+    ],
+    [ {t:'h', n:'g3'}, {t:'h', n:'a3'}, {t:'h', n:'b3'}, {t:'h', n:'c4'}, {t:'h', n:'d4'}, {t:'h', n:'e4'},
+      {t:'h', n:'f4'}, {t:'h', n:'g4'}, {t:'h', n:'a4'}, {t:'h', n:'b4'}, {t:'h', n:'c5'}, {t:'h', n:'d5'},
+      {t:'Rh', n:'e5'}, {t:'Rh', n:'f5'}, {t:'Rh', n:'g5'}, {t:'Rh', n:'a5'}, {t:'Rh', n:'b5'}
+    ].reverse()
+  ]
+};
+
 exports.MajorCPractice={
   signature:'Major',
   scale:'C',
