@@ -1,12 +1,13 @@
-const webpack = require('webpack');
+//const webpack = require('webpack');
 const http = require('http');
-const path = require('path');
+//const path = require('path');
 const app = require('./app');
-const config = require('../../webpack.config.dev');
+//const config = require('../../webpack.config.dev');
 
 /* eslint-disable no-console */
-const compiler = webpack(config);
+//const compiler = webpack(config);
 
+/*
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,
   publicPath: config.output.publicPath
@@ -18,6 +19,7 @@ app.use(require('webpack-hot-middleware')(compiler));
 app.get('*', function(req, res) {
   return res.sendFile(path.join( __dirname, '../index.html'));
 });
+*/
 
 const port = process.env.PORT || '3000';
 const server = http.createServer(app);

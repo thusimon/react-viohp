@@ -2,8 +2,6 @@
  * Created by Lu on 8/9/2018.
  */
 import React from 'react';
-import PropTypes from 'prop-types';
-
 const SelectInput = ({name, label, onChange, defaultOption, value, error, options}) => {
   return (
     <div className="form-group row">
@@ -23,16 +21,6 @@ const SelectInput = ({name, label, onChange, defaultOption, value, error, option
       </div>
     </div>
   );
-};
-
-SelectInput.propTypes = {
-  name: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  defaultOption: PropTypes.string,
-  value: PropTypes.string,
-  error: PropTypes.string,
-  options: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default SelectInput;

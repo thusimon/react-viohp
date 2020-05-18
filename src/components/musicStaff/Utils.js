@@ -77,7 +77,8 @@ export const getSetOfNoteFromSignatureScale = (signature, scale) => {
     i = (++i)%intervalLen;
   }
   // should trace back to add notes
-  nextIdx = scaleIndex, i=0;
+  nextIdx = scaleIndex;
+  i=0;
   while (nextIdx-intervalsR[i]>=0){
     nextIdx -= intervalsR[i];
     let notes = Constant.SCALE_FULL[nextIdx];

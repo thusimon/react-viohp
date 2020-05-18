@@ -2,7 +2,6 @@
  * Created by Lu on 10/31/2018.
  */
 import React from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import * as audioActions from '../../actions/audioActions';
 import toastr from 'toastr';
@@ -112,12 +111,5 @@ function mapDispatchToProps(dispatch){
     }
   };
 }
-
-AudioControls.propTypes = {
-  threshold: PropTypes.number,
-  tolerance: PropTypes.number,
-  freqRange: PropTypes.array,
-  saveAudioSetting: PropTypes.func
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AudioControls);

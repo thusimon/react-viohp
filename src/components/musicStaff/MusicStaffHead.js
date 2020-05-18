@@ -2,7 +2,6 @@
  * Created by Lu on 11/8/2018.
  */
 import React from 'react';
-import PropTypes from 'prop-types';
 const MusicStaffHead = ({musicInfo})=>{
   return (
     <div className="music-staff-head-container">
@@ -14,10 +13,6 @@ const MusicStaffHead = ({musicInfo})=>{
       </div>
     </div>
   );
-};
-
-MusicStaffHead.propTypes = {
-  musicInfo: PropTypes.object
 };
 
 export default MusicStaffHead;

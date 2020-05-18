@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
 import toastr from 'toastr';
 import * as musicActions from '../../actions/musicActions';
 import * as modalActions from '../../actions/modalActions';
@@ -86,11 +85,6 @@ class MusicEditorPage extends React.Component {
     );
   }
 }
-
-MusicEditorPage.propTypes = {
-  musicInfo: PropTypes.object,
-  notes: PropTypes.array
-};
 
 const mapStateToProps = (state) => {
   let {id, musicInfo, notes, scoreList, notesToSave} = state.music;

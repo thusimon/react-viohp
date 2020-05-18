@@ -1,15 +1,14 @@
-/* eslint-disable react/jsx-no-bind */
-require('codemirror/lib/codemirror.css');
-require('codemirror/theme/material.css');
-require('codemirror/theme/neat.css');
-require('codemirror/mode/xml/xml.js');
-require('codemirror/mode/javascript/javascript.js');
-
 import React, {useRef, useEffect} from 'react';
 import {ConvertNotesToText, ConvertTextToNotes} from './Utils';
 import * as musicActions from '../../actions/musicActions';
 import {UnControlled as CodeMirror} from 'react-codemirror2';
 import {connect} from 'react-redux';
+
+require('codemirror/lib/codemirror.css');
+require('codemirror/theme/material.css');
+require('codemirror/theme/neat.css');
+require('codemirror/mode/xml/xml.js');
+require('codemirror/mode/javascript/javascript.js');
 
 const codeMirrorOptions = {
   mode: 'javascript',

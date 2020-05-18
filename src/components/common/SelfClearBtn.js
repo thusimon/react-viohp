@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
 import React, {useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import PropTypes from 'prop-types';
 
 const SelfClearBtn = ({baseClass, activeClass, icon, clickCallBack, isClear}) => {
   const [btnState, setBtnState] = useState({active: false, timer: null});
@@ -30,14 +29,6 @@ const SelfClearBtn = ({baseClass, activeClass, icon, clickCallBack, isClear}) =>
   <button type="button" className={className} onClick = {clickBtn}>
     <FontAwesomeIcon icon={icon} />
   </button>);
-};
-
-SelfClearBtn.propTypes = {
-  baseClass: PropTypes.string,
-  activeClass: PropTypes.string,
-  icon: PropTypes.string,
-  clickCallBack: PropTypes.func,
-  isClear: PropTypes.bool
 };
 
 export default SelfClearBtn;

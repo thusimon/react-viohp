@@ -2,7 +2,6 @@
  * Created by Lu on 11/7/2018.
  */
 import React from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import * as modalActions from '../../actions/modalActions';
 import MusicStaffPage from '../musicStaff/MusicStaffPage';
@@ -77,13 +76,6 @@ class MusicAudioPage extends React.Component{
     );
   }
 }
-
-MusicAudioPage.propTypes = {
-  audio: PropTypes.object,
-  toggleScorePicker: PropTypes.func,
-  toggleSpectrumFilter: PropTypes.func,
-  toggleSpectrumSetting: PropTypes.func
-};
 
 const mapStateToProps = (state) => {
   return {

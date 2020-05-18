@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
 import BoardNote from './ViolinBoardNote';
 import * as Constants from './Constants';
 import * as Utils from './Utils';
@@ -52,12 +51,6 @@ class Violin extends React.Component {
     );
   }
 }
-
-Violin.propTypes = {
-  markNotes: PropTypes.array,
-  noteName: PropTypes.string,
-  noteColor: PropTypes.string
-};
 
 function mapStateToProps(state){
   return {

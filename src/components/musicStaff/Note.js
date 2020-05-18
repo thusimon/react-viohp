@@ -3,7 +3,6 @@
  */
 import React from 'react';
 import * as Syms from './Symbols';
-import PropTypes from 'prop-types';
 import {getNoteClassByType} from './Utils';
 import Notes from './notes/Notes';
 
@@ -100,29 +99,7 @@ class Note extends React.Component {
   }
 }
 
-Note.propTypes = {
-  showLabel: PropTypes.bool,
-  label: PropTypes.string,
-  primary: PropTypes.bool,
-  mark: PropTypes.bool,
-  name: PropTypes.string,
-  sfIdx: PropTypes.number,
-  //this will define a bunch of properties, such as
-  // 1. whether rotate
-  // 2. flat or shart, on the note left side
-  // 3. whether extend, on the note right side
-  // 4. wheter show the staff segment line
-  descriptor: PropTypes.object,
-  type: PropTypes.string
-};
-
 Note.center = [14, 70];
 // hard code the certer point, maybe an issue on other browsers
-Note.defaultProps  = {
-  name:Syms.NOTE_QUARTER_TYPE,
-  showLabel: false,
-  primary: true,
-  label: 'C'
-};
 
 export default Note;

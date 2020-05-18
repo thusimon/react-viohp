@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-no-bind */
 import React from 'react';
-import PropTypes from 'prop-types';
 import NoteEditor from './NoteEditor';
 import {connect} from 'react-redux';
 import * as musicActions from '../../actions/musicActions';
@@ -68,11 +67,6 @@ const MusicTextEditor = (props) => {
     </div>
     <NoteEditor />
   </div>);
-};
-
-MusicTextEditor.propTypes = {
-  musicInfo: PropTypes.object,
-  updateScoreInfo: PropTypes.func,
 };
 
 const mapStateToProps = (state) => {

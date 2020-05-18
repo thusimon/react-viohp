@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const ListBox = ({status, data, style, curName, clickEvt})=>{
@@ -39,12 +38,5 @@ const ListBox = ({status, data, style, curName, clickEvt})=>{
     </div>);
 };
 
-ListBox.propTypes = {
-    status: PropTypes.number,
-    data: PropTypes.array,
-    style: PropTypes.object,
-    curName: PropTypes.string,
-    clickEvt: PropTypes.func
-};
 
 export default ListBox;

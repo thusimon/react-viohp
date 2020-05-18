@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as playerActions from '../../actions/playerActions';
-import PropTypes from 'prop-types';
+
 import SelfClearBtn from '../common/SelfClearBtn';
 import Slider from '../common/Slider';
 import PrepareTimerModal from '../modal/PrepareTimerModal';
@@ -72,14 +72,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-AudioPlayer.propTypes = {
-  backward: PropTypes.func,
-  forward: PropTypes.func,
-  play: PropTypes.func,
-  pause: PropTypes.func,
-  changeVol: PropTypes.func,
-  playing: PropTypes.number,
-  seek: PropTypes.number,
-  vol: PropTypes.number
-};
 export default connect(mapStateToProps, mapDispatchToProps)(AudioPlayer);

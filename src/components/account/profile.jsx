@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {deleteAccessToken} from '../../storage/utils';
+import * as authActions from '../../actions/authActions';
 
 const profile = ({user, setUser}) => {
 

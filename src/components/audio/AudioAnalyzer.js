@@ -3,7 +3,6 @@
  */
 /*eslint no-console: 0 */
 import React from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import * as audioUtils from './Utils';
 import AudioDisplay from './AudioDisplay';
@@ -177,14 +176,5 @@ function mapDispatchToProps(dispatch){
     }
   };
 }
-
-AudioAnalyzer.propTypes = {
-  threshold: PropTypes.number,
-  tolerance: PropTypes.number,
-  freqRange: PropTypes.array,
-  appliedFilter: PropTypes.array,
-  displayInfo: PropTypes.func,
-  setAudioParam: PropTypes.func
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AudioAnalyzer);

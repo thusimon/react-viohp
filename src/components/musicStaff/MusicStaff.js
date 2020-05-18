@@ -3,7 +3,6 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
 import * as Symbols from './Symbols';
 import * as Utils from './Utils';
 import Note from './Note';
@@ -224,21 +223,6 @@ class MusicStaff extends React.Component {
     );
   }
 }
-
-MusicStaff.propTypes = {
-  notes: PropTypes.array,
-  scale: PropTypes.string,
-  signature: PropTypes.string,
-  dragInfo: PropTypes.object,
-  idx: PropTypes.number,
-  freqLineVal: PropTypes.number,
-  addNote: PropTypes.func
-};
-//define some static properties, config of the class
-MusicStaff.defaultProps = {
-  notes: [],
-  freqLineVal:-1
-};
 
 function mapStateToProps(state){
   return {

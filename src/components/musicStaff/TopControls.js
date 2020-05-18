@@ -2,7 +2,6 @@
  * Created by Lu on 8/18/2018.
  */
 import React from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Note from './Note';
 import * as Constants from './Constants';
@@ -83,12 +82,6 @@ class TopControls extends React.Component {
     );
   }
 }
-
-TopControls.propTypes = {
-  addNotes: PropTypes.func,
-  setSignatureScale: PropTypes.func,
-  clearAllNotes: PropTypes.func
-};
 
 const mapDispatchToProps = (dispatch) => ({
   addNotes: (notes) => {

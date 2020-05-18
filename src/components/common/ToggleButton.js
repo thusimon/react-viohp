@@ -2,7 +2,6 @@
  * Created by Lu on 11/3/2018.
  */
 import React from 'react';
-import PropTypes from 'prop-types';
 
 const ToggleButton = ({text, toggle, onclick})=>{
   let arrow;
@@ -17,12 +16,6 @@ const ToggleButton = ({text, toggle, onclick})=>{
       {arrow}
     </button>
   );
-};
-
-ToggleButton.propTypes = {
-  text:PropTypes.string.isRequired,
-  toggle:PropTypes.bool.isRequired,
-  onclick:PropTypes.func.isRequired
 };
 
 export default ToggleButton;

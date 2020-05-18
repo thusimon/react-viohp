@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import * as playerActions from '../../actions/playerActions';
 import {useDispatch } from 'react-redux';
 
@@ -44,17 +43,6 @@ const ViolinBoardNote = ({note, markNotes, noteName, noteColor}) => {
   return (
     <div className={boardNoteClassName} title={`${freq}Hz`} onClick={boradNoteClick}>{label}</div>
   );
-};
-
-ViolinBoardNote.propTypes = {
-  note: PropTypes.array,
-  markNotes: PropTypes.array,
-  noteName: PropTypes.string,
-  noteColor: PropTypes.string
-};
-
-ViolinBoardNote.defaultProps = {
-  markNotes: []
 };
 
 export default ViolinBoardNote;

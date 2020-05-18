@@ -8,7 +8,6 @@ import {
   NOTE_POLE,
   NOTE_TAIL, NOTE_TAIL_REVERSE
 } from '../Symbols';
-import PropTypes from 'prop-types';
 
 const Full = function(props) {
   const components = [
@@ -25,11 +24,6 @@ const Full = function(props) {
   return <NoteBase center={Full.center} components={components} mark={props.mark} name={props.name} sfIdx={props.sfIdx} />;
 };
 Full.center = [9,8];
-Full.propTypes = {
-  mark: PropTypes.bool,
-  name: PropTypes.string,
-  sfIdx: PropTypes.number
-};
 
 const Half = function(props) {
   const components = [
@@ -55,11 +49,6 @@ const Half = function(props) {
   return <NoteBase center={Half.center} components={components} mark={props.mark} name={props.name} sfIdx={props.sfIdx}/>;
 };
 Half.center = [9, 43];
-Half.propTypes = {
-  mark: PropTypes.bool,
-  name: PropTypes.string,
-  sfIdx: PropTypes.number
-};
 
 const HalfReverse = function(props) {
   const components = [
@@ -85,11 +74,6 @@ const HalfReverse = function(props) {
   return <NoteBase center={HalfReverse.center} components={components} mark={props.mark} name={props.name} sfIdx={props.sfIdx} />;
 };
 HalfReverse.center = [9, 8];
-HalfReverse.propTypes = {
-  mark: PropTypes.bool,
-  name: PropTypes.string,
-  sfIdx: PropTypes.number
-};
 
 const Quarter = function(props) {
   const components = [
@@ -115,11 +99,6 @@ const Quarter = function(props) {
   return <NoteBase center={Quarter.center} components={components} mark={props.mark} name={props.name} sfIdx={props.sfIdx} />;
 };
 Quarter.center = [9, 43];
-Quarter.propTypes = {
-  mark: PropTypes.bool,
-  name: PropTypes.string,
-  sfIdx: PropTypes.number
-};
 
 const QuarterReverse = function(props) {
   const components = [
@@ -145,11 +124,6 @@ const QuarterReverse = function(props) {
   return <NoteBase center={QuarterReverse.center} components={components} mark={props.mark} name={props.name} sfIdx={props.sfIdx} />;
 };
 QuarterReverse.center = [9, 8];
-QuarterReverse.propTypes = {
-  mark: PropTypes.bool,
-  name: PropTypes.string,
-  sfIdx: PropTypes.number
-};
 
 const Eighth = function(props) {
   const components = [
@@ -184,11 +158,6 @@ const Eighth = function(props) {
   return <NoteBase center={Eighth.center} components={components} mark={props.mark} name={props.name} sfIdx={props.sfIdx} />;
 };
 Eighth.center = [9, 43];
-Eighth.propTypes = {
-  mark: PropTypes.bool,
-  name: PropTypes.string,
-  sfIdx: PropTypes.number
-};
 
 const EighthReverse = function(props) {
   const components = [
@@ -223,10 +192,5 @@ const EighthReverse = function(props) {
   return <NoteBase center={EighthReverse.center} components={components} mark={props.mark} name={props.name} sfIdx={props.sfIdx} />;
 };
 EighthReverse.center = [9, 8];
-EighthReverse.propTypes = {
-  mark: PropTypes.bool,
-  name: PropTypes.string,
-  sfIdx: PropTypes.number
-};
 
 export default {Full, Half, HalfReverse, Quarter, QuarterReverse, Eighth, EighthReverse};

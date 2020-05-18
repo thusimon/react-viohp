@@ -2,7 +2,6 @@
  * Created by Lu on 10/31/2018.
  */
 import React from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import './audio-display.scss';
 
@@ -47,15 +46,6 @@ function mapStateToProps(state){
     noteFreq: state.audio.noteFreq
   };
 }
-
-AudioDisplay.propTypes = {
-  sampleRate: PropTypes.number,
-  peakEnergy: PropTypes.number,
-  noteColor: PropTypes.string,
-  peakFreq: PropTypes.string,
-  noteName: PropTypes.string,
-  noteFreq: PropTypes.string
-};
 
 export default connect(mapStateToProps)(AudioDisplay);
 //export default AudioDisplay;

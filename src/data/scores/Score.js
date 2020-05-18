@@ -146,7 +146,7 @@ class Score {
         } else if (prevNoteX) {
           note.x = prevNoteX+incStep/2;
         } else {
-          note.x = nextNoteY-incStep/2;
+          note.x = nextNoteX-incStep/2;
         }
       }
       return note;

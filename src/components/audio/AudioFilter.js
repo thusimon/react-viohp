@@ -2,7 +2,6 @@ import React from 'react';
 import * as audioActions from '../../actions/audioActions';
 import ListBox from '../common/ListBox';
 import TwoDPDisp from '../common/TwoDPoints';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {generateConsecutiveFilterData, getFreqRange} from './Utils';
 
@@ -106,13 +105,4 @@ function mapDispatchToProps(dispatch){
     };
 }
 
-AudioFilter.propTypes = {
-    filters: PropTypes.object,
-    filters_AJAXFlag: PropTypes.number,
-    getFilters: PropTypes.func,
-    applyFilter: PropTypes.func,
-    sampleRate: PropTypes.number,
-    fftSize: PropTypes.number,
-    freqRange: PropTypes.array
-};
 export default connect(mapStateToProps, mapDispatchToProps)(AudioFilter);

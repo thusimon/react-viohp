@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import * as Sym from './Symbols';
 import {connect} from 'react-redux';
 import * as playerActions from '../../actions/playerActions';
@@ -134,15 +133,6 @@ class MusicStaffPlayerArrow extends React.Component {
     return (<div className="triangle-down" style={{position:'absolute', top: y+'px', left:x+'px'}}/>);
     }
 }
-
-MusicStaffPlayerArrow.propTypes = {
-  staffRef: PropTypes.object,
-  playing: PropTypes.number,
-  seek: PropTypes.number,
-  notes: PropTypes.array,
-  playNote: PropTypes.func,
-  playerReset: PropTypes.func
-};
 
 function mapStateToProps(state){
   const {playing, seek} = state.player;

@@ -2,7 +2,6 @@
  * Created by Lu on 8/19/2018.
  */
 import React from 'react';
-import PropTypes from 'prop-types';
 import * as Symbols from './Symbols';
 
 const NoteKey = ({name}) => {
@@ -29,9 +28,6 @@ const NoteKey = ({name}) => {
   );
 };
 
-NoteKey.propTypes = {
-  name: PropTypes.string
-};
 //TODO should use percentage instead of pixels
 NoteKey.center=[9,0];
 

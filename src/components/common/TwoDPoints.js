@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 const TwoDPointsDisp = ({points, editable, width, height})=>{
     let isDisable = (!editable).toString();
@@ -15,13 +14,6 @@ const TwoDPointsDisp = ({points, editable, width, height})=>{
     return (<div style={{width, height, overflowX:"hidden", overflowY:"auto", paddingLeft:"10px"}}>
         {pointsDisp}
     </div>);
-};
-
-TwoDPointsDisp.propTypes = {
-    points: PropTypes.array.isRequired,
-    editable: PropTypes.bool.isRequired,
-    width: PropTypes.string,
-    height: PropTypes.string 
 };
 
 export default TwoDPointsDisp;

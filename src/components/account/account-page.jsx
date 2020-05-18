@@ -3,7 +3,7 @@ import {AccountProvider} from './account-context';
 import Account from './account';
 import {fetchDataWithAccessToken} from '../../api/utils';
 
-const accountPage = () => {
+const AccountPage = props => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -25,4 +25,4 @@ const accountPage = () => {
   )
 }
 
-export default accountPage;
+export default AccountPage;

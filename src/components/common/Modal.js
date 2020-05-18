@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 const Modal = ({show, title, buttonClickHandler, children})=>{
     let modalClass = show ? "modal fade show" : "modal fade";
@@ -23,13 +22,6 @@ const Modal = ({show, title, buttonClickHandler, children})=>{
             </div>
         </div>
     </div>);
-};
-
-Modal.propTypes = {
-    show: PropTypes.bool,
-    title: PropTypes.string,
-    buttonClickHandler: PropTypes.func,
-    children: PropTypes.object
 };
 
 export default Modal;

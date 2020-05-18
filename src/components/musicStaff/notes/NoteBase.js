@@ -2,7 +2,6 @@
  * Created by Lu on 8/31/2019.
  */
 import React from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import * as musicActions from '../../../actions/musicActions';
 import noteComponents from '../../../resources/js/note-components';
@@ -46,16 +45,6 @@ class NoteBase extends React.Component {
       </div>);
   }
 }
-
-NoteBase.propTypes = {
-  center: PropTypes.array,
-  components:PropTypes.array,
-  mark: PropTypes.bool,
-  name: PropTypes.string,
-  sfIdx: PropTypes.number,
-  onNoteClicked: PropTypes.func
-};
-
 
 function mapDispatchToProps(dispatch) {
   return {

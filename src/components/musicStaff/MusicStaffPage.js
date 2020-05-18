@@ -2,7 +2,6 @@
  * Created by Lu on 8/12/2018.
  */
 import React from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import MusicStaff from './MusicStaff';
 import MusicStaffPlayerArrow from './MusicStaffPlayerArrow';
@@ -79,17 +78,6 @@ class MusicStaffPage extends React.Component {
       </div>);
   }
 }
-
-MusicStaffPage.propTypes = {
-  notes: PropTypes.array,
-  scaleHead: PropTypes.array,
-  signature: PropTypes.string,
-  scale: PropTypes.string,
-  dragInfo: PropTypes.object,
-  musicInfo: PropTypes.object,
-  scoreId: PropTypes.string,
-  dragStatusChange: PropTypes.func
-};
 
 function mapStateToProps(state){
   return state.music;
