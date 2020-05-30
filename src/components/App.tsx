@@ -2,7 +2,7 @@
  * Created by Lu on 8/4/2018.
  */
 import React from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter, RouteComponentProps } from 'react-router-dom';
 import Header from './common/Header';
 import HomePage from './home/HomePage';
 import AboutPage from './about/AboutPage';
@@ -19,9 +19,14 @@ import './App.scss';
 library.add(faSpinner, faPlay, faPause, faBackward, faForward, faVolumeUp, faVolumeMute
   , faUserCircle);
 
-class App extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+interface AppPropsType {
+  store:any
+}
+
+class App extends React.Component<RouteComponentProps> {
+  private store:any;
+  constructor(props:AppPropsType | any) {
+    super(props);
     this.store = props.store;
   }
   async componentDidMount() {
@@ -49,10 +54,5 @@ class App extends React.Component {
     );
   }
 }
-
-
-App.propTypes = {
-};
-
 
 export default withRouter(App);

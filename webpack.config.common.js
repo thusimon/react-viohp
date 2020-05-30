@@ -1,27 +1,31 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   entry: {
-    index: path.resolve(__dirname, './src/index.js')
+    index: path.resolve(__dirname, './src/index.tsx')
   },
   target: 'web',
   output: {
-    path: path.resolve(__dirname, './dist'), // Note: Physical files are only output by the production build task `npm run build`.
+    path: path.resolve(__dirname, './dist'),
     publicPath: '/',
-    filename: '[name].[hash].bundle.js'
+    filename: 'bundle.[hash].js'
   },
   optimization: {
     noEmitOnErrors: true
   },
   plugins: [
-    new CopyWebpackPlugin([
-      { 
-        from: path.join(__dirname, './src/resources/images'),
-        to: path.join(__dirname, './dist/resources/images')
-      }
-    ]),
+    new CleanWebpackPlugin(),
+    new CopyWebpackPlugin({
+      patterns: [
+        { 
+          from: path.join(__dirname, './src/resources/images'),
+          to: path.join(__dirname, './dist/resources/images')
+        }
+      ],
+    }),
     new HtmlWebpackPlugin({
       hash: true,
       inject: 'body',
@@ -31,6 +35,17 @@ module.exports = {
   ],
   module: {
     rules: [
+      {
+        test: /\.(ts|tsx)$/,
+        use: 'ts-loader',
+        exclude: /node_modules/
+      },
+      // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+      {
+        enforce: "pre",
+        test: /\.js$/,
+        loader: "source-map-loader"
+      },
       {
         test: /\.jsx?$/, 
         include: path.join(__dirname, 'src'), 
@@ -54,6 +69,6 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', ".ts", ".tsx"],
   }
 };

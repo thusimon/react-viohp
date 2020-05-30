@@ -7,17 +7,12 @@
  *
 */
 import * as Sym from '../../components/musicStaff/Symbols';
-import stringifyObj from 'stringify-object';
-import Score from '../../data/scores/Score';
 
 export const ConvertNotesToText = (notes) => {
   const allNotesStr = notes.map(noteLine=>{
     const noteLineStr = noteLine.map(note=>{
       note = note||{};
-      return stringifyObj(note, {
-        indent: '',
-        inlineCharacterLimit:200
-      });
+      return JSON.stringify(note, null, '  ');
     }).join(',');
     return '[' + noteLineStr + ']';
   }).join(',\n');
