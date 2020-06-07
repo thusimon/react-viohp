@@ -5,13 +5,11 @@
   "author": "Lu Xu",
   "license": "MIT",
   "scripts": {
-    "start:prod": "npm run prebuild && npm run build && env-cmd -f ./src/server/config/prod.env node src/server/distServer.js",
-    "start:dev": "npm-run-all --parallel open:server",
+    "start:prod": "npm run build && env-cmd -f ./src/server/config/prod.env node src/server/distServer.js",
+    "start:dev": "npm run open:server",
     "open:server": "env-cmd -f ./src/server/config/dev.env nodemon src/server/srcServer.js -e js,jsx,ts,tsx --ignore dist/",
-    "start": "set PORT=3008 && react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "npm run build && node src/server/distServer.js",
+    "build": "node tools/build.js"
   },
   "dependencies": {
     "@babel/core": "^7.10.2",
@@ -33,6 +31,7 @@
     "bcryptjs": "^2.4.3",
     "bootstrap": "^4.5.0",
     "codemirror": "^5.53.2",
+    "compression": "^1.7.4",
     "copy-webpack-plugin": "^6.0.1",
     "css-loader": "^3.5.3",
     "env-cmd": "^10.0.1",
@@ -55,6 +54,7 @@
     "style-loader": "^1.2.1",
     "svg-inline-loader": "^0.8.2",
     "svg-inline-react": "^3.2.0",
+    "terser-webpack-plugin": "^3.0.3",
     "toastr": "^2.1.4",
     "ts-loader": "^7.0.5",
     "typescript": "^3.9.3",
