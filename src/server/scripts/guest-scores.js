@@ -770,14 +770,14 @@ exports.BlackHeart={
       {t:'h', n:'d4', a:'.', x: 0.34},
     ]
   ],
-  order:0
+  order:1
 };
 
 exports.WarmupPracticePos1={
   signature:'Major',
   scale:'C',
   title:'Warmup practice position 1',
-  author:'Lu',
+  author:'Anonymous',
   notes:[
     [ {t:'h', n:'g3'}, {t:'h', n:'a3'}, {t:'h', n:'b3'}, {t:'h', n:'c4'}, {t:'h', n:'d4'}, {t:'h', n:'e4'},
       {t:'h', n:'f4'}, {t:'h', n:'g4'}, {t:'h', n:'a4'}, {t:'h', n:'b4'}, {t:'h', n:'c5'}, {t:'h', n:'d5'},
@@ -795,7 +795,8 @@ exports.WarmupPracticePos1={
       {t:'h', n:'f4'}, {t:'h', n:'g4'}, {t:'h', n:'a4'}, {t:'h', n:'b4'}, {t:'h', n:'c5'}, {t:'h', n:'d5'},
       {t:'Rh', n:'e5'}, {t:'Rh', n:'f5'}, {t:'Rh', n:'g5'}, {t:'Rh', n:'a5'}, {t:'Rh', n:'b5'}
     ].reverse()
-  ]
+  ],
+  order: 0
 };
 
 exports.MajorCPractice={
@@ -832,7 +833,7 @@ exports.MajorCPractice={
       {t:'q', n:'c5'},{t:'q', n:'g4'},{t:'q', n:'e4'},
       {t:'q', n:'c4'}]
   ],
-  order:1
+  order:2
 };
 
 exports.MajorFPractice={
@@ -869,7 +870,7 @@ exports.MajorFPractice={
       {t:'q', n:'f5'},{t:'q', n:'c5'},{t:'q', n:'a4'},
       {t:'q', n:'f4'}]
   ],
-  order:2
+  order:3
 };
 
 exports.MajorBFPractice={
@@ -906,5 +907,5 @@ exports.MajorBFPractice={
       {t:'q', n:'b4b'},{t:'q', n:'f4'},{t:'q', n:'d4'},
       {t:'q', n:'b3b'}]
   ],
-  order:3
+  order:4
 };

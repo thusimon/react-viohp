@@ -4,35 +4,24 @@ const http = require('http');
 const path = require('path');
 const app = require('./app');
 const db = require('./db/mongoose');
-const config = require('../../webpack.config.dev');
+const {webpackBuildResult} = require('../../tools/utils')
+const webConfig = require('../../webpack.config.dev');
+const workletConfig = require('../../webpack.config.worklets');
 
-const compiler = webpack(config);
 
-const webpackBuildResult = new Promise((resolve, reject) => {
-  compiler.run((err, stats) => {
-    if (err){
-      console.log(err);
-      reject(err);
-    }
-    const jsonStats = stats.toJson();
-    if (jsonStats.hasErrors){
-      return jsonStats.errors.map(err=>console.log(err));
-    }
-    if (jsonStats.hasWarnings){
-      console.log('Webpack generated the following warnings: ');
-      jsonStats.warnings.map(warning=>console.log(warning));
-    }
-    console.log(`Webpack stats: ${stats}`);
-    console.log('Your app has been compiled in dev mode and written to dist');
-    resolve();
-  });
-});
+const compilerWeb = webpack(webConfig);
+const compilerWorklet = webpack(workletConfig);
 
 app.use(express.static(path.join(__dirname, '../../dist')));
 
-webpackBuildResult.then(()=> {
-  return db.connectToDb();
-}).then(() => {
+webpackBuildResult(compilerWeb)
+.then(() => {
+  return webpackBuildResult(compilerWorklet);
+})
+.then(() => {
+  return db.connectToDb(true);
+})
+.then(() => {
   app.get('*', function(req, res) {
     return res.sendFile(path.join( __dirname, '../../dist/index.html'));
   });
@@ -48,16 +37,7 @@ webpackBuildResult.then(()=> {
       console.log(`server started on ${port}`);
     }
   })
-}).catch(err => {
-  
 })
-/*
-app.use(require('webpack-dev-middleware')(compiler, {
-  noInfo: true,
-  publicPath: config.output.publicPath
-}));
-
-
-app.use(require('webpack-hot-middleware')(compiler));
-*/
-
+.catch(err => {
+  
+});

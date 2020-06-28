@@ -6,20 +6,24 @@ const path = require('path');
 const http = require('http');
 const compression = require('compression');
 const app = require('./app');
-/* eslint-disable no-console */
+const db = require('./db/mongoose');
 
 app.use(compression());
 app.use(express.static(path.join(__dirname, '../../dist')));
 
-app.get('*', function(req, res){
-  return res.sendFile(path.join(__dirname, '../../dist/index.html'));
-});
 
-const port = process.env.PORT || '3000';
-const server = http.createServer(app);
-
-server.listen(port, function(err){
-  if(err){
-    console.log(err);
-  }
+db.connectToDb(false)
+.then(() => {
+  app.get('*', function(req, res){
+    return res.sendFile(path.join(__dirname, '../../dist/index.html'));
+  });
+  
+  const port = process.env.PORT || '3008';
+  const server = http.createServer(app);
+  
+  server.listen(port, function(err){
+    if(err){
+      console.log(err);
+    }
+  });
 });

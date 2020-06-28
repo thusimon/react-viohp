@@ -8,14 +8,16 @@ const CONNECTION_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/vio
 const {createGuestAndScores} = require('../scripts/setup-db-data');
 
 module.exports = {
-  connectToDb: () => {
+  connectToDb: (reInitDB) => {
     return mongoose.connect(CONNECTION_URI, {
       useNewUrlParser: true,
       useCreateIndex: true
     }).then(async () => {
       console.log(`Connected to mongoDB to ${CONNECTION_URI}`);
-      await createGuestAndScores();
-      console.log('prerequiste data is created');
+      if (reInitDB) {
+        await createGuestAndScores();
+        console.log('prerequiste data is created');
+      }
       return Promise.resolve();
     });
   }

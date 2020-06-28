@@ -32,10 +32,19 @@
       flex-basis: auto;
       margin: 0px 10px;
     }
-    .player-section {
+    .audio-recording-button {
       order: 3;
       flex-basis: auto;
       margin: 0px 10px;
+      width: 54px;
+    }
+    .player-section {
+      order: 4;
+      flex-basis: auto;
+      margin: 0px 10px;
+    }
+    .fullwidth {
+      width: 100%;
     }
   }
   .score-section {
