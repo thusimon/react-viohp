@@ -18,7 +18,7 @@ db.connectToDb(false)
     return res.sendFile(path.join(__dirname, '../../dist/index.html'));
   });
   
-  const port = process.env.PORT || '3008';
+  const port = process.env.PORT || '3000';
   const server = http.createServer(app);
   
   server.listen(port, function(err){
