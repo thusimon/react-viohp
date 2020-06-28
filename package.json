@@ -8,7 +8,8 @@
     "start:prod": "npm run build && env-cmd -f ./src/server/config/prod.env node src/server/distServer.js",
     "start:dev": "npm run open:server",
     "open:server": "env-cmd -f ./src/server/config/dev.env nodemon src/server/srcServer.js -e js,jsx,ts,tsx --ignore dist/",
-    "start": "npm run build && node src/server/distServer.js",
+    "start": "node src/server/distServer.js",
+    "postinstall": "npm run build",
     "build": "node tools/build.js"
   },
   "dependencies": {
