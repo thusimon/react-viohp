@@ -11,6 +11,8 @@ declare var AudioWorkletProcessor: {
 
 declare function registerProcessor(name:any, _class:any)
 
+declare var sampleRate:number;
+
 class RecordWorklet extends AudioWorkletProcessor {
   _bufferSize: number;
   _bufferChannel1: Float32Array;
@@ -24,7 +26,7 @@ class RecordWorklet extends AudioWorkletProcessor {
   }
   constructor() {
     super();
-    this._bufferSize = 2048;
+    this._bufferSize = sampleRate; // the buffer is 1 second data
     this._bufferChannel1 = new Float32Array(this._bufferSize);
     this._bufferChannel2 = new Float32Array(this._bufferSize);
     this._initBuffer();

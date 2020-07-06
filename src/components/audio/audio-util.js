@@ -91,7 +91,7 @@ export const generateWAV = (interleaved, sampleRate) => {
     index += 2;
   }
   // our final binary blob that we can hand off
-  return new Blob ( [ view ], { type : 'audio/wav' } );
+  return view;
 }
 
 export const forceDownload = (blob, filename) => {

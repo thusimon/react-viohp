@@ -3,6 +3,7 @@ const express = require('express');
 const http = require('http');
 const path = require('path');
 const app = require('./app');
+const {createWebSocket} = require('./websockets/websockets');
 const db = require('./db/mongoose');
 const {webpackBuildResult} = require('../../tools/utils')
 const webConfig = require('../../webpack.config.dev');
@@ -29,15 +30,17 @@ webpackBuildResult(compilerWeb)
   
   const port = process.env.PORT || '3000';
   const server = http.createServer(app);
-  
+
   server.listen(port, function(err) {
     if (err) {
       console.log(err);
     } else {
       console.log(`server started on ${port}`);
     }
-  })
+  });
+
+  createWebSocket(server);
 })
 .catch(err => {
-  
+  console.log(err);
 });

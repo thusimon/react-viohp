@@ -8,6 +8,7 @@ import HomePage from './home/HomePage';
 import AboutPage from './about/AboutPage';
 import MusicAudioPage from './page/MusicAudioPage';
 import MusicEditorPage from './page/MusicEditorPage';
+import MusicAnalyticsPage from './page/MusicAnalyticsPage';
 import AccountPage from './account/account-page';
 import {fetchDataWithAccessToken} from '../api/utils';
 import * as authActions from '../actions/authActions';
@@ -47,6 +48,7 @@ class App extends React.Component<RouteComponentProps> {
           <Route path="/home" component={HomePage} />
           <Route path="/musicstaff" component={MusicAudioPage} />
           <Route path="/musicEditor" component={MusicEditorPage} />
+          <Route path="/musicAnalytics" component={MusicAnalyticsPage} />
           <Route path="/account" component={AccountPage} />
           <Route path="/about" component={AboutPage} />
         </Switch>

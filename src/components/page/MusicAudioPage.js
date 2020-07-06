@@ -3,6 +3,9 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
+import {fetchDataWithAccessToken} from '../../api/utils';
+import {getAccessToken} from '../../storage/utils';
+import {getWebSockets} from '../../websockets/websocket';
 import * as modalActions from '../../actions/modalActions';
 import MusicStaffPage from '../musicStaff/MusicStaffPage';
 import Violin from '../musicStaff/Violin';
@@ -23,13 +26,15 @@ class MusicAudioPage extends React.Component{
     this.pickSpectrumSetting = this.pickSpectrumSetting.bind(this);
     this.cleanBuffers = this.cleanBuffers.bind(this);
     this.recordAudio = this.recordAudio.bind(this);
-    this.createDownloadLink = this.createDownloadLink.bind(this);
     this.state = {recording: 0};
-    this.recorder = null;
-    this.recLength = 0,
-    this.recBuffers = [[],[]],
-    this.sampleRate = 48000
+    this.recLength = 0;
+    this.recBuffers = [[],[]];
+    this.sampleRate = 48000;
     this.numChannels = 2;
+    this.ws = null;
+
+    //this.postData = [[], []];
+    //this.postDataSize = 480000; // 10 seconds of data, post data size: 4*480000*2 = 3.7MB
   }
 
   toggleFilter(){
@@ -47,41 +52,33 @@ class MusicAudioPage extends React.Component{
     this.props.toggleSpectrumSetting();
   }
 
-  createDownloadLink() {
-    this.recorder && this.recorder.exportWAV(function(blob) {
-      var url = URL.createObjectURL(blob);
-      var li = document.createElement('li');
-      var au = document.createElement('audio');
-      var hf = document.createElement('a');
-      
-      au.controls = true;
-      au.src = url;
-      hf.href = url;
-      hf.download = new Date().toISOString() + '.wav';
-      hf.innerHTML = hf.download;
-      li.appendChild(au);
-      li.appendChild(hf);
-      //recordingslist.appendChild(li);
-    });
-  }
-
   cleanBuffers() {
     this.recBuffers=[[],[]];
     this.recLength = 0;
   }
 
   recordAudio(evt) {
+    const {scoreId, musicInfo} = this.props.music;
     if (this.state.recording == 1) {
       // we should stop recording
       this.setState({recording: 0});
-      this.audioContext && this.recorderNode &&
-        this.recorderNode.parameters.get('isRecording').setValueAtTime(0, this.audioContext.currentTime);
+      console.log(this.props.music);
+      const stopRecordingWSData = {
+        type: 'stopRecording',
+        data: {scoreId, title: musicInfo.title}
+      }
+      this.audioContext && this.recorderNode && this.recorderNode.parameters.get('isRecording').setValueAtTime(0, this.audioContext.currentTime);
+      this.ws && this.ws.send(JSON.stringify(stopRecordingWSData));
     } else {
       this.setState({recording: 1});
       const audioContext = AudioCtx.getInstance();
       this.audioContext = audioContext;
       this.sampleRate = audioContext.sampleRate;
-
+      const startRecordingWSData = {
+        type: 'startRecording',
+        data: {scoreId, title: musicInfo.title, sampleRate: this.sampleRate}
+      }
+      this.ws && this.ws.send(JSON.stringify(startRecordingWSData));
       audioContext.audioWorklet.addModule('worklets/record-worklet.js').then(() => {
         const recorderNode = new window.AudioWorkletNode(
           audioContext,
@@ -100,14 +97,23 @@ class MusicAudioPage extends React.Component{
               // store the buffers
               this.recBuffers[0].push(audioData[0]);
               this.recBuffers[1].push(audioData[1]);
-              this.recLength += audioData[0].length; // audioData[0] is one frame, length should be 128
+              const bufferLen = audioData[0].length; // audioData[0] is one audio worklet buffer, length should be sampleRate
+              this.recLength += bufferLen
+              // combine the two channels as 1
+              const audioWSData = new Float32Array(bufferLen*2);
+              console.log(104, audioWSData, audioWSData.length, audioWSData.byteLength, audioWSData.buffer, audioWSData.buffer.length);
+              audioWSData.set(audioData[0], 0);
+              audioWSData.set(audioData[1], bufferLen);
+              this.ws && this.ws.send(audioWSData.buffer);
             }
             if (e.data.eventType === 'stop') {
               const channel1Buffer = mergeBuffers(this.recBuffers[0], this.recLength);
               const channel2Buffer = mergeBuffers(this.recBuffers[1], this.recLength);
               const interleavedBuffer = interleave(channel1Buffer, channel2Buffer);
-              const wavBlob = generateWAV(interleavedBuffer, this.sampleRate);
+              const view = generateWAV(interleavedBuffer, this.sampleRate);
+              const wavBlob = new Blob ( [ view ], { type : 'audio/wav' } );
               this.cleanBuffers();
+
               const fileTime = new Date().toISOString().replace(/:/g, '_');
               forceDownload(wavBlob, `record_${fileTime}.wav`);
             }
@@ -118,6 +124,29 @@ class MusicAudioPage extends React.Component{
     }
   }
 
+  componentDidMount() {
+    const host = window.location.host
+    const ws = new WebSocket(`ws://${host}/path`);
+    this.ws = ws;
+    ws.onopen = function (event) {
+      const authData={
+        type: 'auth',
+        token: getAccessToken()
+      }
+      ws.send(JSON.stringify(authData));
+      const array = new Float32Array(48000);
+
+      for (var i = 0; i < array.length; ++i) {
+        array[i] = i / 2;
+      }
+      const t= new Float32Array(48000*2);
+
+      t.set(array);
+      t.set(array, 48000);
+      
+      ws.send(t);
+    };
+  }
   render(){
     return (
       <div className="music-audio-page">
@@ -166,7 +195,8 @@ class MusicAudioPage extends React.Component{
 
 const mapStateToProps = (state) => {
   return {
-    audio:state.audio
+    audio:state.audio,
+    music:state.music
   };
 };
 

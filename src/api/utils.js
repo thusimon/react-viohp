@@ -1,6 +1,6 @@
 import {getAccessToken, storeAccessToken} from '../storage/utils';
 
-export const fetchDataWithAccessToken = async (url = '', method = 'GET', data = {}) => {
+export const fetchDataWithAccessToken = async (url = '', method = 'GET', data = {}, contentType = 'application/json') => {
   // Default options are marked with *
   const fetchOptions = {
     method,
@@ -8,7 +8,7 @@ export const fetchDataWithAccessToken = async (url = '', method = 'GET', data = 
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
     credentials: 'same-origin', // include, *same-origin, omit
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': contentType,
       'Authorization': `Bearer ${getAccessToken()}`
     },
     redirect: 'follow', // manual, *follow, error
@@ -16,7 +16,18 @@ export const fetchDataWithAccessToken = async (url = '', method = 'GET', data = 
   };
 
   if (method == 'POST' || method == 'PUT' || method == 'PATCH') {
-    fetchOptions.body = JSON.stringify(data); // body data type must match "Content-Type" header
+    switch (contentType) {
+      case 'application/json':
+        fetchOptions.body = JSON.stringify(data); // body data type must match "Content-Type" header
+        break;
+      case 'audio/vnd.wave':
+        const fd = new FormData();
+        fd.append('upl', data, 'audio.wav');
+        fetchOptions.body = fd;
+        break;
+      default:
+        break;
+    }
   }
 
   try {
