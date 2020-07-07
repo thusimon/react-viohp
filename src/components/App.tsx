@@ -12,6 +12,7 @@ import MusicAnalyticsPage from './page/MusicAnalyticsPage';
 import AccountPage from './account/account-page';
 import {fetchDataWithAccessToken} from '../api/utils';
 import * as authActions from '../actions/authActions';
+import * as wsActions from '../actions/wsActions';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner, faPlay, faPause, faBackward, faForward, faVolumeUp, faVolumeMute
   , faUserCircle } from '@fortawesome/free-solid-svg-icons';
@@ -38,6 +39,9 @@ class App extends React.Component<RouteComponentProps> {
     } else {
       this.store.dispatch(authActions.setUser(user));
     }
+    const host = window.location.host
+    const url = `ws://${host}/websockets`;
+    this.store.dispatch(wsActions.getWebSocket(url));
   }
   render() {
     return (

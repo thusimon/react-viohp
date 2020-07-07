@@ -81,6 +81,10 @@ const webSocketIncomingDataHandler = (wsId, data) => {
         case 'auth': {
           break;
         }
+        case 'wsUnmount': {
+          console.log('server received ws unmount');
+          break;
+        }
         case 'startRecording': {
           const {scoreId, title, sampleRate} = dataJson.data;
           const recordAudio = webSocketCache.getCache(wsId, 'audio') || {};

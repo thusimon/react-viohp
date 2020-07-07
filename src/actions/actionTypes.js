@@ -54,3 +54,6 @@ export const PREPARE_TIMER_TOGGLE = 'PREPARE_TIMER_TOGGLE';
 
 //authentication action types
 export const SET_USER = 'SET_USER';
+
+//websocket action types
+export const GET_WEBSOCKET = 'GET_WEBSOCKET';

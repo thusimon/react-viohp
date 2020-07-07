@@ -3,9 +3,7 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import {fetchDataWithAccessToken} from '../../api/utils';
 import {getAccessToken} from '../../storage/utils';
-import {getWebSockets} from '../../websockets/websocket';
 import * as modalActions from '../../actions/modalActions';
 import MusicStaffPage from '../musicStaff/MusicStaffPage';
 import Violin from '../musicStaff/Violin';
@@ -31,10 +29,6 @@ class MusicAudioPage extends React.Component{
     this.recBuffers = [[],[]];
     this.sampleRate = 48000;
     this.numChannels = 2;
-    this.ws = null;
-
-    //this.postData = [[], []];
-    //this.postDataSize = 480000; // 10 seconds of data, post data size: 4*480000*2 = 3.7MB
   }
 
   toggleFilter(){
@@ -58,17 +52,16 @@ class MusicAudioPage extends React.Component{
   }
 
   recordAudio(evt) {
-    const {scoreId, musicInfo} = this.props.music;
+    const {scoreId, musicInfo} = this.state.music;
     if (this.state.recording == 1) {
       // we should stop recording
       this.setState({recording: 0});
-      console.log(this.props.music);
       const stopRecordingWSData = {
         type: 'stopRecording',
         data: {scoreId, title: musicInfo.title}
       }
       this.audioContext && this.recorderNode && this.recorderNode.parameters.get('isRecording').setValueAtTime(0, this.audioContext.currentTime);
-      this.ws && this.ws.send(JSON.stringify(stopRecordingWSData));
+      this.state.ws.ws && this.state.ws.ws.send(JSON.stringify(stopRecordingWSData));
     } else {
       this.setState({recording: 1});
       const audioContext = AudioCtx.getInstance();
@@ -78,7 +71,7 @@ class MusicAudioPage extends React.Component{
         type: 'startRecording',
         data: {scoreId, title: musicInfo.title, sampleRate: this.sampleRate}
       }
-      this.ws && this.ws.send(JSON.stringify(startRecordingWSData));
+      this.state.ws.ws && this.state.ws.ws.send(JSON.stringify(startRecordingWSData));
       audioContext.audioWorklet.addModule('worklets/record-worklet.js').then(() => {
         const recorderNode = new window.AudioWorkletNode(
           audioContext,
@@ -104,7 +97,7 @@ class MusicAudioPage extends React.Component{
               console.log(104, audioWSData, audioWSData.length, audioWSData.byteLength, audioWSData.buffer, audioWSData.buffer.length);
               audioWSData.set(audioData[0], 0);
               audioWSData.set(audioData[1], bufferLen);
-              this.ws && this.ws.send(audioWSData.buffer);
+              this.state.ws.ws && this.state.ws.ws.send(audioWSData.buffer);
             }
             if (e.data.eventType === 'stop') {
               const channel1Buffer = mergeBuffers(this.recBuffers[0], this.recLength);
@@ -124,28 +117,33 @@ class MusicAudioPage extends React.Component{
     }
   }
 
+  static getDerivedStateFromProps(nextProps, state){
+    const {auth, music, ws} = nextProps;
+    return {auth, music, ws};
+  }
+
   componentDidMount() {
+    console.log(this.state.ws);
+    /*
     const host = window.location.host
     const ws = new WebSocket(`ws://${host}/path`);
     this.ws = ws;
-    ws.onopen = function (event) {
+    ws.onopen = (event) => {
       const authData={
         type: 'auth',
         token: getAccessToken()
       }
       ws.send(JSON.stringify(authData));
-      const array = new Float32Array(48000);
-
-      for (var i = 0; i < array.length; ++i) {
-        array[i] = i / 2;
-      }
-      const t= new Float32Array(48000*2);
-
-      t.set(array);
-      t.set(array, 48000);
-      
-      ws.send(t);
     };
+    ws.onclose = (event) => {
+      console.log('websocket will close!');
+    }
+    */
+  }
+
+  componentWillUnmount() {
+    console.log('page will unmount');
+    this.ws && this.ws.send(JSON.stringify({type: 'wsUnmount'}));
   }
   render(){
     return (
@@ -169,7 +167,7 @@ class MusicAudioPage extends React.Component{
           <div className='audio-recording-button'>
             <button type="button" className={this.state.recording != 1 ? 'btn btn-outline-primary btn-xs fullwidth' : 'btn btn-outline-danger btn-xs fullwidth'}
               onClick={this.recordAudio}
-              title='Record the audio for better analysis' disabled={this.state.recording == -1}
+              title='Record the audio for better analysis' disabled={this.state.auth.user == null}
             >
               {this.state.recording != 1 ? 'Record':'Stop'}
             </button>
@@ -196,7 +194,9 @@ class MusicAudioPage extends React.Component{
 const mapStateToProps = (state) => {
   return {
     audio:state.audio,
-    music:state.music
+    music:state.music,
+    auth:state.auth,
+    ws: state.ws
   };
 };
 

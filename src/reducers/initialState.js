@@ -57,3 +57,8 @@ export const modalInitState = {
 export const authInitState = {
   user: null
 }
+
+export const wsInitState = {
+  ws: null,
+  updateTime: null
+}
