@@ -122,29 +122,6 @@ class MusicAudioPage extends React.Component{
     return {auth, music, ws};
   }
 
-  componentDidMount() {
-    console.log(this.state.ws);
-    /*
-    const host = window.location.host
-    const ws = new WebSocket(`ws://${host}/path`);
-    this.ws = ws;
-    ws.onopen = (event) => {
-      const authData={
-        type: 'auth',
-        token: getAccessToken()
-      }
-      ws.send(JSON.stringify(authData));
-    };
-    ws.onclose = (event) => {
-      console.log('websocket will close!');
-    }
-    */
-  }
-
-  componentWillUnmount() {
-    console.log('page will unmount');
-    this.ws && this.ws.send(JSON.stringify({type: 'wsUnmount'}));
-  }
   render(){
     return (
       <div className="music-audio-page">

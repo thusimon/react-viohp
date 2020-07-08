@@ -57,3 +57,4 @@ export const SET_USER = 'SET_USER';
 
 //websocket action types
 export const GET_WEBSOCKET = 'GET_WEBSOCKET';
+export const CLOSE_WEBSOCKET = 'CLOSE_WEBSOCKET';

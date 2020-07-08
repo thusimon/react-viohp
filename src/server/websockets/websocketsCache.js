@@ -1,6 +1,6 @@
 const webSocketCache = () => {
   const cache = {};
-
+  const cacheExpireTimeout = 60*60*24*1000; // 1d;
   const clearAllCache = () => {
     cache = {};
   }
@@ -25,6 +25,15 @@ const webSocketCache = () => {
       cache[id] = {};
     }
     cache[id][entry] = value;
+    cache[id]['updatedTime'] = Date.now();
+  }
+
+  const cleanCache = () => {
+    for (let id in cache) {
+      if (cache[id]['updatedTime'] < Date.now() + cacheExpireTimeout) {
+        delete cache[id];
+      }
+    }
   }
 
   return {
@@ -32,7 +41,8 @@ const webSocketCache = () => {
     clearCache,
     getAllCache,
     getCache,
-    setCache
+    setCache,
+    cleanCache
   }
 }
 

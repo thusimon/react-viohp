@@ -1,7 +1,7 @@
 const WebSocket = require('ws');
-const { v4: uuidv4 } = require('uuid');
 const Audio = require('../models/audio');
 const webSocketCache = require('./websocketsCache').webSocketCache();
+const {authInternal} = require('../routers/middleware/auth');
 
 const mergeBuffers = (channelBuffer, recordingLength) => {
   const result = new Float32Array(recordingLength);
@@ -145,18 +145,49 @@ const webSocketIncomingDataHandler = (wsId, data) => {
   }
 }
 
+// self clean the websocket cache
+setInterval(webSocketCache.cleanCache, 60*60*1000); // every one hour clean the cache
+
 const webSocketConnectHandler = (ws, req) => {
   console.log('ws on connection');
-  ws.id = uuidv4();
   webSocketCache.setCache(ws.id, 'audio', {});
   ws.on('message', function incomingMessage(data) {
     webSocketIncomingDataHandler(ws.id, data);
   });
+  ws.on('close', function close(evt) {
+    console.log('socket closed, should clean the cache');
+    console.log(webSocketCache.getAllCache());
+    webSocketCache.clearCache(ws.id);
+    console.log(webSocketCache.getAllCache());
+  });
 }
 
 const createWebSocket = (server) => {
-  const wss = new WebSocket.Server({ server });
+  const wss = new WebSocket.Server({ noServer: true });
   wss.on('connection', webSocketConnectHandler);
+
+  server.on('upgrade', function upgrade(request, socket, head) {
+    wss.handleUpgrade(request, socket, head, async function done(ws) {
+      // we can do authentication here
+      const authTokenMatch = request.url.match(/accessToken=([^&]*)/);
+      const wsIdMatch = request.url.match(/id=([0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12})/i);
+      if (authTokenMatch && wsIdMatch) {
+        const authToken = authTokenMatch[1];
+        const id = wsIdMatch[1]
+        try {
+          const {user} = await authInternal(authToken);
+          ws.id = id;
+          ws.userId = user._id;
+          wss.emit('connection', ws, request);
+        } catch(e) {
+          console.log(e.message);
+          ws.close(1000, "auth failed");
+        }
+      } else {
+        ws.close(1000, "auth failed");
+      }
+    });
+  });
   return wss;
 }
 

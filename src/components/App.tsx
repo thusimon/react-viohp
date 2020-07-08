@@ -30,6 +30,10 @@ class App extends React.Component<RouteComponentProps> {
   constructor(props:AppPropsType | any) {
     super(props);
     this.store = props.store;
+    this.unload = this.unload.bind(this);
+  }
+  unload() {
+    this.store.dispatch(wsActions.closeWebSocket());
   }
   async componentDidMount() {
     // should try to get authentication status
@@ -42,7 +46,9 @@ class App extends React.Component<RouteComponentProps> {
     const host = window.location.host
     const url = `ws://${host}/websockets`;
     this.store.dispatch(wsActions.getWebSocket(url));
+    window.addEventListener("beforeunload", this.unload);
   }
+
   render() {
     return (
       <div className="container-fluid" >

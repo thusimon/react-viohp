@@ -5,6 +5,10 @@ const {AuthException} = require('./authException');
 const auth = async (req) => {
   const authorizationHeader = req.header('Authorization') || '';
   const token = authorizationHeader.replace('Bearer', '').trim();
+  return await authInternal(token);
+}
+
+const authInternal = async (token) => {
   if (!token) {
     throw new AuthException('no token in header, please authenticate');
   }
@@ -13,7 +17,7 @@ const auth = async (req) => {
   if (exp < Date.now()) {
     throw new AuthException('token expired, please authenticate');
   }
-  const user = await User.findById(decoded.id);
+  const user = await User.findById(decoded.id, '-password');
   if (!user) {
     throw new AuthException('can not find user, please authenticate');
   }
@@ -50,6 +54,7 @@ const guestAuth = async (req, res, next) => {
 
 module.exports = {
   auth,
+  authInternal,
   userAuth,
   guestAuth
 };
