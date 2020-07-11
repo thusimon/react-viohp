@@ -33,7 +33,8 @@ export const audioInitState = {
   tolerance: 5, // the spectrum peak's freq is x, find the pitch between [x-5, x+5]
   freqRange: [180, 1000], //the frequency range to display the spectrum position 1, note frequency g3=196Hz, b5=988Hz
   filters_AJAXFlag: 0,
-  filters:{}
+  filters:{},
+  analyzeState: false
 };
 
 export const scoreInitState = {

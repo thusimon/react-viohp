@@ -3,12 +3,14 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import {getAccessToken} from '../../storage/utils';
 import * as modalActions from '../../actions/modalActions';
+import {toggleAnalyzeAudio} from '../../actions/audioActions'
+import * as playerActions from '../../actions/playerActions'
 import MusicStaffPage from '../musicStaff/MusicStaffPage';
 import Violin from '../musicStaff/Violin';
 import AudioAnalyzer from '../audio/AudioAnalyzer';
 import AudioPlayer from '../audio/AudioPlayer';
+import PrepareTimerModal from '../modal/PrepareTimerModal';
 import ScorePickerModal from '../modal/ScorePickerModal';
 import SpectrumFilterModal from '../modal/SpectrumFilterModal';
 import SpectrumSettingModal from '../modal/SpectrumSettingModal';
@@ -23,7 +25,7 @@ class MusicAudioPage extends React.Component{
     this.pickSpectrumFilter = this.pickSpectrumFilter.bind(this);
     this.pickSpectrumSetting = this.pickSpectrumSetting.bind(this);
     this.cleanBuffers = this.cleanBuffers.bind(this);
-    this.recordAudio = this.recordAudio.bind(this);
+    this.analyzeAudio = this.analyzeAudio.bind(this);
     this.state = {recording: 0};
     this.recLength = 0;
     this.recBuffers = [[],[]];
@@ -51,27 +53,33 @@ class MusicAudioPage extends React.Component{
     this.recLength = 0;
   }
 
-  recordAudio(evt) {
+  analyzeAudio(evt) {
     const {scoreId, musicInfo} = this.state.music;
+    this.props.toggleAnalyzeAudio(!this.state.recording);
     if (this.state.recording == 1) {
       // we should stop recording
       this.setState({recording: 0});
+      this.audioContext && this.recorderNode && this.recorderNode.parameters.get('isRecording').setValueAtTime(0, this.audioContext.currentTime);
+      /*
       const stopRecordingWSData = {
         type: 'stopRecording',
         data: {scoreId, title: musicInfo.title}
       }
-      this.audioContext && this.recorderNode && this.recorderNode.parameters.get('isRecording').setValueAtTime(0, this.audioContext.currentTime);
       this.state.ws.ws && this.state.ws.ws.send(JSON.stringify(stopRecordingWSData));
+      */
     } else {
+      this.props.preplay();
       this.setState({recording: 1});
       const audioContext = AudioCtx.getInstance();
       this.audioContext = audioContext;
       this.sampleRate = audioContext.sampleRate;
+      /*
       const startRecordingWSData = {
         type: 'startRecording',
         data: {scoreId, title: musicInfo.title, sampleRate: this.sampleRate}
       }
       this.state.ws.ws && this.state.ws.ws.send(JSON.stringify(startRecordingWSData));
+      */
       audioContext.audioWorklet.addModule('worklets/record-worklet.js').then(() => {
         const recorderNode = new window.AudioWorkletNode(
           audioContext,
@@ -93,11 +101,12 @@ class MusicAudioPage extends React.Component{
               const bufferLen = audioData[0].length; // audioData[0] is one audio worklet buffer, length should be sampleRate
               this.recLength += bufferLen
               // combine the two channels as 1
+              /*
               const audioWSData = new Float32Array(bufferLen*2);
-              console.log(104, audioWSData, audioWSData.length, audioWSData.byteLength, audioWSData.buffer, audioWSData.buffer.length);
               audioWSData.set(audioData[0], 0);
               audioWSData.set(audioData[1], bufferLen);
               this.state.ws.ws && this.state.ws.ws.send(audioWSData.buffer);
+              */
             }
             if (e.data.eventType === 'stop') {
               const channel1Buffer = mergeBuffers(this.recBuffers[0], this.recLength);
@@ -143,10 +152,10 @@ class MusicAudioPage extends React.Component{
           </div>
           <div className='audio-recording-button'>
             <button type="button" className={this.state.recording != 1 ? 'btn btn-outline-primary btn-xs fullwidth' : 'btn btn-outline-danger btn-xs fullwidth'}
-              onClick={this.recordAudio}
-              title='Record the audio for better analysis' disabled={this.state.auth.user == null}
+              onClick={this.analyzeAudio}
+              title='Analyze the audio for evalutating the performance' disabled={this.state.auth.user == null}
             >
-              {this.state.recording != 1 ? 'Record':'Stop'}
+              {this.state.recording != 1 ? 'Analyze':'Stop'}
             </button>
           </div>
           <div className="player-section">
@@ -163,6 +172,7 @@ class MusicAudioPage extends React.Component{
             <Violin />
           </div>
         </div>
+        <PrepareTimerModal callback={playerActions.play}/>
       </div>
     );
   }
@@ -187,7 +197,13 @@ const mapDispatchToProps = (dispatch) => {
     },
     toggleSpectrumSetting: () => {
       dispatch(modalActions.toggleSpectrumSetting());
-    }
+    },
+    toggleAnalyzeAudio: (state) => {
+      dispatch(toggleAnalyzeAudio(state));
+    },
+    preplay: () => {
+      dispatch(playerActions.preplay());
+    },
   };
 }
 

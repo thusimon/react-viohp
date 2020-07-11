@@ -36,6 +36,7 @@ export const ADD_FILTER_POINT = 'ADD_FILTER_POINT';
 export const REMOVE_FILTER_POINT = 'REMOVE_FILTER_POINT';
 export const SAVE_FILTER_POINTS = 'SAVE_FILTER_POINTS';
 export const APPLY_FILTER = 'APPLY_FILTER';
+export const ANALYZE_AUDIO = 'ANALYZE_AUDIO'
 
 //player action types
 export const PLAY = 'PLAY';

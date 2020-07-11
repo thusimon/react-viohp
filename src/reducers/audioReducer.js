@@ -43,6 +43,10 @@ export default function audioReducer(state=initState, action={}){
       let {appliedFiltername, appliedFilter} = action;
       return Object.assign({}, state, {appliedFilter, appliedFiltername});
     }
+    case types.ANALYZE_AUDIO: {
+      const {analyzeState} = action;
+      return Object.assign({}, state, {analyzeState});
+    }
     default:
       return state;
   }

@@ -36,7 +36,6 @@ const AudioPlayer = (props) => {
             setVolumeState(val);
         }}/>
       </div>
-      <PrepareTimerModal />
     </div>
   );
 };

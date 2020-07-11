@@ -7,7 +7,7 @@ import './prepare-timer-modal.scss';
 
 const TIME_OFF = 5;
 
-const PrepareTimerModal = ({display, startPlay, toggleDisplay}) => {
+const PrepareTimerModal = ({display, startPlay, toggleDisplay, callback}) => {
   let [timeLeftover, setTimeLeftover] = useState(TIME_OFF);
   useEffect(() => {
     if (display) {
@@ -19,7 +19,7 @@ const PrepareTimerModal = ({display, startPlay, toggleDisplay}) => {
       setTimeLeftover(currentTime);
       setTimeout(startCountDown, 1000, currentTime-1);
     } else {
-      startPlay();
+      startPlay(callback);
       toggleDisplay();
     }
   }
@@ -42,8 +42,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    startPlay: () => {
-      dispatch(playerActions.play());
+    startPlay: (callback) => {
+      dispatch(callback());
     },
     toggleDisplay: () => {
       dispatch(modalActions.togglePrepareTimer());

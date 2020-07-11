@@ -50,3 +50,8 @@ export const saveFilterPoints = (xpoints, ypoints)=>{
 export const applyFilter = (appliedFiltername, appliedFilter) => {
   return {type:types.APPLY_FILTER, appliedFiltername, appliedFilter};
 };
+
+// state is either true(start) or false(stop)
+export const toggleAnalyzeAudio = (analyzeState) => {
+  return {type: types.ANALYZE_AUDIO, analyzeState}
+}

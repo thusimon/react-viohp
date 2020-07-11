@@ -15,30 +15,34 @@ const MusicAnalyticsPage = () => {
   const [audioList, setAudioList] = useState([]);
   useEffect(() => {
     const fetchAccount = async () => {
-      const {err, audios} = await fetchDataWithAccessToken('/api/audio', 'GET');
+      const {err, audioAnalyses} = await fetchDataWithAccessToken('/api/audioanalyses', 'GET');
       if (err) {
         setAudioList([]);
       } else {
-        console.log(12, audios);
-        setAudioList(audios);
+        console.log(12, audioAnalyses);
+        setAudioList(audioAnalyses);
       }
     }
     fetchAccount();
   }, []);
 
   const clickScoreDownload = async (evt, id) => {
-    console.log(21, id);
-    const response = await fetch(`/api/audio/${id}`);
-    const wavBlob = await response.blob();
-    const fileTime = new Date().toISOString().replace(/:/g, '_');
-    forceDownload(wavBlob, `record_${fileTime}.wav`);
+    const response = await fetchDataWithAccessToken(`/api/audioanalyse/${id}`, 'GET');
+    //const wavBlob = await response.blob();
+    //const fileTime = new Date().toISOString().replace(/:/g, '_');
+    //forceDownload(wavBlob, `record_${fileTime}.wav`);
+    
   }
   return (
-    <div>
-      MusicAnalyticsPage
-      <ul>
-        {audioList.map(audio => <li key={audio._id} onClick={(evt) => clickScoreDownload(evt, audio._id)}>{audio.title}</li>)}
-      </ul>
+    <div class="music-analytics-page">
+      <div class="music-analytics-list">
+        <ul>
+          {audioList.map(audio => <li key={audio._id} onClick={(evt) => clickScoreDownload(evt, audio._id)}>{audio.scoreTitle}</li>)}
+        </ul>
+      </div>
+      <div class="music-analytics-staff">
+
+      </div>
     </div>
   )
 }

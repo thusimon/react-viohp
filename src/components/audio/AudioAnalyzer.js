@@ -16,10 +16,20 @@ class AudioAnalyzer extends React.Component{
     this.canvasRef = React.createRef();
     this.constraints = {audio: true, video:false};
     this.updateCanvas = this.updateCanvas.bind(this);
+    this.toggleAudioAnalyze = this.toggleAudioAnalyze.bind(this);
     this.toggleSettings = this.toggleSettings.bind(this);
     this.source=null;
     this.defaultInfo = {noteColor: "#00FF00", peakFreq: "0", noteName: "--", noteFreq: '--'};
     this.state = Object.assign({}, this.props, {showSettings: false});
+    this.initAnalyzeData = {
+      sampleRate: 0,
+      scoreTitle: '',
+      scoreId: '',
+      analyzeFrames: [],
+      prepareTime: 5000,
+      analyzeIncTime: 100
+    },
+    this.analyzing = false;
   }
   static getDerivedStateFromProps(nextProps){
     let {threshold, tolerance, freqRange,appliedFilter} = nextProps;
@@ -66,9 +76,37 @@ class AudioAnalyzer extends React.Component{
   componentWillUnmount(){
     clearInterval(this.timer);
   }
-  toggleSettings(){
+  toggleSettings() {
     let curState = this.state.showSettings;
     this.setState({showSettings:!curState});
+  }
+  toggleAudioAnalyze(peakFreqIndex) {
+    if (!this.props.ws.ws) {
+      return;
+    }
+    if (this.props.analyzeState==1){
+      if (this.analyzing == false) {
+        this.analyzing = true;
+        this.analyzeData = this.initAnalyzeData;
+        this.analyzeData.analyzeFrames = [];
+        this.analyzeData.sampleRate = this.sampleRate;
+        this.analyzeData.scoreTitle = this.props.music.musicInfo.title
+        this.analyzeData.scoreId = this.props.music.id
+        this.analyzeData.analyzeFrames.push(peakFreqIndex);
+      } else {
+        this.analyzeData.analyzeFrames.push(peakFreqIndex);
+      }
+    } else {
+      if (this.analyzing == true) {
+        // recording is done, we should send the analyzed data
+        this.analyzing = false;
+        this.props.ws.ws.send(JSON.stringify({
+          type: 'anaylzeAudio',
+          data: this.analyzeData
+        }));
+        this.analyzeData = this.initAnalyzeData;
+      }
+    }
   }
   updateCanvas(){
     this.analyser.getByteFrequencyData(this.dataArray);
@@ -78,6 +116,7 @@ class AudioAnalyzer extends React.Component{
       rangedFreqData = multiplyVectors(rangedFreqData, this.state.appliedFilter);
     }
     let [peakEnergy, peakFreqIndex] = audioUtils.getPeakFreq(rangedFreqData, this.state.threshold);
+    this.toggleAudioAnalyze(peakFreqIndex)
     //let [peakEnergy, peakFreqIndex] = audioUtils.getBasePeakFreq(rangedFreqData, this.state.threshold, 50);
     let {noteColor, peakFreq,noteName, noteFreq} = this.defaultInfo;
     if (peakEnergy>0){
@@ -164,8 +203,9 @@ class AudioAnalyzer extends React.Component{
   }
 }
 function mapStateToProps(state){
-  return state.audio;
+  return Object.assign({}, state.audio, {music:state.music}, {ws: state.ws});
 }
+
 function mapDispatchToProps(dispatch){
   return {
     displayInfo: (peakEnergy, peakFreq, noteColor, noteName, noteFreq)=>{

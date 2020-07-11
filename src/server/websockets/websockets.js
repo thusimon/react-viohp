@@ -1,5 +1,6 @@
 const WebSocket = require('ws');
 const Audio = require('../models/audio');
+const AudioAnalyse = require('../models/audio-analyse');
 const webSocketCache = require('./websocketsCache').webSocketCache();
 const {authInternal} = require('../routers/middleware/auth');
 
@@ -72,19 +73,12 @@ const generateWAV = (interleaved, sampleRate) => {
   return view;
 }
 
-const webSocketIncomingDataHandler = (wsId, data) => {
+const webSocketIncomingDataHandler = (wsId, wsUserId, data) => {
   // data can only be blob or string
   if (typeof data == 'string') {
     try {
       const dataJson = JSON.parse(data);
       switch (dataJson.type) {
-        case 'auth': {
-          break;
-        }
-        case 'wsUnmount': {
-          console.log('server received ws unmount');
-          break;
-        }
         case 'startRecording': {
           const {scoreId, title, sampleRate} = dataJson.data;
           const recordAudio = webSocketCache.getCache(wsId, 'audio') || {};
@@ -124,6 +118,14 @@ const webSocketIncomingDataHandler = (wsId, data) => {
           webSocketCache.setCache(wsId, 'audio', {});
           break;
         }
+        case 'anaylzeAudio': {
+          const audioAnalyse = new AudioAnalyse(Object.assign({}, dataJson.data, {userId: wsUserId}));
+          audioAnalyse.save()
+          .catch(err => {
+            console.log(err);
+          });
+          break;
+        }
       }
     } catch (e) {
       console.log('Handling string socket data error' + e.message);
@@ -152,7 +154,7 @@ const webSocketConnectHandler = (ws, req) => {
   console.log('ws on connection');
   webSocketCache.setCache(ws.id, 'audio', {});
   ws.on('message', function incomingMessage(data) {
-    webSocketIncomingDataHandler(ws.id, data);
+    webSocketIncomingDataHandler(ws.id, ws.userId, data);
   });
   ws.on('close', function close(evt) {
     console.log('socket closed, should clean the cache');
