@@ -3,6 +3,8 @@ import * as audioActions from '../../actions/audioActions';
 import ListBox from '../common/ListBox';
 import TwoDPDisp from '../common/TwoDPoints';
 import {connect} from 'react-redux';
+import * as AudioFilters from '../../data/audioFilters/filters';
+
 import {generateConsecutiveFilterData, getFreqRange} from './Utils';
 
 class AudioFilter extends React.Component {
@@ -21,11 +23,11 @@ class AudioFilter extends React.Component {
         //this.removeFilterPoint = this.removeFilterPoint.bind(this);
         //this.saveFilter = this.saveFilter.bind(this);
         this.state = {showModal:false, filters:this.props.filters, filters_AJAXFlag: this.props.filters_AJAXFlag, selectedFilter:{data:[],edit:false}};
-        this.props.getFilters();
+        //this.props.getFilters();
     }
     
     getFiltersOnClick(){
-        this.props.getFilters();
+        //this.props.getFilters();
     }
     clearFilterOnClick(){
         this.setState({selectedFilterName:null, selectedFilter:{data:[],edit:false}});
@@ -55,6 +57,11 @@ class AudioFilter extends React.Component {
     modalBtnHandler(){
         this.setState({showModal:false});
     }
+
+    componentDidMount() {
+        this.props.loadFilterSuccess(AudioFilters);
+    }
+
     render(){
         // should return two inputs and a add button
         let {selectedFilter, selectedFilterName} = this.state;
@@ -96,8 +103,8 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        getFilters: ()=>{
-            dispatch(audioActions.loadAllFilters());
+        loadFilterSuccess: (filters) => {
+            dispatch(audioActions.loadFiltersSuccess(filters))
         },
         applyFilter: (filtername, appliedFilter)=>{
             dispatch(audioActions.applyFilter(filtername, appliedFilter));

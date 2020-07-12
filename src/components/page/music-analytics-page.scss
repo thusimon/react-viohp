@@ -1,0 +1,44 @@
+.music-analytics-page {
+  display: grid;
+  grid-template-columns: 400px auto;
+  grid-template-areas:  
+    "records analytics";
+  justify-items: stretch;
+  align-items: stretch;
+  width: 100vw;
+  height: 100%;
+  .music-analytics-list {
+    grid-area: records;
+    ul {
+      list-style-type: none;
+      padding: 0px;
+      margin: 0px;
+      li {
+        cursor: pointer;
+        border-bottom: 1px solid black;
+        div {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          .score-title {
+            text-align: left;
+            max-width: 250px;
+          }
+          .score-time {
+            text-align: right;
+            font-size: 12px;
+            max-width: 150px;
+            vertical-align: middle;
+          }
+        }
+        :hover {
+          background-color: ghostwhite;
+        }
+      }
+    }
+  }
+  .music-analytics-staff {
+    grid-area: analytics;
+  }
+}

@@ -20,7 +20,7 @@ webpackBuildResult(compilerWeb)
   return webpackBuildResult(compilerWorklet);
 })
 .then(() => {
-  return db.connectToDb(true);
+  return db.connectToDb(false);
 })
 .then(() => {
   app.get('*', function(req, res) {

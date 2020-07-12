@@ -1,35 +1,10 @@
 import React from 'react';
-import * as Sym from './Symbols';
 import {connect} from 'react-redux';
 import * as playerActions from '../../actions/playerActions';
-import getNoteIterator from './NoteIterator';
+import {getNoteIterator, getTimeoutFromNoteType} from './NoteIterator';
 import './music-staff-player-arrow.scss';
 
-const baseTime = 0.2; // eigth note is 200ms
-const getTimeoutFromNoteType = (note) => {
-  let time = baseTime;
-  switch (note.type) {
-    case Sym.NOTE_HALF:
-    case Sym.NOTE_HALF_REVERSE:
-    case Sym.HALFREST_TYPE:
-      time = baseTime*4;
-      break;
-    case Sym.NOTE_QUARTER:
-    case Sym.NOTE_QUARTER_REVERSE:
-    case Sym.QUARTERREST_TYPE:
-      time = baseTime*2;
-      break;
-    case Sym.NOTE_EIGHTH:
-    case Sym.NOTE_EIGHTH_REVERSE:
-    case Sym.EIGTHREST_TYPE:
-    default:
-      time = baseTime;
-  }
-  if (note.descriptor && note.descriptor.augment) {
-    time += time/2;
-  }
-  return time;
-};
+const baseTime = 0.3; // eigth note is 300ms
 
 const getNoteState = (noteIter, staffWidth=1200) => {
   const note = noteIter.next().value;
@@ -39,7 +14,7 @@ const getNoteState = (noteIter, staffWidth=1200) => {
   const row = note.row;
   const top = initState[1] + row*200;
   const left = Math.round(note.note.x*staffWidth-8);
-  const time = getTimeoutFromNoteType(note.note);
+  const time = getTimeoutFromNoteType(note.note, baseTime);
   return {top, left, row, time, note:note.note};
 }
 
@@ -59,7 +34,6 @@ class MusicStaffPlayerArrow extends React.Component {
 
   static getDerivedStateFromProps(nextProps, state) {
     let newState = {};
-    console.log(nextProps);
     if (Array.isArray(nextProps.notes[0])) {
       if (nextProps.id != state.id) {
         // if the score id is different or current notes are not same as previous notes

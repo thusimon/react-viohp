@@ -28,6 +28,10 @@ export const showFreqLine = (freqLineVal)=>{
   return {type:types.SHOW_FREQLINE, freqLineVal};
 };
 
+export const setScoreRaw = (score) => {
+  return {type: types.SET_SCORE, score}
+}
+
 export const setScore = (category, id)=>{
   return {type: types.SET_SCORE_ID, category, id};
 };

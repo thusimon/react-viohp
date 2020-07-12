@@ -27,10 +27,10 @@ const ScorePicker  = () => {
         <Col sm={9}>
           <Tab.Content>
             <Tab.Pane eventKey="first">
-              <ScoreList category="public" reqPath="/api/score/public"/>
+              <ScoreList category="public" reqPath="/api/scores/public"/>
             </Tab.Pane>
             <Tab.Pane eventKey="second">
-              <ScoreList category="private" reqPath="/api/score/me"/>
+              <ScoreList category="private" reqPath="/api/scores/me"/>
             </Tab.Pane>
           </Tab.Content>
         </Col>

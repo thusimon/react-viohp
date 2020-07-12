@@ -38,6 +38,12 @@ const musicReducer = (state=initState, action={}) => {
       return Object.assign({}, state, {dragInfo: action.dragInfo});
     case types.SHOW_FREQLINE:
       return Object.assign({}, state, {freqLineVal: action.freqLineVal});
+    case types.SET_SCORE: {
+      let scoreData = action.score;
+      const score = new Score(scoreData);
+      let musicInfo = {title:score.title, author:score.author, signature: score.signature, scale: score.scale};
+      return Object.assign({}, state, {id: score.id, musicInfo, notes:score.notes, originalNotes:score.originalNotes});
+    }
     case types.SET_SCORE_ID:
     {
       let {category, id} = action;

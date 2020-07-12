@@ -8,6 +8,7 @@ import * as audioUtils from './Utils';
 import AudioDisplay from './AudioDisplay';
 import * as audioActions from '../../actions/audioActions';
 import {multiplyVectors} from '../../math/basicMatrix';
+import {fetchDataWithAccessToken} from '../../api/utils';
 import './audio-analyzer.scss';
 
 class AudioAnalyzer extends React.Component{
@@ -81,9 +82,6 @@ class AudioAnalyzer extends React.Component{
     this.setState({showSettings:!curState});
   }
   toggleAudioAnalyze(peakFreqIndex) {
-    if (!this.props.ws.ws) {
-      return;
-    }
     if (this.props.analyzeState==1){
       if (this.analyzing == false) {
         this.analyzing = true;
@@ -92,6 +90,7 @@ class AudioAnalyzer extends React.Component{
         this.analyzeData.sampleRate = this.sampleRate;
         this.analyzeData.scoreTitle = this.props.music.musicInfo.title
         this.analyzeData.scoreId = this.props.music.id
+        this.analyzeData.noteBaseTime = 300;
         this.analyzeData.analyzeFrames.push(peakFreqIndex);
       } else {
         this.analyzeData.analyzeFrames.push(peakFreqIndex);
@@ -100,10 +99,13 @@ class AudioAnalyzer extends React.Component{
       if (this.analyzing == true) {
         // recording is done, we should send the analyzed data
         this.analyzing = false;
+        /*
         this.props.ws.ws.send(JSON.stringify({
           type: 'anaylzeAudio',
           data: this.analyzeData
         }));
+        */
+        fetchDataWithAccessToken('/api/audioanalyse', 'POST', this.analyzeData);
         this.analyzeData = this.initAnalyzeData;
       }
     }

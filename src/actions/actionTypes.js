@@ -20,6 +20,7 @@ export const CLEAR_ALL_NOTES = 'CLEAR_ALL_NOTES';
 export const NOTE_CLICK = 'NOTE_CLICK';
 export const NOTE_DRAG = 'NOTE_DRAG';
 export const SHOW_FREQLINE = "SHOW_FREQLINE";
+export const SET_SCORE = 'SET_SCORE';
 export const SET_SCORE_ID = 'SET_SCORE_ID';
 export const SET_SCORE_LIST = 'SET_SCORE_LIST';
 export const UPDATE_SCORE_INFO = 'UPDATE_SCORE_INFO';
@@ -36,6 +37,7 @@ export const ADD_FILTER_POINT = 'ADD_FILTER_POINT';
 export const REMOVE_FILTER_POINT = 'REMOVE_FILTER_POINT';
 export const SAVE_FILTER_POINTS = 'SAVE_FILTER_POINTS';
 export const APPLY_FILTER = 'APPLY_FILTER';
+export const LOAD_ALL_FILTER = 'LOAD_ALL_FILTER';
 export const ANALYZE_AUDIO = 'ANALYZE_AUDIO'
 
 //player action types

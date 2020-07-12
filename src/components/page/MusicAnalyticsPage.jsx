@@ -1,5 +1,10 @@
 import React, {useState,useEffect} from 'react';
+import {connect} from 'react-redux';
 import {fetchDataWithAccessToken} from '../../api/utils';
+import {getNoteIterator, getTimeoutFromNoteType} from '../musicStaff/NoteIterator';
+import MusicStaffPage from '../musicStaff/MusicStaffPage';
+import * as musicActions from '../../actions/musicActions';
+import './music-analytics-page.scss';
 
 const forceDownload = (blob, filename) => {
   let url = (window.URL || window.webkitURL).createObjectURL(blob);
@@ -11,40 +16,120 @@ const forceDownload = (blob, filename) => {
   link.remove();
 }
 
-const MusicAnalyticsPage = () => {
+const getElapsedTime = (time, now) => {
+  const elapsedSeconds = (now - time) / 1000;
+  if (elapsedSeconds < 60) {
+    return elapsedSeconds+'s';
+  } else if (elapsedSeconds < 3600) {
+    return Math.round(elapsedSeconds/60) + 'm';
+  } else if (elapsedSeconds < 3600 * 24) {
+    return Math.round(elapsedSeconds/3600) + 'h';
+  } else {
+    return Math.round(elapsedSeconds/3600/24) + 'd'
+  }
+}
+
+const average = (arr) => {
+  if (arr.length == 0) {
+    return 0;
+  }
+  const sum = arr.reduce((a, b) => a + b, 0);
+  const avg = (sum / arr.length) || 0;
+  return avg;
+}
+const MusicAnalyticsPage = ({music={}, setScore}) => {
   const [audioList, setAudioList] = useState([]);
+  const [audioAnalyze, setAudioAnalyze] = useState({});
+  
+  const analyze = (audioAnalyse, notes) => {
+    const {analyzeFrames, analyzeIncTime, noteBaseTime, prepareTime} = audioAnalyse;
+    if (!analyzeFrames || !analyzeIncTime || !noteBaseTime || !prepareTime || !notes) {
+      return;
+    }
+    //console.log(analyzeFrames, analyzeIncTime, noteBaseTime, prepareTime, notes);
+    const noteIter = new getNoteIterator(notes).getNextNoteInfo();
+    let note;
+    let noteTimeline = prepareTime;
+    do {
+      note = noteIter.next().value;
+      if (!note) {
+        break;
+      }
+      const time = getTimeoutFromNoteType(note.note, noteBaseTime);
+      if (note.note.type.startsWith('NOTE')) {
+        const audioFrameIdx = Math.round(noteTimeline / analyzeIncTime);
+        const audioFrameIdxSpan = Math.round(time/analyzeIncTime);
+        const audioFrames = analyzeFrames.slice(audioFrameIdx, audioFrameIdx+audioFrameIdxSpan);
+        const avg = average(audioFrames)
+        console.log(`${note.note.label}-${note.note.freq} diff: ${avg - note.note.freq}, ${JSON.stringify(audioFrames)}`);
+      }
+      noteTimeline += time;
+    } while(!!note);
+  }
+
   useEffect(() => {
-    const fetchAccount = async () => {
+    const fetchAudioAnalyses = async () => {
       const {err, audioAnalyses} = await fetchDataWithAccessToken('/api/audioanalyses', 'GET');
       if (err) {
         setAudioList([]);
       } else {
-        console.log(12, audioAnalyses);
         setAudioList(audioAnalyses);
       }
     }
-    fetchAccount();
-  }, []);
+    fetchAudioAnalyses();
+    analyze(audioAnalyze, music.notes);
+  }, [music]);
 
   const clickScoreDownload = async (evt, id) => {
-    const response = await fetchDataWithAccessToken(`/api/audioanalyse/${id}`, 'GET');
+    const audioAnalyseRes = await fetchDataWithAccessToken(`/api/audioanalyse/${id}`, 'GET');
     //const wavBlob = await response.blob();
     //const fileTime = new Date().toISOString().replace(/:/g, '_');
     //forceDownload(wavBlob, `record_${fileTime}.wav`);
-    
+    if (audioAnalyseRes.err) {
+      console.log('err:' + audioAnalyseRes.err)
+      return;
+    }
+    const {scoreId} = audioAnalyseRes.audioAnalyse;
+    setAudioAnalyze(audioAnalyseRes.audioAnalyse);
+    const scoreRes = await fetchDataWithAccessToken(`/api/score/${scoreId}`, 'GET');
+    if (scoreRes.err) {
+      console.log('err:' + scoreRes.err)
+      return;
+    }
+    setScore(scoreRes.score);
   }
   return (
-    <div class="music-analytics-page">
-      <div class="music-analytics-list">
+    <div className="music-analytics-page">
+      <div className="music-analytics-list">
         <ul>
-          {audioList.map(audio => <li key={audio._id} onClick={(evt) => clickScoreDownload(evt, audio._id)}>{audio.scoreTitle}</li>)}
+          {audioList.map(audio => {
+            return <li key={audio._id} onClick={(evt) => clickScoreDownload(evt, audio._id)}>
+              <div>
+                <span className="score-title">{audio.scoreTitle}</span>
+                <span className="score-time">{new Date(audio.updatedAt).toISOString()}</span>
+              </div>
+            </li>
+          })}
         </ul>
       </div>
-      <div class="music-analytics-staff">
-
+      <div className="music-analytics-staff">
+        <MusicStaffPage />
       </div>
     </div>
   )
 }
 
-export default MusicAnalyticsPage;
+function mapStateToProps(state){
+  return {music: state.music};
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setScore: (score) => {
+      dispatch(musicActions.setScoreRaw(score));
+    }
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(MusicAnalyticsPage);

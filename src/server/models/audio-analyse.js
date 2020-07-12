@@ -14,6 +14,9 @@ const audioAnalyseSchema = new Schema({
   analyzeIncTime: {
     type: Number
   },
+  noteBaseTime: {
+    type: Number
+  },
   scoreTitle: {
     type: String
   },
@@ -22,7 +25,9 @@ const audioAnalyseSchema = new Schema({
   },
   userId: {
     type: Schema.Types.ObjectId
-  }
+  },
+  createdAt: Number,
+  updatedAt: Number
 }, {
   timestamps:true
 });

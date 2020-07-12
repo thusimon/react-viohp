@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import AudioControls from '../audio/AudioControls';
 
-const SepctrumFilterModal = ({display, toggleDisplay}) => {
+const SepctrumSettingModal = ({display, toggleDisplay}) => {
   
   const handleClose = () => {
     toggleDisplay();
@@ -15,7 +15,7 @@ const SepctrumFilterModal = ({display, toggleDisplay}) => {
     <>
       <Modal show={display} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Select your spectrum filter</Modal.Title>
+          <Modal.Title>Config audio analyze settings</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <AudioControls />
@@ -44,4 +44,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SepctrumFilterModal);
+export default connect(mapStateToProps, mapDispatchToProps)(SepctrumSettingModal);

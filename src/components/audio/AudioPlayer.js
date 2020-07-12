@@ -6,7 +6,6 @@ import * as playerActions from '../../actions/playerActions';
 
 import SelfClearBtn from '../common/SelfClearBtn';
 import Slider from '../common/Slider';
-import PrepareTimerModal from '../modal/PrepareTimerModal';
 import '../../styles/common/btn-xs.scss';
 import './audio-player.scss';
 

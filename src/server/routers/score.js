@@ -5,7 +5,7 @@ const Score = require('../models/score');
 const User = require('../models/user');
 var mongoose = require('mongoose');
 
-router.get('/api/score/me', userAuth, async (req, res) => {
+router.get('/api/scores/me', userAuth, async (req, res) => {
   try {
     const userId = req.user._id;
     const scores = await Score.find({owner: mongoose.Types.ObjectId(userId)}).sort({order: 1});
@@ -13,6 +13,17 @@ router.get('/api/score/me', userAuth, async (req, res) => {
   } catch (err) {
     return res.status(400).send({err: err.message});
   }
+});
+
+router.get('/api/score/:id', userAuth, async (req, res) => {
+  const userId = req.user._id;
+  const id = req.params.id;
+  if (id) {
+    const score = await Score.findById(id);
+    // check score owner should user userId or Guest
+    return res.status(200).send({score});
+  }
+  return res.status(400).send({err: 'no score id specified'});
 });
 
 router.post('/api/score/me', userAuth, async (req, res) => {
@@ -52,7 +63,7 @@ router.patch('/api/score/me', userAuth, async (req, res) => {
     return res.status(500).send({err: err.message});
   }
 });
-router.get('/api/score/public', async (req, res) => {
+router.get('/api/scores/public', async (req, res) => {
   try{
     const guest = await User.collection.findOne({email: 'Guest'});
     if (!guest) {
