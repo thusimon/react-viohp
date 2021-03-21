@@ -10,7 +10,7 @@ import * as Utils from './Utils';
 import * as musicActions from '../../actions/musicActions';
 import MusicStaffHead from './MusicStaffHead';
 import './music-staff-page.scss';
-
+import {Staff} from '../../music-editor/staff/staff'
 class MusicStaffPage extends React.Component {
   constructor(props, context){
     super(props, context);
@@ -74,6 +74,7 @@ class MusicStaffPage extends React.Component {
           {Array.from(Array(this.state.staffNum).keys()).map(n =>
               <MusicStaff key={n.toString()} idx={n} staffRef = {this.staffRef}/>
           )}
+          <Staff count={2} />
         </div>
       </div>);
   }

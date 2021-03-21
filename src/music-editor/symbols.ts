@@ -1,0 +1,1 @@
+export const CLEF_G = '\ud834\udd1e';
