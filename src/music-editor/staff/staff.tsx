@@ -1,10 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux'
 import {Score, SymbolType, ScaleHead} from '../types';
-import {CLEF_G, SHARP, FLAT} from '../symbols';
+import {CLEF_G, SHARP, FLAT} from '../symbols/symbol-unicode';
 import {STAFF_SCALES_HEAD} from '../constants';
-import {Note} from '../notes/notes';
-import * as d3 from 'd3'
+import SymbolSVG from '../symbols/symbol-svg';
+import * as d3 from 'd3';
+
+const {NOTE_WHOLE, NOTE_HALF, NOTE_HALF_REVERSE, NOTE_QUARTER, NOTE_QUARTER_REVERSE
+  , NOTE_EIGHTH, NOTE_EIGHTH_REVERSE} = SymbolType
 /** 
  * one music staff contains 3+4+3 gapps, and one gap is 20px now  
  * so one staff takes 200px 
@@ -89,16 +92,18 @@ const drawNotes = (score: Score) => {
   const {notes, signature, scale} = score;
   const scalesHeadLength = STAFF_SCALES_HEAD[signature][scale].length;
   const staff =  d3.selectAll('.d3-staff');
-  const note = new Note(SymbolType.NOTE_WHOLE);
-  const noteCenter = note.getCenter();
+  const syms = [new SymbolSVG(NOTE_WHOLE), new SymbolSVG(NOTE_HALF), new SymbolSVG(NOTE_HALF_REVERSE)
+    , new SymbolSVG(NOTE_QUARTER), new SymbolSVG(NOTE_QUARTER_REVERSE)
+    , new SymbolSVG(NOTE_EIGHTH), new SymbolSVG(NOTE_EIGHTH_REVERSE)];
   staff.selectAll('.d3-staff-note')
-  .data([1])
+  .data(syms)
   .join('g')
   .attr('class', 'd3-staff-note')
-  .attr('transform', `translate(${100-noteCenter[0]},${100-noteCenter[1]})`)
-  .html((d) => {
-    return note.getPath();
-  });
+  .attr('transform', (d, idx) => {
+    const noteCenter = d.getCenter();
+    return `translate(${100-noteCenter[0] + idx*30},${100-noteCenter[1]})`
+  })
+  .html(d => d.getPath());
 }
 export const StaffUnconnected = (score: Score) => {
   const divRef = useRef<HTMLDivElement>(null)

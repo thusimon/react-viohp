@@ -47,6 +47,7 @@ For example, paste the following in the note editor:
             </tr>
           </tbody>
         </table>
+        <div className='motto'>早服还丹无世情 琴心三叠道初成</div>
       </div>
     );
   }
