@@ -1,18 +1,22 @@
 import * as d3 from 'd3';
-import { path } from 'd3';
+import { Selection } from 'd3';
+import {SYM_MAP} from '../constants'
 import {ellipse, noteStem, noteStemRev, stem, hook} from '../svgs/base-paths';
-import {SymbolType} from '../types';
+import {SymbolType, Descriptor} from '../types';
 
 const {NOTE_WHOLE, NOTE_HALF, NOTE_HALF_REVERSE, NOTE_QUARTER, NOTE_QUARTER_REVERSE
-  , NOTE_EIGHTH, NOTE_EIGHTH_REVERSE} = SymbolType;
+  , NOTE_EIGHTH, NOTE_EIGHTH_REVERSE, FLAT, SHARP, NATURAL} = SymbolType;
 
 class SymbolSVG {
   type: SymbolType;
-  constructor(type: SymbolType) {
+  desc?: Descriptor;
+  nodes: Selection<SVGPathElement|SVGTextElement|SVGCircleElement, undefined, null, undefined>[];
+  constructor(type: SymbolType, desc?: Descriptor) {
     this.type = type;
+    this.desc = desc || {};
+    this.nodes = [];
   }
-  getPath(): string {
-    let paths = [];
+  getSymbolNodes(): void {
     switch(this.type) {
       case NOTE_WHOLE: {
         const path = d3.create('path');
@@ -20,7 +24,7 @@ class SymbolSVG {
         path.style('fill', 'none');
         path.style('stroke','black');
         path.style('stroke-width', 2);
-        paths = [path];
+        this.nodes.push(path);
         break;
       }
       case NOTE_HALF: {
@@ -29,7 +33,7 @@ class SymbolSVG {
         path.style('fill', 'none');
         path.style('stroke','black');
         path.style('stroke-width', 2);
-        paths = [path];
+        this.nodes.push(path);
         break;
       }
       case NOTE_HALF_REVERSE: {
@@ -38,7 +42,7 @@ class SymbolSVG {
         path.style('fill', 'none');
         path.style('stroke','black');
         path.style('stroke-width', 2);
-        paths = [path];
+        this.nodes.push(path);
         break;
       }
       case NOTE_QUARTER: {
@@ -47,7 +51,7 @@ class SymbolSVG {
         path.style('fill', 'black');
         path.style('stroke','black');
         path.style('stroke-width', 2);
-        paths = [path];
+        this.nodes.push(path);
         break;
       }
       case NOTE_QUARTER_REVERSE: {
@@ -56,7 +60,7 @@ class SymbolSVG {
         path.style('fill', 'black');
         path.style('stroke','black');
         path.style('stroke-width', 2);
-        paths = [path];
+        this.nodes.push(path);
         break;
       }
       case NOTE_EIGHTH: {
@@ -71,7 +75,7 @@ class SymbolSVG {
         path2.attr('transform', 'scale(1,-1) translate(8.2, 15.8)');
         path2.style('stroke','black');
         path2.style('stroke-width', 1);
-        paths = [path1, path2];
+        this.nodes.push(path1, path2);
         break;
       }
       case NOTE_EIGHTH_REVERSE: {
@@ -86,13 +90,38 @@ class SymbolSVG {
         path2.attr('transform', 'translate(-7.8, 15)');
         path2.style('stroke','black');
         path2.style('stroke-width', 1);
-        paths = [path1, path2];
+        this.nodes.push(path1, path2);
         break;
       }
       default:
         break;
     }
-    return paths.reduce((acc, path) => acc + path.node().outerHTML, '');
+  }
+  getAugumentDescriptor(): void {
+    if (this.desc.augment) {
+      // add dot
+      const dot = d3.create('circle');
+      dot.attr('r', 3)
+      dot.attr('cx', 17);
+      dot.attr('cy', -6);
+      this.nodes.push(dot);
+    }
+  } 
+  getScaleDescriptor(): void {
+    if (this.desc.scale) {
+      const scale = d3.create('text');
+      scale.text(SYM_MAP[this.desc.scale]);
+      scale.attr('x', -22);
+      scale.attr('y', 6);
+      scale.style('font-size', '22px');
+      this.nodes.push(scale);
+    }
+  }
+  getHTML(): string {
+    this.getSymbolNodes();
+    this.getAugumentDescriptor();
+    this.getScaleDescriptor();
+    return this.nodes.reduce((acc, node) => acc + node.node().outerHTML, '');
   }
   getCenter():[number, number] {
     switch(this.type) {

@@ -1,13 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux'
 import {Score, SymbolType, ScaleHead} from '../types';
-import {CLEF_G, SHARP, FLAT} from '../symbols/symbol-unicode';
+import {CLEF_G_SYM, SHARP_SYM, FLAT_SYM} from '../symbols/symbol-unicode';
 import {STAFF_SCALES_HEAD} from '../constants';
 import SymbolSVG from '../symbols/symbol-svg';
 import * as d3 from 'd3';
 
 const {NOTE_WHOLE, NOTE_HALF, NOTE_HALF_REVERSE, NOTE_QUARTER, NOTE_QUARTER_REVERSE
-  , NOTE_EIGHTH, NOTE_EIGHTH_REVERSE} = SymbolType
+  , NOTE_EIGHTH, NOTE_EIGHTH_REVERSE, FLAT, SHARP, NATURAL} = SymbolType
 /** 
  * one music staff contains 3+4+3 gapps, and one gap is 20px now  
  * so one staff takes 200px 
@@ -66,7 +66,7 @@ const drawStaffLinesAndClef = (score: Score, width: number) => {
     staffs.selectAll('.staff-clef')
     .data([0])
     .join('text')
-    .text(CLEF_G)
+    .text(CLEF_G_SYM)
     .attr('transform', 'translate(2, 125)')
     .style('font-size', '96px');
 }
@@ -81,7 +81,7 @@ const drawStaffScale = (score: Score) => {
   d3.selectAll('.d3-staff').selectAll('.d3-staff-scale-head')
   .data(scalesHead)
   .join('text')
-  .text(d => d.type == SymbolType.FLAT ? FLAT : SHARP)
+  .text(d => d.type == SymbolType.FLAT ? FLAT_SYM : SHARP_SYM)
   .attr('transform', (d, idx) => {
     return `translate(${55+idx*12}, ${d.pos*10+66})`
   })
@@ -91,19 +91,27 @@ const drawStaffScale = (score: Score) => {
 const drawNotes = (score: Score) => {
   const {notes, signature, scale} = score;
   const scalesHeadLength = STAFF_SCALES_HEAD[signature][scale].length;
+  const notesOffXSet = 80 + scalesHeadLength * 12
   const staff =  d3.selectAll('.d3-staff');
-  const syms = [new SymbolSVG(NOTE_WHOLE), new SymbolSVG(NOTE_HALF), new SymbolSVG(NOTE_HALF_REVERSE)
+  const syms = [
+    new SymbolSVG(NOTE_WHOLE)
+    , new SymbolSVG(NOTE_HALF), new SymbolSVG(NOTE_HALF_REVERSE)
     , new SymbolSVG(NOTE_QUARTER), new SymbolSVG(NOTE_QUARTER_REVERSE)
-    , new SymbolSVG(NOTE_EIGHTH), new SymbolSVG(NOTE_EIGHTH_REVERSE)];
+    , new SymbolSVG(NOTE_EIGHTH), new SymbolSVG(NOTE_EIGHTH_REVERSE)
+    , new SymbolSVG(NOTE_WHOLE, {augment: true, scale: FLAT})
+    , new SymbolSVG(NOTE_HALF, {augment: true, scale: SHARP}), new SymbolSVG(NOTE_HALF_REVERSE, {augment: true, scale: NATURAL})
+    , new SymbolSVG(NOTE_QUARTER, {augment: true, scale: FLAT}), new SymbolSVG(NOTE_QUARTER_REVERSE, {augment: true, scale: NATURAL})
+    , new SymbolSVG(NOTE_EIGHTH, {augment: true, scale: SHARP}), new SymbolSVG(NOTE_EIGHTH_REVERSE, {augment: true, scale: FLAT}) 
+  ];
   staff.selectAll('.d3-staff-note')
   .data(syms)
   .join('g')
   .attr('class', 'd3-staff-note')
   .attr('transform', (d, idx) => {
     const noteCenter = d.getCenter();
-    return `translate(${100-noteCenter[0] + idx*30},${100-noteCenter[1]})`
+    return `translate(${notesOffXSet-noteCenter[0] + idx*50},${100-noteCenter[1]})`
   })
-  .html(d => d.getPath());
+  .html(d => d.getHTML());
 }
 export const StaffUnconnected = (score: Score) => {
   const divRef = useRef<HTMLDivElement>(null)

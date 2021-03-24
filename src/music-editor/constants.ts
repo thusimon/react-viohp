@@ -1,7 +1,6 @@
-import {ScaleHeads} from './types';
-import {SymbolType} from './types';
-
-const {FLAT, SHARP} = SymbolType;
+import {ScaleHeads, SymbolType} from './types';
+import {SHARP_SYM, FLAT_SYM, NATURAL_SYM} from './symbols/symbol-unicode';
+const {FLAT, SHARP, NATURAL} = SymbolType;
 
 export const STAFF_SCALES_HEAD: ScaleHeads = {
   Major:{
@@ -182,3 +181,9 @@ export const STAFF_SCALES_HEAD: ScaleHeads = {
     ]
   }
 };
+
+export const SYM_MAP = {
+  [SHARP]: SHARP_SYM,
+  [FLAT]: FLAT_SYM,
+  [NATURAL]: NATURAL_SYM
+} 
