@@ -1,6 +1,7 @@
 import {ScaleHeads, SymbolType} from './types';
-import {SHARP_SYM, FLAT_SYM, NATURAL_SYM} from './symbols/symbol-unicode';
-const {FLAT, SHARP, NATURAL} = SymbolType;
+import {SHARP_SYM, FLAT_SYM, NATURAL_SYM, WHOLEREST_SYM
+  , HALFREST_SYM, QUARTERREST_SYM, EIGTHREST_SYM} from './symbols/symbol-unicode';
+const {FLAT, SHARP, NATURAL, WHOLEREST, HALFREST, QUARTERREST, EIGTHREST} = SymbolType;
 
 export const STAFF_SCALES_HEAD: ScaleHeads = {
   Major:{
@@ -185,5 +186,9 @@ export const STAFF_SCALES_HEAD: ScaleHeads = {
 export const SYM_MAP = {
   [SHARP]: SHARP_SYM,
   [FLAT]: FLAT_SYM,
-  [NATURAL]: NATURAL_SYM
-} 
+  [NATURAL]: NATURAL_SYM,
+  [WHOLEREST]: WHOLEREST_SYM,
+  [HALFREST]: HALFREST_SYM,
+  [QUARTERREST]: QUARTERREST_SYM,
+  [EIGTHREST]: EIGTHREST_SYM
+}

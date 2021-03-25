@@ -6,8 +6,15 @@ import {STAFF_SCALES_HEAD} from '../constants';
 import SymbolSVG from '../symbols/symbol-svg';
 import * as d3 from 'd3';
 
-const {NOTE_WHOLE, NOTE_HALF, NOTE_HALF_REVERSE, NOTE_QUARTER, NOTE_QUARTER_REVERSE
-  , NOTE_EIGHTH, NOTE_EIGHTH_REVERSE, FLAT, SHARP, NATURAL} = SymbolType
+const {
+  NOTE_WHOLE
+  , NOTE_HALF, NOTE_HALF_REVERSE
+  , NOTE_QUARTER, NOTE_QUARTER_REVERSE
+  , NOTE_EIGHTH, NOTE_EIGHTH_REVERSE
+  , FLAT, SHARP, NATURAL
+  , WHOLEREST, HALFREST, QUARTERREST, EIGTHREST
+  , BAR
+} = SymbolType;
 /** 
  * one music staff contains 3+4+3 gapps, and one gap is 20px now  
  * so one staff takes 200px 
@@ -101,7 +108,9 @@ const drawNotes = (score: Score) => {
     , new SymbolSVG(NOTE_WHOLE, {augment: true, scale: FLAT})
     , new SymbolSVG(NOTE_HALF, {augment: true, scale: SHARP}), new SymbolSVG(NOTE_HALF_REVERSE, {augment: true, scale: NATURAL})
     , new SymbolSVG(NOTE_QUARTER, {augment: true, scale: FLAT}), new SymbolSVG(NOTE_QUARTER_REVERSE, {augment: true, scale: NATURAL})
-    , new SymbolSVG(NOTE_EIGHTH, {augment: true, scale: SHARP}), new SymbolSVG(NOTE_EIGHTH_REVERSE, {augment: true, scale: FLAT}) 
+    , new SymbolSVG(NOTE_EIGHTH, {augment: true, scale: SHARP}), new SymbolSVG(NOTE_EIGHTH_REVERSE, {augment: true, scale: FLAT})
+    , new SymbolSVG(WHOLEREST), new SymbolSVG(HALFREST), new SymbolSVG(QUARTERREST), new SymbolSVG(EIGTHREST)
+    , new SymbolSVG(BAR)
   ];
   staff.selectAll('.d3-staff-note')
   .data(syms)

@@ -1,11 +1,18 @@
 import * as d3 from 'd3';
 import { Selection } from 'd3';
 import {SYM_MAP} from '../constants'
-import {ellipse, noteStem, noteStemRev, stem, hook} from '../svgs/base-paths';
+import {ellipse, noteStem, noteStemRev, stem, hook, bar} from '../svgs/base-paths';
 import {SymbolType, Descriptor} from '../types';
 
-const {NOTE_WHOLE, NOTE_HALF, NOTE_HALF_REVERSE, NOTE_QUARTER, NOTE_QUARTER_REVERSE
-  , NOTE_EIGHTH, NOTE_EIGHTH_REVERSE, FLAT, SHARP, NATURAL} = SymbolType;
+const {
+  NOTE_WHOLE
+  , NOTE_HALF, NOTE_HALF_REVERSE
+  , NOTE_QUARTER, NOTE_QUARTER_REVERSE
+  , NOTE_EIGHTH, NOTE_EIGHTH_REVERSE
+  , FLAT, SHARP, NATURAL
+  , WHOLEREST, HALFREST, QUARTERREST, EIGTHREST
+  , BAR
+} = SymbolType;
 
 class SymbolSVG {
   type: SymbolType;
@@ -91,6 +98,46 @@ class SymbolSVG {
         path2.style('stroke','black');
         path2.style('stroke-width', 1);
         this.nodes.push(path1, path2);
+        break;
+      }
+      case WHOLEREST: {
+        const rest = d3.create('text');
+        rest.text(SYM_MAP[this.type]);
+        rest.style('font-size', '40px');
+        rest.attr('transform', 'translate(0, 6)');
+        this.nodes.push(rest);
+        break;
+      }
+      case HALFREST: {
+        const rest = d3.create('text');
+        rest.text(SYM_MAP[this.type]);
+        rest.style('font-size', '40px');
+        rest.attr('transform', 'translate(0, 18)');
+        this.nodes.push(rest);
+        break;
+      }
+      case QUARTERREST: {
+        const rest = d3.create('text');
+        rest.text(SYM_MAP[this.type]);
+        rest.style('font-size', '40px');
+        rest.attr('transform', 'translate(0, 14)');
+        this.nodes.push(rest);
+        break;
+      }
+      case EIGTHREST: {
+        const rest = d3.create('text');
+        rest.text(SYM_MAP[this.type]);
+        rest.style('font-size', '40px');
+        rest.attr('transform', 'translate(0,20)');
+        this.nodes.push(rest);
+        break;
+      }
+      case BAR: {
+        const path = d3.create('path');
+        path.attr('d', bar);
+        path.style('stroke-width', 1);
+        path.style('stroke', 'black');
+        this.nodes.push(path);
         break;
       }
       default:
