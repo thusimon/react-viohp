@@ -99,7 +99,13 @@ const drawNotes = (score: Score) => {
   const {notes, signature, scale} = score;
   const scalesHeadLength = STAFF_SCALES_HEAD[signature][scale].length;
   const notesOffXSet = 80 + scalesHeadLength * 12
-  const staff =  d3.selectAll('.d3-staff');
+  const staffs =  d3.selectAll('.d3-staff');
+  staffs.each(function(staffs, idx) {
+    const notesFromProps = notes[idx];
+    d3.select(this)
+    .selectAll('.d3-staff-note')
+    console.log(staffs, idx);
+  })
   const syms = [
     new SymbolSVG(NOTE_WHOLE)
     , new SymbolSVG(NOTE_HALF), new SymbolSVG(NOTE_HALF_REVERSE)
@@ -112,7 +118,7 @@ const drawNotes = (score: Score) => {
     , new SymbolSVG(WHOLEREST), new SymbolSVG(HALFREST), new SymbolSVG(QUARTERREST), new SymbolSVG(EIGTHREST)
     , new SymbolSVG(BAR)
   ];
-  staff.selectAll('.d3-staff-note')
+  staffs.selectAll('.d3-staff-note')
   .data(syms)
   .join('g')
   .attr('class', 'd3-staff-note')

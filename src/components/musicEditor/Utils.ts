@@ -6,7 +6,7 @@
  * ]
  *
 */
-import * as Sym from '../../components/musicStaff/Symbols';
+import {SymbolType as Sym} from '../../music-editor/types'
 
 export const ConvertNotesToText = (notes) => {
   const allNotesStr = notes.map(noteLine=>{
@@ -26,7 +26,14 @@ export const ConvertNotesToText = (notes) => {
  * @param {string} symText 
  */
 const ConvertTextToSym = (symText) => {
-  const noteSym = {};
+  const noteSym: {
+    type: Sym
+    descriptor?: any
+    pitch?: string
+  } = {
+    type: Sym.NOTE_WHOLE
+  };
+
   if (!symText) {
     return noteSym;
   }
@@ -56,34 +63,37 @@ const ConvertTextToSym = (symText) => {
       symType = Sym.NOTE_EIGHTH_REVERSE;
       break;
     case '|':
-      symType = Sym.BARLINE_TYPE;
+      symType = Sym.BAR;
       break;
     case 'rw':
-      symType = Sym.WHOLEREST_TYPE;
+      symType = Sym.WHOLEREST;
       break;
     case 'rh':
-      symType = Sym.HALFREST_TYPE;
+      symType = Sym.HALFREST;
       break;
     case 'rq':
-      symType = Sym.QUARTERREST_TYPE;
+      symType = Sym.QUARTERREST;
       break;
     case 're':
-      symType = Sym.EIGTHREST_TYPE;
+      symType = Sym.EIGTHREST;
       break;
     default:
       break;
   }
   noteSym.type = symType;
   if (descriptorText) {
-    let descriptor = {};
+    let descriptor: {
+      augment?: boolean,
+      scale?: Sym
+    } = {};
     if (descriptorText.includes('.')){
       descriptor.augment = true;
     } else if (descriptorText.includes('f')){
-      descriptor.scale=Sym.FLAT_TYPE;
+      descriptor.scale=Sym.FLAT;
     } else if (descriptorText.includes('s')){
-      descriptor.scale=Sym.SHARP_TYPE;
+      descriptor.scale=Sym.SHARP;
     } else if (descriptorText.includes('n')){
-      descriptor.scale=Sym.NATURAL_TYPE;
+      descriptor.scale=Sym.NATURAL;
     }
     noteSym.descriptor = descriptor;
   }

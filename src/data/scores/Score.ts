@@ -2,7 +2,7 @@
  * Created by Lu on 11/9/2018.
  */
 import {NotesFullMap, STAFF_SYM_START, STAFF_SYM_END} from '../../components/musicStaff/Constants';
-import * as Syms from '../../components/musicStaff/Symbols';
+import {SymbolType as Sym} from '../../music-editor/types';
 
 class Score {
   /**
@@ -12,6 +12,13 @@ class Score {
    * @param author
    * @param notes, would be a 2D array [[staffline1],[staffline2]];
    */
+  id: string;
+  signature: string;
+  scale: string;
+  title: string;
+  author: string;
+  originalNotes: any[];
+  notes: any[];
   constructor(score){
     let {_id, signature, scale, title, author, notes=[]} = score;
     this.id = _id;
@@ -29,48 +36,48 @@ class Score {
    */
   static filterNonPositionedSymbols(notes){
     return notes.filter(note=>{
-      return note.type!=Syms.BARLINE_TYPE;
+      return note.type!=Sym.BAR;
     })
   }
 
   static convertRawTypeToSymType(type) {
-    let symType = Syms.NOTE_QUARTER;
+    let symType = Sym.NOTE_QUARTER;
     switch (type) {
       case 'w':
-        symType = Syms.NOTE_WHOLE;
+        symType = Sym.NOTE_WHOLE;
         break;
       case 'h':
-        symType = Syms.NOTE_HALF;
+        symType = Sym.NOTE_HALF;
         break;
       case 'Rh':
-        symType = Syms.NOTE_HALF_REVERSE;
+        symType = Sym.NOTE_HALF_REVERSE;
         break;
       case 'q':
-        symType = Syms.NOTE_QUARTER;
+        symType = Sym.NOTE_QUARTER;
         break;
       case 'Rq':
-        symType = Syms.NOTE_QUARTER_REVERSE;
+        symType = Sym.NOTE_QUARTER_REVERSE;
         break;
       case 'e':
-        symType = Syms.NOTE_EIGHTH;
+        symType = Sym.NOTE_EIGHTH;
         break;
       case 'Re':
-        symType = Syms.NOTE_EIGHTH_REVERSE;
+        symType = Sym.NOTE_EIGHTH_REVERSE;
         break;
       case '|':
-        symType = Syms.BARLINE_TYPE;
+        symType = Sym.BAR;
         break;
       case 'rw':
-        symType = Syms.WHOLEREST_TYPE;
+        symType = Sym.WHOLEREST;
         break;
       case 'rh':
-        symType = Syms.HALFREST_TYPE;
+        symType = Sym.HALFREST;
         break;
       case 'rq':
-        symType = Syms.QUARTERREST_TYPE;
+        symType = Sym.QUARTERREST;
         break;
       case 're':
-        symType = Syms.EIGTHREST_TYPE;
+        symType = Sym.EIGTHREST;
         break;
       default:
         break;
@@ -79,15 +86,18 @@ class Score {
   }
 
   static addDescriptor(nt) {
-    let descriptor = {};
+    let descriptor: {
+      augment?: boolean,
+      scale?: Sym
+    } = {};
     let scale = nt.s;
     let augment = nt.a;
     if(scale == 'b') {
-      descriptor.scale=Syms.FLAT_TYPE;
+      descriptor.scale=Sym.FLAT;
     } else if (scale == 's') {
-      descriptor.scale=Syms.SHARP_TYPE;
+      descriptor.scale=Sym.SHARP;
     } else if (scale == 'n') {
-      descriptor.scale=Syms.NATURAL_TYPE;
+      descriptor.scale=Sym.NATURAL;
     } else if (augment == '.') {
       descriptor.augment = true;
     }
@@ -120,7 +130,7 @@ class Score {
     const incStep = (STAFF_SYM_END - STAFF_SYM_START)/countNoteLen;
     let symPos = STAFF_SYM_START;
     notes.forEach((note) => {
-      if(note.type == Syms.BARLINE_TYPE){
+      if(note.type == Sym.BAR){
         // do not assign bar line x first
       } else if (note.x) {
         // do not assign x if exists;
@@ -136,7 +146,7 @@ class Score {
       }
     });
     return notes.map((note, idx)=> {
-      if (note.type == Syms.BARLINE_TYPE && !note.x) {
+      if (note.type == Sym.BAR && !note.x) {
         const prevNote = notes[idx-1];
         const nextNote = notes[idx+1];
         const prevNoteX = prevNote && prevNote.x ? prevNote.x : null;
