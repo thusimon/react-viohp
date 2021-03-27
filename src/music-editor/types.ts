@@ -31,7 +31,8 @@ export interface ScoreSymbol {
   type: SymbolType,
   name?: string,
   x?: number,
-  desc?: Descriptor
+  desc?: Descriptor,
+  sfIdx?: number
 }
 
 export interface Score {

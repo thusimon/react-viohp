@@ -28,7 +28,7 @@ export const ConvertNotesToText = (notes) => {
 const ConvertTextToSym = (symText) => {
   const noteSym: {
     type: Sym
-    descriptor?: any
+    desc?: any
     pitch?: string
   } = {
     type: Sym.NOTE_WHOLE
@@ -82,20 +82,20 @@ const ConvertTextToSym = (symText) => {
   }
   noteSym.type = symType;
   if (descriptorText) {
-    let descriptor: {
+    let desc: {
       augment?: boolean,
       scale?: Sym
     } = {};
     if (descriptorText.includes('.')){
-      descriptor.augment = true;
+      desc.augment = true;
     } else if (descriptorText.includes('f')){
-      descriptor.scale=Sym.FLAT;
+      desc.scale=Sym.FLAT;
     } else if (descriptorText.includes('s')){
-      descriptor.scale=Sym.SHARP;
+      desc.scale=Sym.SHARP;
     } else if (descriptorText.includes('n')){
-      descriptor.scale=Sym.NATURAL;
+      desc.scale=Sym.NATURAL;
     }
-    noteSym.descriptor = descriptor;
+    noteSym.desc = desc;
   }
   return noteSym;
 };

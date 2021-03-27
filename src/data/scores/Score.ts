@@ -86,22 +86,22 @@ class Score {
   }
 
   static addDescriptor(nt) {
-    let descriptor: {
+    let desc: {
       augment?: boolean,
       scale?: Sym
     } = {};
     let scale = nt.s;
     let augment = nt.a;
     if(scale == 'b') {
-      descriptor.scale=Sym.FLAT;
+      desc.scale=Sym.FLAT;
     } else if (scale == 's') {
-      descriptor.scale=Sym.SHARP;
+      desc.scale=Sym.SHARP;
     } else if (scale == 'n') {
-      descriptor.scale=Sym.NATURAL;
+      desc.scale=Sym.NATURAL;
     } else if (augment == '.') {
-      descriptor.augment = true;
+      desc.augment = true;
     }
-    return descriptor;
+    return desc;
   }
   /**
    * @param {*} note
@@ -117,7 +117,7 @@ class Score {
       name: nt.n,
       x: Number.isNaN(xParse) ? null : xParse,
       freq: Number.isNaN(freqParse) ? null : freqParse,
-      descriptor: Score.addDescriptor(nt)
+      desc: Score.addDescriptor(nt)
     };
   }
 

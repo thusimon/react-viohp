@@ -13,7 +13,7 @@ class Note extends React.Component {
     this.drawScale = this.drawScale.bind(this);
     let {mark,name,sfIdx} = this.props;
     this.state = {mark,name,sfIdx};
-    this.descriptor = this.props.descriptor || {};
+    this.desc = this.props.desc || {};
     // by default center is (14, 70), but if rotate, the center would change
     this.center=[14, 70];
   }
@@ -52,7 +52,7 @@ class Note extends React.Component {
   }
   drawAugment(){
     // find sfIdx value if it is even, meaning it lies on the staff line, the augment dot should be higher
-    if (this.descriptor.augment){
+    if (this.desc.augment){
       let sfIdxEven = this.props.sfIdx % 2 == 0;
       let augmentPosY = this.center[1];
       let augmentPosX = this.center[0]+14;
@@ -67,15 +67,15 @@ class Note extends React.Component {
     }
   }
   drawScale(){
-    if(this.descriptor.scale){
+    if(this.desc.scale){
       let augmentPosY = this.center[1]-3;
       let augmentPosX = this.center[0]-20;
-      if (this.descriptor.scale==Syms.FLAT_TYPE){
+      if (this.desc.scale==Syms.FLAT_TYPE){
         return <div className="noteScaleLeft" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.FLAT}</div>;
-      } else if(this.descriptor.scale==Syms.SHARP_TYPE)
+      } else if(this.desc.scale==Syms.SHARP_TYPE)
       {
         return <div className="noteScaleLeft" style={{top:augmentPosY+"px", left:augmentPosX+"px"}}>{Syms.SHARP}</div>;
-      } else if(this.descriptor.scale==Syms.NATURAL_TYPE){
+      } else if(this.desc.scale==Syms.NATURAL_TYPE){
         return <div className="noteScaleLeft" style={{top:augmentPosY+"px", left:augmentPosX-6+"px"}}>{Syms.NATURAL}</div>;
       } else {
         return null;

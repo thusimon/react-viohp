@@ -134,7 +134,7 @@ class MusicStaff extends React.Component<StaffProps, StaffProps> {
     return res;
   }
   getSymByProperties(rawSym, idx, width){
-    let {type, name, label, sfIdx, x, mark, descriptor={}} = rawSym;
+    let {type, name, label, sfIdx, x, mark, desc={}} = rawSym;
     x = Math.round(x*width);
     const halfSpace = this.LineSpace / 2;
     const symCenter = Note.center;
@@ -185,7 +185,7 @@ class MusicStaff extends React.Component<StaffProps, StaffProps> {
           const curSymYPos = sfIdx + this.staffStart;
           const initOffset = [x,curSymYPos*halfSpace]; //[x, y]
           const adjustedOffset = [initOffset[0]-symCenter[0], initOffset[1]];
-          let curNote = <Note type={type} showLabel label={label} sfIdx={sfIdx} name={name} mark={mark} descriptor={descriptor} />;
+          let curNote = <Note type={type} showLabel label={label} sfIdx={sfIdx} name={name} mark={mark} desc={desc} />;
           sym = (<div key={"NT_"+idx} style={{position:'absolute', top: adjustedOffset[1]+'px', left:adjustedOffset[0]+'px'}}>
             {curNote}
             </div>);

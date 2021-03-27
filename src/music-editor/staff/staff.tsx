@@ -2,6 +2,8 @@ import React, {useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux'
 import {Score, SymbolType, ScaleHead} from '../types';
 import {CLEF_G_SYM, SHARP_SYM, FLAT_SYM} from '../symbols/symbol-unicode';
+import {isSymbolNote} from '../symbols/utils';
+import {getSymXPosition} from './utils';
 import {STAFF_SCALES_HEAD} from '../constants';
 import SymbolSVG from '../symbols/symbol-svg';
 import * as d3 from 'd3';
@@ -95,38 +97,35 @@ const drawStaffScale = (score: Score) => {
   .style('font-size', '36px');
 }
 
-const drawNotes = (score: Score) => {
+const drawNotes = (score: Score, staffWidth: number) => {
   const {notes, signature, scale} = score;
   const scalesHeadLength = STAFF_SCALES_HEAD[signature][scale].length;
   const notesOffXSet = 80 + scalesHeadLength * 12
   const staffs =  d3.selectAll('.d3-staff');
   staffs.each(function(staffs, idx) {
     const notesFromProps = notes[idx];
+    const xPos = getSymXPosition(notesFromProps, notesOffXSet, staffWidth);
+    const svgFromProps = notesFromProps.map(noteFromProps => {
+      return new SymbolSVG(noteFromProps.type, {augment: noteFromProps.desc.augment, scale: noteFromProps.desc.scale});
+    })
+
     d3.select(this)
     .selectAll('.d3-staff-note')
-    console.log(staffs, idx);
-  })
-  const syms = [
-    new SymbolSVG(NOTE_WHOLE)
-    , new SymbolSVG(NOTE_HALF), new SymbolSVG(NOTE_HALF_REVERSE)
-    , new SymbolSVG(NOTE_QUARTER), new SymbolSVG(NOTE_QUARTER_REVERSE)
-    , new SymbolSVG(NOTE_EIGHTH), new SymbolSVG(NOTE_EIGHTH_REVERSE)
-    , new SymbolSVG(NOTE_WHOLE, {augment: true, scale: FLAT})
-    , new SymbolSVG(NOTE_HALF, {augment: true, scale: SHARP}), new SymbolSVG(NOTE_HALF_REVERSE, {augment: true, scale: NATURAL})
-    , new SymbolSVG(NOTE_QUARTER, {augment: true, scale: FLAT}), new SymbolSVG(NOTE_QUARTER_REVERSE, {augment: true, scale: NATURAL})
-    , new SymbolSVG(NOTE_EIGHTH, {augment: true, scale: SHARP}), new SymbolSVG(NOTE_EIGHTH_REVERSE, {augment: true, scale: FLAT})
-    , new SymbolSVG(WHOLEREST), new SymbolSVG(HALFREST), new SymbolSVG(QUARTERREST), new SymbolSVG(EIGTHREST)
-    , new SymbolSVG(BAR)
-  ];
-  staffs.selectAll('.d3-staff-note')
-  .data(syms)
-  .join('g')
-  .attr('class', 'd3-staff-note')
-  .attr('transform', (d, idx) => {
-    const noteCenter = d.getCenter();
-    return `translate(${notesOffXSet-noteCenter[0] + idx*50},${100-noteCenter[1]})`
-  })
-  .html(d => d.getHTML());
+    .data(svgFromProps)
+    .join('g')
+    .attr('class', 'd3-staff-note')
+    .attr('transform', (d, idx) => {
+      const noteCenter = d.getCenter();
+      if (isSymbolNote(d.type)) {
+        // it is a note, should put it in the correct y position according to the sfIdx
+        return `translate(${xPos[idx].x - noteCenter[0]}, ${60-noteCenter[1]+notesFromProps[idx].sfIdx*10})`;
+      } else {
+        // it is not a note, they are always at a fixed y position
+        return `translate(${xPos[idx].x - noteCenter[0]}, 100)`;
+      }
+    })
+    .html(d => d.getHTML());
+  });
 }
 export const StaffUnconnected = (score: Score) => {
   const divRef = useRef<HTMLDivElement>(null)
@@ -135,7 +134,7 @@ export const StaffUnconnected = (score: Score) => {
     const staffWidth = divRef.current.offsetWidth;
     drawStaffLinesAndClef(score, staffWidth)
     drawStaffScale(score)
-    drawNotes(score);
+    drawNotes(score, staffWidth);
   }, [score]);
 
   return <div className='d3-staff-container' ref={divRef} style={{width:'99.8%'}}>

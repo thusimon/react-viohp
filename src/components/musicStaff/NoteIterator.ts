@@ -45,7 +45,7 @@ export const getTimeoutFromNoteType = (note, baseTime) => {
     default:
       time = baseTime;
   }
-  if (note.descriptor && note.descriptor.augment) {
+  if (note.desc && note.desc.augment) {
     time += time/2;
   }
   return time;
