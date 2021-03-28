@@ -1,3 +1,5 @@
+import SymbolSVG from './symbols/symbol-svg';
+
 export enum Signature {
   Major = 'Major',
   Minor = 'Minor'
@@ -18,7 +20,8 @@ export enum SymbolType {
   EIGTHREST,
   FLAT,
   SHARP,
-  NATURAL
+  NATURAL,
+  ARROW
 };
 
 export interface Descriptor {
@@ -27,11 +30,12 @@ export interface Descriptor {
 }
 
 export interface ScoreSymbol {
-  type: SymbolType,
-  name?: string,
-  x?: number,
-  desc?: Descriptor,
-  sfIdx?: number
+  type: SymbolType;
+  name?: string;
+  x?: number;
+  desc?: Descriptor;
+  sfIdx?: number;
+  freq?: number;
 }
 
 export interface ScoreType {
@@ -42,6 +46,12 @@ export interface ScoreType {
   author?: string,
   notes?: ScoreSymbol[][],
   scoreInfo?: any;
+}
+
+export interface IteratorResponse {
+  symbol: SymbolSVG;
+  row: number;
+  col: number;
 }
 
 export interface StaffType {

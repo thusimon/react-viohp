@@ -69,7 +69,6 @@ class MusicStaffPage extends React.Component {
            onMouseUp={this.onMusicStaffPageMouseUp}>
         <MusicStaffHead scoreInfo={this.state.scoreInfo}/>
         <div className='music-staff-section' ref={this.staffRef}>
-          <MusicStaffPlayerArrow staffRef = {this.staffRef} />
           <Staff />
         </div>
       </div>);

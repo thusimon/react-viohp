@@ -11,3 +11,5 @@ export const hook = 'M 0.5625,28.31978 C 0,21.94982 5.40505,19.68858 8.0625,16.7
 export const bar = 'm 0 40 v-80';
 
 export const staffSegment = 'm -20 0 h40';
+
+export const arrow = 'M-6 -18h12 0L0 0z';

@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import { Selection } from 'd3';
 import {SYM_MAP} from '../constants'
-import {ellipse, noteStem, noteStemRev, stem, hook, bar, staffSegment} from '../svgs/base-paths';
+import {ellipse, noteStem, noteStemRev, stem, hook, bar, staffSegment, arrow} from '../svgs/base-paths';
 import {SymbolType, Descriptor} from '../types';
 import {isSymbolNote} from './utils';
 
@@ -14,7 +14,7 @@ const {
   , NOTE_EIGHTH, NOTE_EIGHTH_REVERSE
   , FLAT, SHARP, NATURAL
   , WHOLEREST, HALFREST, QUARTERREST, EIGTHREST
-  , BAR
+  , BAR, ARROW
 } = SymbolType;
 
 class SymbolSVG {
@@ -25,13 +25,15 @@ class SymbolSVG {
   sfIdx?: number;
   selected: boolean;
   name?: string;
-  constructor(type: SymbolType, desc?: Descriptor, sfIdx?: number, name?: string) {
+  freq?: number;
+  constructor(type: SymbolType, desc?: Descriptor, sfIdx?: number, name?: string, freq?: number) {
     this.type = type;
     this.desc = desc || {};
     this.nodes = [];
     this.sfIdx = sfIdx;
     this.selected = false;
     this.name = name;
+    this.freq = freq;
   }
   getSymbolNodes(): void {
     switch(this.type) {
@@ -139,6 +141,12 @@ class SymbolSVG {
         path.attr('class', 'normal-filled-sym single-stroke-sym');
         this.nodes.push(path);
         break;
+      }
+      case ARROW: {
+        const path = d3.create('path');
+        path.attr('d', arrow);
+        path.style('fill', 'red');
+        this.nodes.push(path);
       }
       default:
         break;
