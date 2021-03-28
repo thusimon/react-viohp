@@ -110,7 +110,7 @@ class MusicStaffPlayerArrow extends React.Component {
 
 function mapStateToProps(state){
   const {playing, seek} = state.player;
-  const {notes, id} = state.music;
+  const {notes, id} = state.score;
   const {analyzeState} = state.audio
   return {playing, seek, notes, id, analyzeState};
 }

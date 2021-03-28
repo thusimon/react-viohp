@@ -14,21 +14,21 @@ const MusicTextEditor = (props) => {
     props.updateScoreInfo(infoName, infoValue);
   };
 
-  const signautreValue = props.musicInfo.signature ? props.musicInfo.signature : 'Major';
-  const scaleValue = props.musicInfo.scale ? props.musicInfo.scale : 'C';
+  const signautreValue = props.scoreInfo.signature ? props.scoreInfo.signature : 'Major';
+  const scaleValue = props.scoreInfo.scale ? props.scoreInfo.scale : 'C';
   return (
   <div className="music-text-editor-main">
     <div className="input-group input-group-sm mb-3">
       <div className="input-group-prepend">
         <span className="input-group-text">Title</span>
       </div>
-      <input type="text" className="form-control" id="title" name="title" value={props.musicInfo.title} onChange={infoChange}/>
+      <input type="text" className="form-control" id="title" name="title" value={props.scoreInfo.title} onChange={infoChange}/>
     </div>
     <div className="input-group input-group-sm mb-3">
       <div className="input-group-prepend">
         <span className="input-group-text">Author</span>
       </div>
-      <input type="text" className="form-control" id="author" name="author" value={props.musicInfo.author} onChange={infoChange}/>
+      <input type="text" className="form-control" id="author" name="author" value={props.scoreInfo.author} onChange={infoChange}/>
     </div>
     <div className="input-group input-group-sm mb-3">
       <div className="input-group-prepend">
@@ -70,8 +70,8 @@ const MusicTextEditor = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  const {id, musicInfo} = state.music;
-  return {id, musicInfo};
+  const {id, scoreInfo} = state.score;
+  return {id, scoreInfo};
 };
 const mapDispatchToProps = (dispatch) => {
   return {

@@ -2,11 +2,6 @@
  * Created by Lu on 10/31/2018.
  */
 import * as types from './actionTypes';
-import mockAudioApi from '../api/mockAudioApi';
-
-export const beginAjaxCall = (reqType)=>{
-  return {type: types.BEGIN_AJAX_CALL, reqType};
-};
 
 export const displayInfo = (peakEnergy, peakFreq, noteColor, noteName, noteFreq)=>{
   return {type:types.DISPLAY_INFO, peakEnergy, peakFreq, noteColor, noteName, noteFreq};
@@ -24,17 +19,6 @@ export const loadFiltersSuccess = (filters) => {
   return {type: types.LOAD_FILTER_SUCCESS, filters};
 };
 
-//TODO why loadAllFitlers returns a function, but not an object like others?????
-export const loadAllFilters = ()=>{
-  return function(dispatch) {
-    dispatch(beginAjaxCall("filters"));
-    return mockAudioApi.getAllFilters().then(filters=>{
-      dispatch(loadFiltersSuccess(filters));
-    }).catch(err=>{
-      throw err;
-    });
-  };
-};
 export const addFilterPoint = (x, y)=>{
   return {type:types.ADD_FILTER_POINT, x, y};
 };

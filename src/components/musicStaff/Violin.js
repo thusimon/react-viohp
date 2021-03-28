@@ -54,7 +54,7 @@ class Violin extends React.Component {
 
 function mapStateToProps(state){
   return {
-    markNotes: state.music.markNotes,
+    markNotes: state.score.markNotes,
     peakEnergy: state.audio.peakFreq,
     noteColor: state.audio.noteColor,
     noteName: state.audio.noteName,

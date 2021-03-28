@@ -54,7 +54,7 @@ class MusicAudioPage extends React.Component{
   }
 
   analyzeAudio(evt) {
-    const {scoreId, musicInfo} = this.state.music;
+    const {scoreId, scoreInfo} = this.state.score;
     this.props.toggleAnalyzeAudio(!this.state.recording);
     if (this.state.recording == 1) {
       // we should stop recording
@@ -63,7 +63,7 @@ class MusicAudioPage extends React.Component{
       /*
       const stopRecordingWSData = {
         type: 'stopRecording',
-        data: {scoreId, title: musicInfo.title}
+        data: {scoreId, title: scoreInfo.title}
       }
       this.state.ws.ws && this.state.ws.ws.send(JSON.stringify(stopRecordingWSData));
       */
@@ -76,7 +76,7 @@ class MusicAudioPage extends React.Component{
       /*
       const startRecordingWSData = {
         type: 'startRecording',
-        data: {scoreId, title: musicInfo.title, sampleRate: this.sampleRate}
+        data: {scoreId, title: scoreInfo.title, sampleRate: this.sampleRate}
       }
       this.state.ws.ws && this.state.ws.ws.send(JSON.stringify(startRecordingWSData));
       */
@@ -127,8 +127,8 @@ class MusicAudioPage extends React.Component{
   }
 
   static getDerivedStateFromProps(nextProps, state){
-    const {auth, music, ws} = nextProps;
-    return {auth, music, ws};
+    const {auth, score, ws} = nextProps;
+    return {auth, score, ws};
   }
 
   render(){
@@ -181,7 +181,7 @@ class MusicAudioPage extends React.Component{
 const mapStateToProps = (state) => {
   return {
     audio:state.audio,
-    music:state.music,
+    score:state.score,
     auth:state.auth,
     ws: state.ws
   };

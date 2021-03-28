@@ -6,10 +6,10 @@ export enum Signature {
 export enum SymbolType {
   NOTE_WHOLE,
   NOTE_HALF,
-  NOTE_HALF_REVERSE,
   NOTE_QUARTER,
-  NOTE_QUARTER_REVERSE,
   NOTE_EIGHTH,
+  NOTE_HALF_REVERSE,
+  NOTE_QUARTER_REVERSE,
   NOTE_EIGHTH_REVERSE,
   BAR,
   WHOLEREST,
@@ -18,8 +18,7 @@ export enum SymbolType {
   EIGTHREST,
   FLAT,
   SHARP,
-  NATURAL,
-  DOT
+  NATURAL
 };
 
 export interface Descriptor {
@@ -35,13 +34,28 @@ export interface ScoreSymbol {
   sfIdx?: number
 }
 
-export interface Score {
-  id: string,
-  signature: Signature,
-  scale: string,
-  title: string,
-  author: string,
-  notes: ScoreSymbol[][]
+export interface ScoreType {
+  id?: string,
+  signature?: Signature,
+  scale?: string,
+  title?: string,
+  author?: string,
+  notes?: ScoreSymbol[][],
+  scoreInfo?: any;
+}
+
+export interface StaffType {
+  config: {
+    showNoteName: boolean;
+    showStaffIndex: boolean;
+    showAudioSpectrum: boolean;
+  }
+}
+
+export interface PlayType {
+  playing: number;
+  seek: number;
+  vol: number;
 }
 
 export enum NoteName {

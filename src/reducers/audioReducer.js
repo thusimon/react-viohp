@@ -27,11 +27,6 @@ export default function audioReducer(state=initState, action={}){
       let currentFilterPoints = state.filterPoints.push([x,y]);
       return Object.assign({}, state, {filterPoints: currentFilterPoints});
     }
-    case types.BEGIN_AJAX_CALL:
-    {
-      // audio begin ajax call
-      return Object.assign({}, state, {filters_AJAXFlag:1}); 
-    }
     case types.LOAD_FILTER_SUCCESS:
     {
       // audio filters loaded successfully

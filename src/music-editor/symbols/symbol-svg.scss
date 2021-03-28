@@ -1,0 +1,45 @@
+.selected-empty-no-stroke-sym {
+  fill: white;
+  color: #f0ad4e;
+}
+
+.selected-empty-sym {
+  stroke: #f0ad4e;
+  @extend .selected-empty-no-stroke-sym
+}
+
+.selected-filled-no-stroke-sym {
+  fill: #f0ad4e;
+  color: #f0ad4e;
+}
+
+.selected-filled-sym {
+  stroke: #f0ad4e;
+  @extend .selected-filled-no-stroke-sym
+}
+
+.normal-empty-no-stroke-sym {
+  fill: white;
+  color: black;
+}
+.normal-empty-sym {
+  stroke: black;
+  @extend .normal-empty-no-stroke-sym
+}
+
+.normal-filled-no-stroke-sym {
+  fill: black;
+  color: black;
+}
+.normal-filled-sym {
+  stroke: black;
+  @extend .normal-filled-no-stroke-sym;
+}
+
+.single-stroke-sym {
+  stroke-width: 1px;
+}
+
+.double-stroke-sym {
+  stroke-width: 2px;
+}

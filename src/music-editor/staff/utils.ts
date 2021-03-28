@@ -1,4 +1,5 @@
-import {ScoreSymbol, SymbolType} from '../types';
+import {ScoreSymbol, SymbolType, ScoreType} from '../types';
+import {STAFF_SCALES_HEAD} from '../constants';
 
 export const getSymXPosition = (symbols: ScoreSymbol[], startOffSet:number, staffWidth:number): ScoreSymbol[] => {
   let notesLen = symbols.filter(d => d.type != SymbolType.BAR).length;
@@ -13,4 +14,18 @@ export const getSymXPosition = (symbols: ScoreSymbol[], startOffSet:number, staf
     }
     return sym;
   });
+}
+
+export const getSymsInterval = (symbols: ScoreSymbol[], startOffset:number, endOffset: number, staffWidth:number): number => {
+  let notesLen = symbols.filter(d => {
+    return d.type != SymbolType.BAR
+  }).length - 1;
+  notesLen = notesLen > 0 ? notesLen : 1;
+  return (staffWidth - startOffset - endOffset) / notesLen;
+}
+
+export const getStaffNotesStartOffset = (score: ScoreType): number => {
+  const {signature, scale} = score.scoreInfo;
+  const scalesHeadLength = STAFF_SCALES_HEAD[signature][scale].length;
+  return 100 + scalesHeadLength * 12;
 }

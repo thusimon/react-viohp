@@ -3,7 +3,6 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import MusicStaff from './MusicStaff';
 import MusicStaffPlayerArrow from './MusicStaffPlayerArrow';
 import * as Constants from './Constants';
 import * as Utils from './Utils';
@@ -26,7 +25,7 @@ class MusicStaffPage extends React.Component {
       dragInfo:this.props.dragInfo,
       activeStaff:0,
       staffNum:this.props.notes.length,
-      musicInfo:this.props.musicInfo,
+      scoreInfo:this.props.scoreInfo,
       scoreId:this.props.scoreId
     };
     this.staffPageRef = React.createRef();
@@ -34,14 +33,14 @@ class MusicStaffPage extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, state){
-    let {signature, scale, dragInfo, notes, musicInfo, scoreId} = nextProps;
+    let {signature, scale, dragInfo, notes, scoreInfo, scoreId} = nextProps;
     let staffNum = notes.length;
     if (signature != state.signature || scale != state.scale){
       // need to update the scaleHead
-      return {signature, scale, dragInfo, staffNum, musicInfo, scoreId};
+      return {signature, scale, dragInfo, staffNum, scoreInfo, scoreId};
     } else {
       // signature and scale is not changed
-      return {dragInfo, staffNum, musicInfo, scoreId};
+      return {dragInfo, staffNum, scoreInfo, scoreId};
     }
   }
 
@@ -68,20 +67,17 @@ class MusicStaffPage extends React.Component {
            ref={this.staffPageRef}
            onMouseMove={this.onMusicStaffPageMouseMove}
            onMouseUp={this.onMusicStaffPageMouseUp}>
-        <MusicStaffHead musicInfo={this.state.musicInfo}/>
+        <MusicStaffHead scoreInfo={this.state.scoreInfo}/>
         <div className='music-staff-section' ref={this.staffRef}>
           <MusicStaffPlayerArrow staffRef = {this.staffRef} />
-          {Array.from(Array(this.state.staffNum).keys()).map(n =>
-              <MusicStaff key={n.toString()} idx={n} staffRef = {this.staffRef}/>
-          )}
-          <Staff count={2} />
+          <Staff />
         </div>
       </div>);
   }
 }
 
 function mapStateToProps(state){
-  return state.music;
+  return state.score;
 }
 
 function mapDispatchToProps(dispatch){

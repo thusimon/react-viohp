@@ -48,7 +48,7 @@ const NoteEditor = ({id, originalNotes, updateScoreNotes}) => {
 }
 
 const mapStateToProps = (state) => {
-  const {id, originalNotes} = state.music;
+  const {id, originalNotes} = state.score;
   return {id, originalNotes};
 };
 

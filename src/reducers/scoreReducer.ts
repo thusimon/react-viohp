@@ -2,12 +2,30 @@
  * Created by Lu on 8/19/2018.
  */
 import * as types from '../actions/actionTypes';
-import {musicInitState as initState} from './initialState';
+import {scoreInitState as initState} from './initialState';
 import {updateMarkNote} from '../components/musicStaff/Utils';
 import Score from '../data/scores/Score';
 import {newScore} from '../data/scores/Score_template';
 
-const musicReducer = (state=initState, action={}) => {
+interface ScoreAction {
+  type?: string;
+  idx?: string;
+  note?: string;
+  scale?: string;
+  signature?: string;
+  scoreInfo?: any;
+  notes?: any[];
+  markNote?: boolean;
+  dragInfo?: any;
+  freqLineVal?: number;
+  score?: any;
+  id?: string;
+  category?: string;
+  scoreList?: any[];
+  name?: string;
+  value?: string;
+}
+const scoreReducer = (state=initState, action: ScoreAction={}) => {
   switch (action.type) {
     case types.ADD_NOTE:
     {
@@ -22,8 +40,8 @@ const musicReducer = (state=initState, action={}) => {
     }
     case types.LOAD_SCORE:
     {
-      let {scale, signature, musicInfo, notes} = action;
-      return Object.assign({}, state, {scale, signature, musicInfo, notes});
+      let {scale, signature, scoreInfo, notes} = action;
+      return Object.assign({}, state, {scale, signature, scoreInfo, notes});
     }
     case types.SET_SIGNA_SCALE:
       return Object.assign({}, state, {signature:action.signature, scale:action.scale});
@@ -41,8 +59,8 @@ const musicReducer = (state=initState, action={}) => {
     case types.SET_SCORE: {
       let scoreData = action.score;
       const score = new Score(scoreData);
-      let musicInfo = {title:score.title, author:score.author, signature: score.signature, scale: score.scale};
-      return Object.assign({}, state, {id: score.id, musicInfo, notes:score.notes, originalNotes:score.originalNotes});
+      let scoreInfo = {title:score.title, author:score.author, signature: score.signature, scale: score.scale};
+      return Object.assign({}, state, {id: score.id, scoreInfo, notes:score.notes, originalNotes:score.originalNotes});
     }
     case types.SET_SCORE_ID:
     {
@@ -51,8 +69,8 @@ const musicReducer = (state=initState, action={}) => {
       const scoreData = scoreList.filter(score=>score._id==id)[0];
       if (scoreData){
         const score = new Score(scoreData);
-        let musicInfo = {title:score.title, author:score.author, signature: score.signature, scale: score.scale};
-        return Object.assign({}, state, {id, musicInfo, notes:score.notes, originalNotes: score.originalNotes});
+        let scoreInfo = {title:score.title, author:score.author, signature: score.signature, scale: score.scale};
+        return Object.assign({}, state, {id, scoreInfo, notes:score.notes, originalNotes: score.originalNotes});
       } else {
         // no score
         return Object.assign({}, state, {id});
@@ -60,8 +78,8 @@ const musicReducer = (state=initState, action={}) => {
     }
     case types.RESET_SCORE: {
       const score = new Score(newScore);
-      let musicInfo = {title:score.title, author:score.author, signature: score.signature, scale: score.scale};
-      return Object.assign({}, state, {id: null, musicInfo, notes:score.notes, originalNotes: score.originalNotes});
+      let scoreInfo = {title:score.title, author:score.author, signature: score.signature, scale: score.scale};
+      return Object.assign({}, state, {id: null, scoreInfo, notes:score.notes, originalNotes: score.originalNotes});
     }
     case types.SET_SCORE_LIST:
     {
@@ -73,13 +91,13 @@ const musicReducer = (state=initState, action={}) => {
     case types.UPDATE_SCORE_INFO:
     {
       let {name, value} = action;
-      let musicInfo = Object.assign({}, state.musicInfo, {[name]: value});
-      return Object.assign({}, state, {musicInfo});  
+      let scoreInfo = Object.assign({}, state.scoreInfo, {[name]: value});
+      return Object.assign({}, state, {scoreInfo});  
     }
     case types.UPDATE_SCORE_NOTES:
     {
       const {notes} = action;
-      const {signature, scale, author, title} = state.musicInfo;
+      const {signature, scale, author, title} = state.scoreInfo;
       const score = new Score({signature, scale, author, title, notes});
       return Object.assign({}, state, {notes: score.notes, notesToSave: score.originalNotes});
     }
@@ -88,4 +106,4 @@ const musicReducer = (state=initState, action={}) => {
   }
 };
 
-export default musicReducer;
+export default scoreReducer;

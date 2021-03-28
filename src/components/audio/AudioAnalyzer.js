@@ -88,8 +88,8 @@ class AudioAnalyzer extends React.Component{
         this.analyzeData = this.initAnalyzeData;
         this.analyzeData.analyzeFrames = [];
         this.analyzeData.sampleRate = this.sampleRate;
-        this.analyzeData.scoreTitle = this.props.music.musicInfo.title
-        this.analyzeData.scoreId = this.props.music.id
+        this.analyzeData.scoreTitle = this.props.score.scoreInfo.title
+        this.analyzeData.scoreId = this.props.score.id
         this.analyzeData.noteBaseTime = 300;
         this.analyzeData.analyzeFrames.push(peakFreqIndex);
       } else {
@@ -205,7 +205,7 @@ class AudioAnalyzer extends React.Component{
   }
 }
 function mapStateToProps(state){
-  return Object.assign({}, state.audio, {music:state.music}, {ws: state.ws});
+  return Object.assign({}, state.audio, {score:state.score}, {ws: state.ws});
 }
 
 function mapDispatchToProps(dispatch){

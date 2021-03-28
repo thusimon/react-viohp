@@ -246,11 +246,11 @@ class MusicStaff extends React.Component<StaffProps, StaffProps> {
 
 function mapStateToProps(state){
   return {
-    freqLineVal:state.music.freqLineVal,
-    signature:state.music.musicInfo.signature,
-    scale:state.music.musicInfo.scale,
-    notes:state.music.notes,
-    dragInfo:state.music.dragInfo
+    freqLineVal:state.score.freqLineVal,
+    signature:state.score.scoreInfo.signature,
+    scale:state.score.scoreInfo.scale,
+    notes:state.score.notes,
+    dragInfo:state.score.dragInfo
   };
 }
 function mapDispatchToProps(dispatch) {

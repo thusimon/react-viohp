@@ -1,9 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {connect} from 'react-redux'
-import {Score, SymbolType, ScaleHead} from '../types';
+import {useDispatch, useSelector} from "react-redux";
+import * as musicActions from '../../actions/musicActions';
+import {ScoreType, StaffType, PlayType, SymbolType, ScaleHead, ScoreSymbol} from '../types';
 import {CLEF_G_SYM, SHARP_SYM, FLAT_SYM} from '../symbols/symbol-unicode';
 import {isSymbolNote} from '../symbols/utils';
-import {getSymXPosition} from './utils';
+import {getSymsInterval, getStaffNotesStartOffset} from './utils';
 import {STAFF_SCALES_HEAD} from '../constants';
 import SymbolSVG from '../symbols/symbol-svg';
 import * as d3 from 'd3';
@@ -38,7 +39,7 @@ const {
  * @param score 
  * @param width 
  */
-const drawStaffLinesAndClef = (score: Score, width: number) => {
+const drawStaffLinesAndClef = (score: ScoreType, width: number) => {
   d3.select('.staff-container-svg').selectAll('.d3-staff')
     .data(new Array(score.notes.length))
     .join('g')
@@ -84,8 +85,8 @@ const drawStaffLinesAndClef = (score: Score, width: number) => {
  * draw staff scale
  * @param score 
  */
-const drawStaffScale = (score: Score) => {
-  const {signature, scale} = score;
+const drawStaffScale = (score: ScoreType) => {
+  const {signature, scale} = score.scoreInfo;
   const scalesHead: ScaleHead[] = STAFF_SCALES_HEAD[signature][scale];
   d3.selectAll('.d3-staff').selectAll('.d3-staff-scale-head')
   .data(scalesHead)
@@ -97,16 +98,26 @@ const drawStaffScale = (score: Score) => {
   .style('font-size', '36px');
 }
 
-const drawNotes = (score: Score, staffWidth: number) => {
-  const {notes, signature, scale} = score;
-  const scalesHeadLength = STAFF_SCALES_HEAD[signature][scale].length;
-  const notesOffXSet = 80 + scalesHeadLength * 12
+const drawNotes = (score: ScoreType, staffWidth: number, dispatch) => {
+  const {notes} = score;
+  const notesOffXSet = getStaffNotesStartOffset(score);
   const staffs =  d3.selectAll('.d3-staff');
   staffs.each(function(staffs, idx) {
     const notesFromProps = notes[idx];
-    const xPos = getSymXPosition(notesFromProps, notesOffXSet, staffWidth);
-    const svgFromProps = notesFromProps.map(noteFromProps => {
-      return new SymbolSVG(noteFromProps.type, {augment: noteFromProps.desc.augment, scale: noteFromProps.desc.scale});
+    const xInterval = getSymsInterval(notesFromProps, notesOffXSet, 30, staffWidth);
+    let barCount = 0;
+    const svgFromProps = notesFromProps.map((noteFromProps, idx) => {
+      const symbolSVG = new SymbolSVG(noteFromProps.type,
+        {augment: noteFromProps.desc.augment, scale: noteFromProps.desc.scale},
+        noteFromProps.sfIdx,
+        noteFromProps.name);
+      if (symbolSVG.type === SymbolType.BAR) {
+        barCount++;
+        symbolSVG.x = notesOffXSet + xInterval * (idx - barCount + 0.5);
+      } else {
+        symbolSVG.x = notesOffXSet + xInterval * (idx - barCount);
+      }
+      return symbolSVG;
     })
 
     d3.select(this)
@@ -118,36 +129,72 @@ const drawNotes = (score: Score, staffWidth: number) => {
       const noteCenter = d.getCenter();
       if (isSymbolNote(d.type)) {
         // it is a note, should put it in the correct y position according to the sfIdx
-        return `translate(${xPos[idx].x - noteCenter[0]}, ${60-noteCenter[1]+notesFromProps[idx].sfIdx*10})`;
+        return `translate(${d.x - noteCenter[0]}, ${60-noteCenter[1]+notesFromProps[idx].sfIdx*10})`;
       } else {
         // it is not a note, they are always at a fixed y position
-        return `translate(${xPos[idx].x - noteCenter[0]}, 100)`;
+        return `translate(${d.x - noteCenter[0]}, 100)`;
       }
     })
-    .html(d => d.getHTML());
+    .html(d => d.getHTML())
+    .on('click', function(evt, ele) {
+      console.log(evt, ele, this);
+      const d3Select = d3.select(this);
+      const selected = !d3Select.classed('selected-sym');
+      d3Select.classed('selected-sym', selected);
+      ele.selected = selected;
+      d3Select.html(ele.getHTML());
+      const markNote = {mark: selected, name: ele.name, sfIdx: ele.sfIdx};
+      dispatch(musicActions.clickNote(markNote));
+    })
+    .on('mouseover', function(evt, ele) {
+      d3.select(this)
+      .style('cursor', 'pointer');
+    })
+    .on('mouseout', function(evt, ele) {
+      d3.select(this)
+      .style('cursor', 'default');
+    });
   });
 }
-export const StaffUnconnected = (score: Score) => {
+
+const drawStaffIndicator = (score: ScoreType, player: PlayType) => {
+  const notesOffXSet = getStaffNotesStartOffset(score);
+}
+
+interface BaseStateType {
+  score: ScoreType;
+  staff: StaffType;
+  player: PlayType;
+}
+
+export const Staff = () => {
+  const signature = useSelector((state: BaseStateType) => state.score.scoreInfo.signature);
+  const scale = useSelector((state: BaseStateType) => state.score.scoreInfo.scale);
+  const notes = useSelector((state: BaseStateType) => state.score.notes);
+  const staff = useSelector((state: BaseStateType) => state.staff);
+  const player = useSelector((state: BaseStateType) => state.player);
+  const dispatch = useDispatch();
   const divRef = useRef<HTMLDivElement>(null)
+  const score = {
+    notes,
+    scoreInfo: {
+      scale,
+      signature
+    } 
+  }
   useEffect(() => {
     divRef.current.style.height = `${score.notes.length * 200}px`;
     const staffWidth = divRef.current.offsetWidth;
     drawStaffLinesAndClef(score, staffWidth)
     drawStaffScale(score)
-    drawNotes(score, staffWidth);
-  }, [score]);
+    drawNotes(score, staffWidth, dispatch);
+  }, [signature, scale, notes, staff]);
+
+  useEffect(() => {
+    drawStaffIndicator(score, player);
+  }, [player]);
 
   return <div className='d3-staff-container' ref={divRef} style={{width:'99.8%'}}>
     <svg className='staff-container-svg' style={{width:'100%', height:'100%'}}></svg>
   </div>
 }
-
-const mapStateToProps = state => {
-  return {
-    signature: state.music.musicInfo.signature,
-    scale: state.music.musicInfo.scale,
-    notes: state.music.notes
-  }
-}
-
-export const Staff = connect(mapStateToProps, null)(StaffUnconnected);

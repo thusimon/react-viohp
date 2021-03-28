@@ -1,26 +1,30 @@
 /**
  * Created by Lu on 8/9/2018.
  */
-export const courseInitState = {
-  authors:[],
-  courses:[],
-  ajaxCallsInProgress: 0
-};
-
-export const musicInitState = {
+export const scoreInitState = {
   notes:[[],[],[]],
   originalNotes: [[],[],[]],
   markNotes:[],
   dragInfo: {dragStatus:-1, dragNoteName:"C", startOffSet:[0,0], noteShift:[0,0]},
   freqLineVal:-1,
-  musicInfo:{
+  scoreInfo:{
     signature : 'Major', 
     scale : 'C',
     title: 'Score Title',
     author: 'author'
   },
-  scoreId:""
+  scoreId:"",
+  name:"",
+  scoreList:{}
 };
+
+export const staffInitState = {
+  config: {
+    showNoteName: true,
+    showStaffIndex: true,
+    showAudioSpectrum: false
+  }
+}
 
 export const audioInitState = {
   sampleRate: 48000,
@@ -35,11 +39,6 @@ export const audioInitState = {
   filters_AJAXFlag: 0,
   filters:{},
   analyzeState: false
-};
-
-export const scoreInitState = {
-  name:"",
-  scoreList:{}
 };
 
 export const playerInitState = {

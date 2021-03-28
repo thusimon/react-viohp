@@ -26,10 +26,10 @@ class MusicEditorPage extends React.Component {
   async saveScore() {
     // prepare the data
     const data = {
-      title: this.props.musicInfo.title,
-      author: this.props.musicInfo.author,
-      signature: this.props.musicInfo.signature,
-      scale: this.props.musicInfo.scale,
+      title: this.props.scoreInfo.title,
+      author: this.props.scoreInfo.author,
+      signature: this.props.scoreInfo.signature,
+      scale: this.props.scoreInfo.scale,
       notes: this.props.notesToSave
     }
     // get the id first
@@ -87,9 +87,9 @@ class MusicEditorPage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  let {id, musicInfo, notes, scoreList, notesToSave} = state.music;
+  let {id, scoreInfo, notes, scoreList, notesToSave} = state.score;
   let {user} = state.auth;
-  return {id, musicInfo, notes, notesToSave, scoreList, user};
+  return {id, scoreInfo, notes, notesToSave, scoreList, user};
 };
 
 const mapDispatchToProps = (dispatch) => {

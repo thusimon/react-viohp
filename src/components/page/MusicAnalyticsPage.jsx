@@ -37,7 +37,7 @@ const average = (arr) => {
   const avg = (sum / arr.length) || 0;
   return avg;
 }
-const MusicAnalyticsPage = ({music={}, setScore}) => {
+const MusicAnalyticsPage = ({score={}, setScore}) => {
   const [audioList, setAudioList] = useState([]);
   const [audioAnalyze, setAudioAnalyze] = useState({});
   
@@ -77,8 +77,8 @@ const MusicAnalyticsPage = ({music={}, setScore}) => {
       }
     }
     fetchAudioAnalyses();
-    analyze(audioAnalyze, music.notes);
-  }, [music]);
+    analyze(audioAnalyze, score.notes);
+  }, [score]);
 
   const clickScoreDownload = async (evt, id) => {
     const audioAnalyseRes = await fetchDataWithAccessToken(`/api/audioanalyse/${id}`, 'GET');
@@ -120,7 +120,7 @@ const MusicAnalyticsPage = ({music={}, setScore}) => {
 }
 
 function mapStateToProps(state){
-  return {music: state.music};
+  return {score: state.score};
 }
 
 const mapDispatchToProps = (dispatch) => {
