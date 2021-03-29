@@ -6,8 +6,9 @@
   "license": "MIT",
   "scripts": {
     "start:prod": "npm run build && env-cmd -f ./src/server/config/prod.env node src/server/distServer.js",
-    "start:dev": "npm run open:server",
-    "open:server": "env-cmd -f ./src/server/config/dev.env nodemon src/server/srcServer.js -e js,jsx,ts,tsx --ignore dist/",
+    "start:dev": "concurrently --kill-others \"npm run webpack:dev\" \"npm run open:server\"",
+    "webpack:dev": "nodemon --watch src -e js,jsx,ts,tsx --ignore src/server src/server/srcWebpack.js",
+    "open:server": "env-cmd -f ./src/server/config/dev.env nodemon --watch src/server -e js,jsx,ts,tsx src/server/srcServer.js",
     "start": "node src/server/distServer.js",
     "postinstall": "npm run build",
     "build": "node tools/build.js"
@@ -35,6 +36,7 @@
     "clean-webpack-plugin": "^3.0.0",
     "codemirror": "^5.53.2",
     "compression": "^1.7.4",
+    "concurrently": "^6.0.0",
     "copy-webpack-plugin": "^6.0.1",
     "css-loader": "^3.5.3",
     "d3": "^6.6.0",
