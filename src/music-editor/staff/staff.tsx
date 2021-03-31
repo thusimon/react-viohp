@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import * as musicActions from '../../actions/musicActions';
 import {ScoreType, StaffType, PlayType, SymbolType, ScaleHead, ScoreSymbol, IteratorResponse} from '../types';
 import {CLEF_G_SYM, SHARP_SYM, FLAT_SYM} from '../symbols/symbol-unicode';
-import {isSymbolNote} from '../symbols/utils';
+import {isSymbolNote, isSymbolNoteUp, isSymbolNoteReverse} from '../symbols/utils';
 import {getSymsInterval, getStaffNotesStartOffset, getNoteIterator, getTimeoutFromNoteType, waitTime} from './utils';
 import {STAFF_SCALES_HEAD} from '../constants';
 import SymbolSVG from '../symbols/symbol-svg';
@@ -113,7 +113,7 @@ const mapScoreNotesToSvg = (score: ScoreType, staffWidth: number): SymbolSVG[][]
   });
 }
 
-const drawNotes = (notes: SymbolSVG[][], dispatch) => {
+const drawNotes = (notes: SymbolSVG[][], staff: StaffType, dispatch) => {
   const staffs =  d3.selectAll('.d3-staff');
   staffs.each(function(staffs, idx) {
     const notesLine = notes[idx];
@@ -150,6 +150,27 @@ const drawNotes = (notes: SymbolSVG[][], dispatch) => {
       d3.select(this)
       .style('cursor', 'default');
     });
+
+    let noteNames: SymbolSVG[] = [];
+    if (staff.config.showNoteName) {
+      noteNames = notesLine;
+    }
+    d3.select(this)
+    .selectAll('.d3-staff-note-name')
+    .data(noteNames)
+    .join('text')
+    .attr('class', 'd3-staff-note-name')
+    .attr('transform', (d, idx) => {
+      const noteCenter = d.getCenter();
+      if (isSymbolNoteUp(d.type)) {
+        return `translate(${d.x - noteCenter[0] - 10}, ${60-noteCenter[1]+notesLine[idx].sfIdx*10 + 30})`;
+      } else if (isSymbolNoteReverse(d.type)){
+        return `translate(${d.x - noteCenter[0] - 10}, ${60-noteCenter[1]+notesLine[idx].sfIdx*10 - 30})`;
+      } else {
+        return '';
+      }
+    })
+    .text(d => d.name ? d.name.toUpperCase() : '');
   });
 }
 
@@ -244,7 +265,7 @@ export const Staff = () => {
     setNotesSVG(notesSVG)
     drawStaffLinesAndClef(score, staffWidth)
     drawStaffScale(score)
-    drawNotes(notesSVG, dispatch);
+    drawNotes(notesSVG, staff, dispatch);
   }, [signature, scale, notes, staff]);
 
   useEffect(() => {
