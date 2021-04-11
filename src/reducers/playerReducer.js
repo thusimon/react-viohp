@@ -16,15 +16,15 @@ export default function playerReducer(state=initState, action={}){
     }
     case types.BACKWARD:
     {
-      return Object.assign({}, state, {seek: -1});
+      return Object.assign({}, state, {playing: -2});
     }
     case types.FORWARD:
     {
-      return Object.assign({}, state, {seek: 1});
+      return Object.assign({}, state, {playing: 2});
     }
     case types.RESET:
     {
-      return Object.assign({}, state, {playing: -1, seek: 0});  
+      return Object.assign({}, state, {playing: -1});  
     }
     case types.CHANGE_VOLUME:
     {

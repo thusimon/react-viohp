@@ -1,12 +1,14 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import * as musicActions from '../../actions/musicActions';
-import {ScoreType, StaffType, PlayType, SymbolType, ScaleHead, ScoreSymbol, IteratorResponse} from '../types';
+import {ScoreType, StaffType, PlayType, SymbolType, ScaleHead, ScoreSymbol, IteratorResponse, StaffOwnProps} from '../types';
 import {CLEF_G_SYM, SHARP_SYM, FLAT_SYM} from '../symbols/symbol-unicode';
 import {isSymbolNote, isSymbolNoteUp, isSymbolNoteReverse} from '../symbols/utils';
-import {getSymsInterval, getStaffNotesStartOffset, getNoteIterator, getTimeoutFromNoteType, waitTime} from './utils';
+import {getSymsInterval, getStaffNotesStartOffset, waitTime} from './utils';
 import {STAFF_SCALES_HEAD} from '../constants';
 import SymbolSVG from '../symbols/symbol-svg';
+import SymbolIterator from '../symbols/symbol-iter';
+import * as playerActions from '../../actions/playerActions';
 import * as d3 from 'd3';
 
 const {ARROW} = SymbolType;
@@ -174,8 +176,8 @@ const drawNotes = (notes: SymbolSVG[][], staff: StaffType, dispatch) => {
   });
 }
 
-const drawStaffIndicator = async (noteIterator: Generator<IteratorResponse, boolean>, player: PlayType) => {
-  if (!noteIterator) {
+const drawStaffIndicator = async (noteIterator: Generator<IteratorResponse, boolean>, playing: number, dispatch, sectionRef: React.RefObject<HTMLDivElement>) => {
+  if (!noteIterator || !sectionRef.current) {
     return;
   }
   const arrowSelect = d3.select('.staff-container-svg').selectAll('.staff-indicator')
@@ -204,34 +206,36 @@ const drawStaffIndicator = async (noteIterator: Generator<IteratorResponse, bool
   })
   .html(arrowSymbol.getHTML());
 
-  if (player.playing === 0) {
-
-  } else if (player.playing > 0) {
-    // start playing
-    // wait for the current note time
-    do {
-      noteVal = note as IteratorResponse;
-      arrowSelect.data([noteVal])
-      .join('g')
-      .attr('class', 'staff-indicator')
-      .attr('transform', d => {
-        if (d) {
-          const symbolCenter = d.symbol.getCenter();
-          const xPos = isSymbolNote(d.symbol.type) ? d.symbol.x - symbolCenter[0] : d.symbol.x;
-          return `translate(${xPos},${60+d.row*200})`;
-        } else {
-          return `translate(0,0)`;
-        }
-      })
-      .html(arrowSymbol.getHTML());
-      const timeout = getTimeoutFromNoteType(noteVal.symbol, 0.3);
-      await waitTime(timeout*1000);
-      note = noteIterator.next().value;
-    } while (note);
-
-  } else {
-
+  if (playing === -1) {
+    return;
   }
+
+  do {
+    noteVal = note as IteratorResponse;
+    arrowSelect.data([noteVal])
+    .join('g')
+    .attr('class', 'staff-indicator')
+    .attr('transform', d => {
+      if (d) {
+        const symbolCenter = d.symbol.getCenter();
+        const xPos = isSymbolNote(d.symbol.type) ? d.symbol.x - symbolCenter[0] : d.symbol.x;
+        return `translate(${xPos},${60+d.row*200})`;
+      } else {
+        return `translate(0,0)`;
+      }
+    })
+    .html(arrowSymbol.getHTML());
+    const timeout = noteVal.symbol.timeout;
+    if (noteVal.symbol.freq) {
+      dispatch(playerActions.playNote('piano', noteVal.symbol.freq, timeout*3));
+    }
+    if (noteVal.row && noteVal.row % 3 == 0) {
+      //it is time to scroll
+      sectionRef.current.scroll(0, noteVal.row * 200);
+    }
+    await waitTime(timeout*1000);
+    note = noteIterator.next().value;
+  } while (note);
 }
 
 interface BaseStateType {
@@ -240,7 +244,7 @@ interface BaseStateType {
   player: PlayType;
 }
 
-export const Staff = () => {
+export const Staff = ({sectionRef}: StaffOwnProps) => {
   const signature = useSelector((state: BaseStateType) => state.score.scoreInfo.signature);
   const scale = useSelector((state: BaseStateType) => state.score.scoreInfo.scale);
   const notes = useSelector((state: BaseStateType) => state.score.notes);
@@ -249,7 +253,7 @@ export const Staff = () => {
   const dispatch = useDispatch();
   const divRef = useRef<HTMLDivElement>(null)
   const [notesSVG, setNotesSVG] = useState([]);
-  const [noteIter, setNoteIter] = useState<Generator<IteratorResponse, boolean>>();
+  const [symbolIter, setSymbolIter] = useState<SymbolIterator>(new SymbolIterator([]));
   const score = {
     notes,
     scoreInfo: {
@@ -261,7 +265,7 @@ export const Staff = () => {
     divRef.current.style.height = `${score.notes.length * 200}px`;
     const staffWidth = divRef.current.offsetWidth;
     const notesSVG = mapScoreNotesToSvg(score, staffWidth);
-    setNoteIter(getNoteIterator(notesSVG));
+    setSymbolIter(new SymbolIterator(notesSVG));
     setNotesSVG(notesSVG)
     drawStaffLinesAndClef(score, staffWidth)
     drawStaffScale(score)
@@ -269,7 +273,8 @@ export const Staff = () => {
   }, [signature, scale, notes, staff]);
 
   useEffect(() => {
-    drawStaffIndicator(noteIter, player);
+    symbolIter.setState(player.playing);
+    drawStaffIndicator(symbolIter.iter, player.playing, dispatch, sectionRef);
   }, [player, notesSVG]);
 
   return <div className='d3-staff-container' ref={divRef} style={{width:'99.8%'}}>

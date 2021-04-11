@@ -43,7 +43,6 @@ export const audioInitState = {
 
 export const playerInitState = {
   playing: -1,
-  seek: 0,
   vol: 0.1
 };
 

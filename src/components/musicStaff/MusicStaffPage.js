@@ -3,7 +3,6 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import MusicStaffPlayerArrow from './MusicStaffPlayerArrow';
 import * as Constants from './Constants';
 import * as Utils from './Utils';
 import * as musicActions from '../../actions/musicActions';
@@ -69,7 +68,7 @@ class MusicStaffPage extends React.Component {
            onMouseUp={this.onMusicStaffPageMouseUp}>
         <MusicStaffHead scoreInfo={this.state.scoreInfo}/>
         <div className='music-staff-section' ref={this.staffRef}>
-          <Staff />
+          <Staff sectionRef={this.staffRef} />
         </div>
       </div>);
   }

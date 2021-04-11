@@ -1,3 +1,4 @@
+import React from 'react';
 import SymbolSVG from './symbols/symbol-svg';
 
 export enum Signature {
@@ -62,9 +63,12 @@ export interface StaffType {
   }
 }
 
+export interface StaffOwnProps {
+  sectionRef: React.RefObject<HTMLDivElement>;
+}
+
 export interface PlayType {
   playing: number;
-  seek: number;
   vol: number;
 }
 

@@ -31,52 +31,6 @@ export const getStaffNotesStartOffset = (score: ScoreType): number => {
   return 100 + scalesHeadLength * 12;
 }
 
-export const getNoteIterator = function* (notes: SymbolSVG[][]): Generator<IteratorResponse, boolean> {
-  this.notes = notes;
-  this.row = 0;
-  this.col = 0;
-  while(this.row < this.notes.length) {
-    const curRow = this.notes[this.row];
-    while(this.col < curRow.length) {
-      const curNote = this.notes[this.row][this.col];
-      if (curNote.type == SymbolType.BAR) {
-        this.col++;
-        continue;
-      }
-      yield {symbol: curNote, row: this.row, col: this.col};
-      this.col++;
-    }
-    this.col = 0;
-    this.row++;
-  }
-  return false;
-};
-
-export const getTimeoutFromNoteType = (note: SymbolSVG, baseTime: number): number => {
-  let time = baseTime;
-  switch (note.type) {
-    case SymbolType.NOTE_HALF:
-    case SymbolType.NOTE_HALF_REVERSE:
-    case SymbolType.HALFREST:
-      time = baseTime*4;
-      break;
-    case SymbolType.NOTE_QUARTER:
-    case SymbolType.NOTE_QUARTER_REVERSE:
-    case SymbolType.QUARTERREST:
-      time = baseTime*2;
-      break;
-    case SymbolType.NOTE_EIGHTH:
-    case SymbolType.NOTE_EIGHTH_REVERSE:
-    case SymbolType.EIGTHREST:
-    default:
-      time = baseTime;
-  }
-  if (note.desc && note.desc.augment) {
-    time += time/2;
-  }
-  return time;
-};
-
 export const waitTime = async (time: number) => {
   return new Promise((resolve, reject) => {
     let wait = setTimeout(() => {

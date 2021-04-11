@@ -3,7 +3,7 @@ import { Selection } from 'd3';
 import {SYM_MAP} from '../constants'
 import {ellipse, noteStem, noteStemRev, stem, hook, bar, staffSegment, arrow} from '../svgs/base-paths';
 import {SymbolType, Descriptor} from '../types';
-import {isSymbolNote} from './utils';
+import {isSymbolNote, getTimeoutFromSymbolType} from './utils';
 
 import './symbol-svg.scss';
 
@@ -26,6 +26,7 @@ class SymbolSVG {
   selected: boolean;
   name?: string;
   freq?: number;
+  timeout?: number;
   constructor(type: SymbolType, desc?: Descriptor, sfIdx?: number, name?: string, freq?: number) {
     this.type = type;
     this.desc = desc || {};
@@ -34,6 +35,7 @@ class SymbolSVG {
     this.selected = false;
     this.name = name;
     this.freq = freq;
+    this.timeout = getTimeoutFromSymbolType(type, desc, 0.3);
   }
   getSymbolNodes(): void {
     switch(this.type) {
