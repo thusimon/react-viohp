@@ -20,7 +20,7 @@ class AudioAnalyzer extends React.Component{
     this.toggleAudioAnalyze = this.toggleAudioAnalyze.bind(this);
     this.toggleSettings = this.toggleSettings.bind(this);
     this.source=null;
-    this.defaultInfo = {noteColor: "#00FF00", peakFreq: "0", noteName: "--", noteFreq: '--'};
+    this.defaultInfo = {noteColor: "#00FF00", peakFreq: 0, noteName: "--", noteFreq: '--'};
     this.state = Object.assign({}, this.props, {showSettings: false});
     this.initAnalyzeData = {
       sampleRate: 0,
@@ -123,7 +123,7 @@ class AudioAnalyzer extends React.Component{
     let {noteColor, peakFreq,noteName, noteFreq} = this.defaultInfo;
     if (peakEnergy>0){
       let peakFreqRaw = audioUtils.getFreqFromIndex(peakFreqIndex, this.sampleRate, this.fftSize) + this.state.freqRange[0];
-      peakFreqRaw = peakFreqRaw.toFixed(2);
+      peakFreqRaw = +peakFreqRaw.toFixed(2);
       let freqDisplayInfo = audioUtils.getNoteByFreq(peakFreqRaw, this.state.tolerance);
       peakFreq = freqDisplayInfo.peakFreq;
       noteColor = freqDisplayInfo.noteColor;

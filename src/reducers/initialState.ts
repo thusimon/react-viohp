@@ -30,7 +30,7 @@ export const audioInitState = {
   sampleRate: 48000,
   peakEnergy: 0,
   noteColor: "#00FF00",
-  peakFreq: "0",
+  peakFreq: 0,
   noteName: "--",
   noteFreq: "--",
   threshold: 100, // if the spectrum power is less than threshold, consider as noise
