@@ -17,6 +17,30 @@ class SymbolIterator {
   setState(state: number) {
     this.state = state;
   }
+
+  getNextSymbol() {
+    let row = this.row, col = this.col;
+    while(row < this.notes.length) {
+      const curRow = this.notes[row];
+      col++;
+      while(col < curRow.length) {
+        const curNote = this.notes[row][col];
+        if (curNote.type == SymbolType.BAR) {
+          continue;
+        }
+        return {symbol: curNote, row: row, col: col};
+      }
+      col = 0;
+      row++;
+    }
+    return null;
+  }
+
+  getCurrentSymbol() {
+    return this.notes ? (this.notes[this.row] ?
+      {symbol: this.notes[this.row][this.col], row: this.row, col: this.col} : null) : null;
+  }
+
   *symIter(): Generator<IteratorResponse, boolean> {
     while(this.row < this.notes.length) {
       const curRow = this.notes[this.row];

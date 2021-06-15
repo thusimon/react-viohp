@@ -238,8 +238,10 @@ const drawStaffIndicator = async (noteIterator: Generator<IteratorResponse, bool
   } while (note);
 }
 
-const drawFreqGraph = (playing: number, freq: number, notes: SymbolSVG[][]) => {
-  console.log(242, freq);
+const drawFreqGraph = (symbolIter: SymbolIterator, playing: number, freq: number, notes: SymbolSVG[][]) => {
+  const currentNote = symbolIter.getCurrentSymbol()
+  const nextNote = symbolIter.getNextSymbol()
+  console.log(242, freq, currentNote, nextNote);
 }
 interface BaseStateType {
   score: ScoreType;
@@ -258,7 +260,7 @@ export const Staff = ({sectionRef}: StaffOwnProps) => {
   const dispatch = useDispatch();
   const divRef = useRef<HTMLDivElement>(null)
   const [notesSVG, setNotesSVG] = useState([]);
-  const [symbolIter, setSymbolIter] = useState<SymbolIterator>(new SymbolIterator([]));
+  const [symbolIter, setSymbolIter] = useState<SymbolIterator>(new SymbolIterator([[]]));
   const score = {
     notes,
     scoreInfo: {
@@ -283,10 +285,8 @@ export const Staff = ({sectionRef}: StaffOwnProps) => {
   }, [player, notesSVG]);
 
   useEffect(() => {
-    drawFreqGraph(player.playing, audio.peakFreq, notesSVG);
-  }, [player, audio.peakFreq]);
-
-  console.log(player, audio.peakFreq);
+    drawFreqGraph(symbolIter, player.playing, audio.peakFreq, notesSVG);
+  }, [player, audio]);
 
   return <div className='d3-staff-container' ref={divRef} style={{width:'99.8%'}}>
     <svg className='staff-container-svg' style={{width:'100%', height:'100%'}}></svg>
