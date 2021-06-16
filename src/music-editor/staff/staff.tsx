@@ -4,8 +4,9 @@ import * as musicActions from '../../actions/musicActions';
 import {ScoreType, StaffType, PlayType, SymbolType, ScaleHead, ScoreSymbol, IteratorResponse, StaffOwnProps} from '../types';
 import {CLEF_G_SYM, SHARP_SYM, FLAT_SYM} from '../symbols/symbol-unicode';
 import {isSymbolNote, isSymbolNoteUp, isSymbolNoteReverse} from '../symbols/utils';
-import {getSymsInterval, getStaffNotesStartOffset, waitTime} from './utils';
+import {getSymsInterval, getStaffNotesStartOffset, waitTime, getFreqLineXIncStep, getFreqLineYVal} from './utils';
 import {STAFF_SCALES_HEAD} from '../constants';
+import {AUDIO_ANALYSE_INTERVAL} from '../../components/audio/constants';
 import SymbolSVG from '../symbols/symbol-svg';
 import SymbolIterator from '../symbols/symbol-iter';
 import * as playerActions from '../../actions/playerActions';
@@ -33,6 +34,8 @@ const {ARROW} = SymbolType;
  * @param score 
  * @param width 
  */
+const audioData = [[]];
+
 const drawStaffLinesAndClef = (score: ScoreType, width: number) => {
   d3.select('.staff-container-svg').selectAll('.d3-staff')
     .data(new Array(score.notes.length))
@@ -241,7 +244,36 @@ const drawStaffIndicator = async (noteIterator: Generator<IteratorResponse, bool
 const drawFreqGraph = (symbolIter: SymbolIterator, playing: number, freq: number, notes: SymbolSVG[][]) => {
   const currentNote = symbolIter.getCurrentSymbol()
   const nextNote = symbolIter.getNextSymbol()
-  console.log(242, freq, currentNote, nextNote);
+  // TODO get the center line's note frequency
+  // currently, take B4 note frequency 494Hz
+  const baseSym = new SymbolSVG(SymbolType.NOTE_HALF, {}, 10, 'b4', 494);
+  if (!currentNote || !nextNote || playing != 1) {
+    return;
+  }
+  const firstNoteInRow = symbolIter.getSymbolByIdx(currentNote.row, 0);
+  const incXStep = getFreqLineXIncStep(currentNote.symbol, nextNote.symbol, 0.1);
+  const yVal = getFreqLineYVal(baseSym, freq)
+  const staffs =  d3.selectAll('.d3-staff');
+  audioData[firstNoteInRow.row] = audioData[firstNoteInRow.row] || [];
+  audioData[firstNoteInRow.row].push(freq);
+  staffs.each(function(staff, idx) {
+    if (idx != currentNote.row) {
+      return;
+    }
+    // should handle this staff
+    d3.select(this)
+    .selectAll('.d3-staff-freq-line')
+    .data([1])
+    .join('path')
+    .attr('d', 'M 0 0')
+    .attr('class', 'd3-staff-freq-line')
+    .style('transform', `translate(${firstNoteInRow.symbol.x}px, 100px)`)
+    .style('stroke', 'blue')
+    .style('stroke-width', 1);
+
+  });
+  //console.log(242, freq, currentNote, nextNote);
+  console.log(276, audioData)
 }
 interface BaseStateType {
   score: ScoreType;

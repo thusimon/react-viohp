@@ -4,6 +4,7 @@
 /*eslint no-console: 0 */
 import React from 'react';
 import {connect} from 'react-redux';
+import { AUDIO_ANALYSE_INTERVAL } from './constants';
 import * as audioUtils from './Utils';
 import AudioDisplay from './AudioDisplay';
 import * as audioActions from '../../actions/audioActions';
@@ -28,7 +29,7 @@ class AudioAnalyzer extends React.Component{
       scoreId: '',
       analyzeFrames: [],
       prepareTime: 5000,
-      analyzeIncTime: 100
+      analyzeIncTime: AUDIO_ANALYSE_INTERVAL
     },
     this.analyzing = false;
   }
@@ -62,7 +63,7 @@ class AudioAnalyzer extends React.Component{
           // for violin g3#-g3=12Hz
           console.log("sample rate = " + me.sampleRate);
           console.log("fft dataArray len: " + me.dataArray.length);
-          me.timer = setInterval(me.updateCanvas, 100);
+          me.timer = setInterval(me.updateCanvas, AUDIO_ANALYSE_INTERVAL);
           me.audioCtx.resume();
         })
         .catch( function(err) { 

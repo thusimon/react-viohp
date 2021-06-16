@@ -1,0 +1,1 @@
+export const AUDIO_ANALYSE_INTERVAL = 100

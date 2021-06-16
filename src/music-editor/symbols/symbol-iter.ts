@@ -36,9 +36,13 @@ class SymbolIterator {
     return null;
   }
 
+  getSymbolByIdx(row: number, col: number) {
+    return this.notes ? (this.notes[row] ?
+      {symbol: this.notes[row][col], row: row, col: col} : null) : null;
+  }
+
   getCurrentSymbol() {
-    return this.notes ? (this.notes[this.row] ?
-      {symbol: this.notes[this.row][this.col], row: this.row, col: this.col} : null) : null;
+    return this.getSymbolByIdx(this.row, this.col);
   }
 
   *symIter(): Generator<IteratorResponse, boolean> {

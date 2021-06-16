@@ -39,3 +39,17 @@ export const waitTime = async (time: number) => {
     }, time)
   });
 }
+
+export const getFreqLineXIncStep = (sym1: SymbolSVG, sym2: SymbolSVG, audioSampleInterval: number) => {
+  return (sym1.x-sym2.x) / (sym1.timeout / audioSampleInterval);
+}
+
+export const getFreqLineYVal = (baseSym: SymbolSVG, freq: number) => {
+  // TODO: need interplation, now just use a linear one
+  return baseSym.sfIdx * 20 + (baseSym.freq - freq); 
+}
+
+export const generateStaffFreqLineD = (audioArr: number[], baseY: number, xStep: number) => {
+  let d = 'M 0 0 '
+  
+}
