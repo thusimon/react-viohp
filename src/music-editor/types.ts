@@ -122,3 +122,8 @@ export type ScaleHeads = {
     [key in NOTE]: ScaleHead[];
   };
 };
+
+export type AudioFreqData = {
+  xInc: number,
+  y: number
+}

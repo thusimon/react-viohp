@@ -1,10 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import * as musicActions from '../../actions/musicActions';
-import {ScoreType, StaffType, PlayType, SymbolType, ScaleHead, ScoreSymbol, IteratorResponse, StaffOwnProps} from '../types';
+import {ScoreType, StaffType, PlayType, SymbolType, ScaleHead, ScoreSymbol, IteratorResponse, StaffOwnProps,
+  AudioFreqData} from '../types';
 import {CLEF_G_SYM, SHARP_SYM, FLAT_SYM} from '../symbols/symbol-unicode';
 import {isSymbolNote, isSymbolNoteUp, isSymbolNoteReverse} from '../symbols/utils';
-import {getSymsInterval, getStaffNotesStartOffset, waitTime, getFreqLineXIncStep, getFreqLineYVal} from './utils';
+import {getSymsInterval, getStaffNotesStartOffset, waitTime, getFreqLineXInc, getFreqLineYVal, generateStaffFreqLineD} from './utils';
 import {STAFF_SCALES_HEAD} from '../constants';
 import {AUDIO_ANALYSE_INTERVAL} from '../../components/audio/constants';
 import SymbolSVG from '../symbols/symbol-svg';
@@ -34,7 +35,7 @@ const {ARROW} = SymbolType;
  * @param score 
  * @param width 
  */
-const audioData = [[]];
+const audioData: AudioFreqData[][] = [[]];
 
 const drawStaffLinesAndClef = (score: ScoreType, width: number) => {
   d3.select('.staff-container-svg').selectAll('.d3-staff')
@@ -251,11 +252,11 @@ const drawFreqGraph = (symbolIter: SymbolIterator, playing: number, freq: number
     return;
   }
   const firstNoteInRow = symbolIter.getSymbolByIdx(currentNote.row, 0);
-  const incXStep = getFreqLineXIncStep(currentNote.symbol, nextNote.symbol, 0.1);
-  const yVal = getFreqLineYVal(baseSym, freq)
+  const xInc = getFreqLineXInc(currentNote.symbol, nextNote.symbol, 0.1);
+  const y = getFreqLineYVal(baseSym, freq)
   const staffs =  d3.selectAll('.d3-staff');
   audioData[firstNoteInRow.row] = audioData[firstNoteInRow.row] || [];
-  audioData[firstNoteInRow.row].push(freq);
+  audioData[firstNoteInRow.row].push({xInc, y});
   staffs.each(function(staff, idx) {
     if (idx != currentNote.row) {
       return;
@@ -265,10 +266,11 @@ const drawFreqGraph = (symbolIter: SymbolIterator, playing: number, freq: number
     .selectAll('.d3-staff-freq-line')
     .data([1])
     .join('path')
-    .attr('d', 'M 0 0')
+    .attr('d', generateStaffFreqLineD(audioData[firstNoteInRow.row]))
     .attr('class', 'd3-staff-freq-line')
     .style('transform', `translate(${firstNoteInRow.symbol.x}px, 100px)`)
     .style('stroke', 'blue')
+    .style('fill', 'none')
     .style('stroke-width', 1);
 
   });

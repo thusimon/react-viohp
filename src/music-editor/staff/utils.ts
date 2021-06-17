@@ -1,4 +1,4 @@
-import {ScoreSymbol, SymbolType, ScoreType, IteratorResponse} from '../types';
+import {ScoreSymbol, SymbolType, ScoreType, IteratorResponse, AudioFreqData} from '../types';
 import SymbolSVG from '../symbols/symbol-svg';
 import {STAFF_SCALES_HEAD} from '../constants';
 
@@ -40,16 +40,23 @@ export const waitTime = async (time: number) => {
   });
 }
 
-export const getFreqLineXIncStep = (sym1: SymbolSVG, sym2: SymbolSVG, audioSampleInterval: number) => {
-  return (sym1.x-sym2.x) / (sym1.timeout / audioSampleInterval);
+export const getFreqLineXInc = (sym1: SymbolSVG, sym2: SymbolSVG, audioSampleInterval: number) => {
+  return (sym2.x-sym1.x) / (sym1.timeout / audioSampleInterval);
 }
 
 export const getFreqLineYVal = (baseSym: SymbolSVG, freq: number) => {
   // TODO: need interplation, now just use a linear one
-  return baseSym.sfIdx * 20 + (baseSym.freq - freq); 
+  return Math.min(Math.max(baseSym.freq - freq, -100), 100); 
 }
 
-export const generateStaffFreqLineD = (audioArr: number[], baseY: number, xStep: number) => {
-  let d = 'M 0 0 '
-  
+export const generateStaffFreqLineD = (audioData: AudioFreqData[]) => {
+  return audioData.reduce((accumulator, currentValue) => {
+    const currentY = currentValue.y;
+    const currentXInc = currentValue.xInc;
+    const lastYIdx = accumulator.lastIndexOf(' ', accumulator.length - 2);
+    const lastXIdx = accumulator.lastIndexOf(' ', lastYIdx - 1);
+    const lastX = parseFloat(accumulator.slice(lastXIdx+1, lastYIdx));
+    const lineToAdd = `L ${lastX + currentXInc} ${currentY} `;
+    return accumulator + lineToAdd;
+  }, 'M 0 0 ')
 }
