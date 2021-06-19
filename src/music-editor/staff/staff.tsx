@@ -311,6 +311,7 @@ export const Staff = ({sectionRef}: StaffOwnProps) => {
     drawStaffLinesAndClef(score, staffWidth)
     drawStaffScale(score)
     drawNotes(notesSVG, staff, dispatch);
+    console.log(319, notesSVG);
   }, [signature, scale, notes, staff]);
 
   useEffect(() => {

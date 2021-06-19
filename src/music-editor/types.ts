@@ -6,6 +6,30 @@ export enum Signature {
   Minor = 'Minor'
 };
 
+export enum Scale {
+  CF = -1,
+  C  = 0,
+  CS = 1,
+  DF = 1,
+  D  = 2,
+  DS = 3,
+  EF = 3,
+  E  = 4,
+  ES = 5,
+  FF = 5,
+  F  = 6,
+  FS = 7,
+  GF = 7,
+  G  = 8,
+  GS = 9,
+  AF = 9,
+  A  = 10,
+  AS = 11,
+  BF = 11,
+  B  = 12,
+  BS = 13
+}
+
 export enum SymbolType {
   NOTE_WHOLE,
   NOTE_HALF,

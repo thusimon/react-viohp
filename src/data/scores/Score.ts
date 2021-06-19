@@ -1,7 +1,8 @@
 /**
  * Created by Lu on 11/9/2018.
  */
-import {NotesFullMap, STAFF_SYM_START, STAFF_SYM_END} from '../../components/musicStaff/Constants';
+import {STAFF_SYM_START, STAFF_SYM_END} from '../../components/musicStaff/Constants';
+import {NotesFullMap} from '../../music-editor/staffData/staff-data';
 import {SymbolType as Sym} from '../../music-editor/types';
 
 class Score {

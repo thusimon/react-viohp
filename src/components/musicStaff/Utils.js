@@ -3,6 +3,7 @@
  */
 import * as Constant from './Constants';
 import * as Symbols from './Symbols';
+import {SCALE_FULL} from '../../music-editor/staffData/staff-data';
 
 export const noteShift = () => {};
 
@@ -56,18 +57,18 @@ export const getSetOfNoteFromSignatureScale = (signature, scale) => {
   const intervalsR = signature == 'Major' ? Constant.MajorIntervalR : Constant.MinorIntervalR;
 
   // find the first note that matches the scale
-  let scaleIndex = Constant.SCALE_FULL.findIndex(notes=>{
+  let scaleIndex = SCALE_FULL.findIndex(notes=>{
       return notes.map(note=>note.scale).includes(scale);
     });
   let res = [], i=0, intervalLen = intervals.length;
-  let firstNote = Constant.SCALE_FULL[scaleIndex].filter(note=>note.scale==scale);
+  let firstNote = SCALE_FULL[scaleIndex].filter(note=>note.scale==scale);
   res.push(firstNote[0]);
   // traverse the Constant.NotesFullArr to get the notes that matches the signature and scale
   let nextIdx = scaleIndex;
-  let NotesFullArrLen = Constant.SCALE_FULL.length;
+  let NotesFullArrLen = SCALE_FULL.length;
   while (nextIdx+intervals[i]<NotesFullArrLen){
     nextIdx += intervals[i];
-    let notes = Constant.SCALE_FULL[nextIdx];
+    let notes = SCALE_FULL[nextIdx];
     // we should find the note whose sfIdx is different from the previous one
     let curNoteSfIdx = res[i].sfIdx;
     let differentSfIdxNote = notes.length>1 ?
@@ -81,7 +82,7 @@ export const getSetOfNoteFromSignatureScale = (signature, scale) => {
   i=0;
   while (nextIdx-intervalsR[i]>=0){
     nextIdx -= intervalsR[i];
-    let notes = Constant.SCALE_FULL[nextIdx];
+    let notes = SCALE_FULL[nextIdx];
     // we should find the note whose sfIdx is different from the previous one
     let curNoteSfIdx = res[0].sfIdx;
     let differentSfIdxNote = notes.length>1 ?
@@ -115,7 +116,7 @@ export const getNoteFromPosition = (scaleNoteFull, sfIdx)=>{
  * return a two dimensional array
  */
 export const generateVirtualBoardNotes = () =>{
-  let fullNotes = Constant.SCALE_FULL;
+  let fullNotes = SCALE_FULL;
 
   let allStringNotes = [], startIdx = 0;
   // each string at a position will have 8 notes
