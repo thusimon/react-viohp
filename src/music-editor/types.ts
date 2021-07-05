@@ -63,6 +63,14 @@ export interface ScoreSymbol {
   freq?: number;
 }
 
+export interface NoteType {
+  name: string; 
+  label: string;
+  scale: Scale;
+  sfIdx: number;
+  freq: number;
+}
+
 export interface ScoreType {
   id?: string,
   signature?: Signature,

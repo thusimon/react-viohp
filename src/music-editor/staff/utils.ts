@@ -1,6 +1,6 @@
-import {ScoreSymbol, SymbolType, ScoreType, IteratorResponse, AudioFreqData} from '../types';
+import {ScoreSymbol, SymbolType, ScoreType, IteratorResponse, AudioFreqData, NoteType} from '../types';
 import SymbolSVG from '../symbols/symbol-svg';
-import {STAFF_SCALES_HEAD} from '../constants';
+import {STAFF_SCALES_HEAD} from '../staffData/staff-data';
 
 export const getSymXPosition = (symbols: ScoreSymbol[], startOffSet:number, staffWidth:number): ScoreSymbol[] => {
   let notesLen = symbols.filter(d => d.type != SymbolType.BAR).length;
@@ -44,9 +44,9 @@ export const getFreqLineXInc = (sym1: SymbolSVG, sym2: SymbolSVG, audioSampleInt
   return (sym2.x-sym1.x) / (sym1.timeout / audioSampleInterval);
 }
 
-export const getFreqLineYVal = (baseSym: SymbolSVG, freq: number) => {
-  // TODO: need interplation, now just use a linear one
-  return Math.min(Math.max(baseSym.freq - freq, -100), 100); 
+export const getFreqLineYVal = (notesFullScale: NoteType[], freq: number) => {
+  // do an interpolation on full scale notes
+  return 1;
 }
 
 export const generateStaffFreqLineD = (audioData: AudioFreqData[]) => {

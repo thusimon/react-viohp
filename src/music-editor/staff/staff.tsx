@@ -2,11 +2,13 @@ import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import * as musicActions from '../../actions/musicActions';
 import {ScoreType, StaffType, PlayType, SymbolType, ScaleHead, ScoreSymbol, IteratorResponse, StaffOwnProps,
-  AudioFreqData} from '../types';
+  AudioFreqData,
+  NoteType} from '../types';
 import {CLEF_G_SYM, SHARP_SYM, FLAT_SYM} from '../symbols/symbol-unicode';
 import {isSymbolNote, isSymbolNoteUp, isSymbolNoteReverse} from '../symbols/utils';
 import {getSymsInterval, getStaffNotesStartOffset, waitTime, getFreqLineXInc, getFreqLineYVal, generateStaffFreqLineD} from './utils';
-import {STAFF_SCALES_HEAD} from '../constants';
+import {STAFF_SCALES_HEAD} from '../staffData/staff-data';
+import {getSetOfNoteFromSignatureScale} from '../staffData/staff-data-utils';
 import {AUDIO_ANALYSE_INTERVAL} from '../../components/audio/constants';
 import SymbolSVG from '../symbols/symbol-svg';
 import SymbolIterator from '../symbols/symbol-iter';
@@ -242,7 +244,10 @@ const drawStaffIndicator = async (noteIterator: Generator<IteratorResponse, bool
   } while (note);
 }
 
-const drawFreqGraph = (symbolIter: SymbolIterator, playing: number, freq: number, notes: SymbolSVG[][]) => {
+const drawFreqGraph = (symbolIter: SymbolIterator, playing: number, freq: number, notes: SymbolSVG[][], notesFullScale: NoteType[]) => {
+  if (notesFullScale.length < 1) {
+    return;
+  }
   const currentNote = symbolIter.getCurrentSymbol()
   const nextNote = symbolIter.getNextSymbol()
   // TODO get the center line's note frequency
@@ -253,7 +258,7 @@ const drawFreqGraph = (symbolIter: SymbolIterator, playing: number, freq: number
   }
   const firstNoteInRow = symbolIter.getSymbolByIdx(currentNote.row, 0);
   const xInc = getFreqLineXInc(currentNote.symbol, nextNote.symbol, 0.1);
-  const y = getFreqLineYVal(baseSym, freq)
+  const y = getFreqLineYVal(notesFullScale, freq)
   const staffs =  d3.selectAll('.d3-staff');
   audioData[firstNoteInRow.row] = audioData[firstNoteInRow.row] || [];
   audioData[firstNoteInRow.row].push({xInc, y});
@@ -294,6 +299,7 @@ export const Staff = ({sectionRef}: StaffOwnProps) => {
   const dispatch = useDispatch();
   const divRef = useRef<HTMLDivElement>(null)
   const [notesSVG, setNotesSVG] = useState([]);
+  const [notesFullScale, setNotesFullScale] = useState([]);
   const [symbolIter, setSymbolIter] = useState<SymbolIterator>(new SymbolIterator([[]]));
   const score = {
     notes,
@@ -307,10 +313,12 @@ export const Staff = ({sectionRef}: StaffOwnProps) => {
     const staffWidth = divRef.current.offsetWidth;
     const notesSVG = mapScoreNotesToSvg(score, staffWidth);
     setSymbolIter(new SymbolIterator(notesSVG));
-    setNotesSVG(notesSVG)
-    drawStaffLinesAndClef(score, staffWidth)
-    drawStaffScale(score)
+    setNotesSVG(notesSVG);
+    drawStaffLinesAndClef(score, staffWidth);
+    drawStaffScale(score);
     drawNotes(notesSVG, staff, dispatch);
+    const notesFullScale = getSetOfNoteFromSignatureScale(signature, scale);
+    setNotesFullScale(notesFullScale);
     console.log(319, notesSVG);
   }, [signature, scale, notes, staff]);
 
@@ -320,7 +328,7 @@ export const Staff = ({sectionRef}: StaffOwnProps) => {
   }, [player, notesSVG]);
 
   useEffect(() => {
-    drawFreqGraph(symbolIter, player.playing, audio.peakFreq, notesSVG);
+    drawFreqGraph(symbolIter, player.playing, audio.peakFreq, notesSVG, notesFullScale);
   }, [player, audio]);
 
   return <div className='d3-staff-container' ref={divRef} style={{width:'99.8%'}}>
