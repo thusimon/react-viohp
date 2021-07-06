@@ -46,6 +46,15 @@ export const getFreqLineXInc = (sym1: SymbolSVG, sym2: SymbolSVG, audioSampleInt
 
 export const getFreqLineYVal = (notesFullScale: NoteType[], freq: number) => {
   // do an interpolation on full scale notes
+  const upperIdx = notesFullScale.findIndex(note => note.freq >= freq);
+  const lowerIdx = upperIdx == 0 ? 0 : upperIdx - 1;
+  const upperNote = notesFullScale[upperIdx];
+  const lowerNote = notesFullScale[lowerIdx];
+  // sfIdx = -6 -> y = 0
+  // sfIdx = 14 -> y = 200
+  const upperY = upperNote.sfIdx * 10 + 60; // frequency higher
+  const lowerY = lowerNote.sfIdx * 10 + 60; // frequency lower
+  return 
   return 1;
 }
 
