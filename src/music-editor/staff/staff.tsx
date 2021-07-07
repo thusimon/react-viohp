@@ -251,8 +251,6 @@ const drawFreqGraph = (symbolIter: SymbolIterator, playing: number, freq: number
   const currentNote = symbolIter.getCurrentSymbol()
   const nextNote = symbolIter.getNextSymbol()
   // TODO get the center line's note frequency
-  // currently, take B4 note frequency 494Hz
-  const baseSym = new SymbolSVG(SymbolType.NOTE_HALF, {}, 10, 'b4', 494);
   if (!currentNote || !nextNote || playing != 1) {
     return;
   }
@@ -273,7 +271,7 @@ const drawFreqGraph = (symbolIter: SymbolIterator, playing: number, freq: number
     .join('path')
     .attr('d', generateStaffFreqLineD(audioData[firstNoteInRow.row]))
     .attr('class', 'd3-staff-freq-line')
-    .style('transform', `translate(${firstNoteInRow.symbol.x}px, 100px)`)
+    .style('transform', `translate(${firstNoteInRow.symbol.x}px, 0px)`)
     .style('stroke', 'blue')
     .style('fill', 'none')
     .style('stroke-width', 1);

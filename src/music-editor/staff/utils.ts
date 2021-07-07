@@ -54,8 +54,11 @@ export const getFreqLineYVal = (notesFullScale: NoteType[], freq: number) => {
   // sfIdx = 14 -> y = 200
   const upperY = upperNote.sfIdx * 10 + 60; // frequency higher
   const lowerY = lowerNote.sfIdx * 10 + 60; // frequency lower
-  return 
-  return 1;
+  if (lowerNote.freq === upperNote.freq) {
+    return upperY;
+  } else {
+    return upperY + (lowerY - upperY) / (upperNote.freq - lowerNote.freq) * (upperNote.freq - freq);
+  } 
 }
 
 export const generateStaffFreqLineD = (audioData: AudioFreqData[]) => {
