@@ -9,7 +9,7 @@ console.log('Generating minified bundle for production via webpack, please wait.
 const compilerWeb = webpack(webConfig);
 const compilerWorklet = webpack(workletConfig);
 
-webpackBuildResult(compilerWeb)
-.then(() => {
-  return webpackBuildResult(compilerWorklet);
-});
+Promise.all([
+  webpackBuildResult(compilerWeb, 'web app'),
+  webpackBuildResult(compilerWorklet, 'web worker')
+]);

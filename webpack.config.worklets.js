@@ -13,13 +13,17 @@ module.exports = {
   mode: "development",
   devtool: 'inline-source-map',
   optimization: {
-    noEmitOnErrors: true
+    emitOnErrors: true
   },
   module: {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        use: 'ts-loader',
+        use: [
+          {
+            loader: 'ts-loader'
+          }
+        ],
         exclude: /node_modules/
       }
     ]
