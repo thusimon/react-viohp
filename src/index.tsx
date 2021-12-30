@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import "regenerator-runtime";
 import configureStore from './store/configureStore';
 import {Provider} from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import App from './components/App';
 import './styles/styles.css';
 import './index.scss';
@@ -15,9 +15,7 @@ const store = configureStore();
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Router>
-        <App store={store}/>
-      </Router>
+      <App />
     </Provider>
   </React.StrictMode>,
   document.getElementById('app')

@@ -2,7 +2,7 @@
  * Created by Lu on 8/4/2018.
  */
 import React from 'react';
-import { Route, Switch, withRouter, RouteComponentProps } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './common/Header';
 import HomePage from './home/HomePage';
 import AboutPage from './about/AboutPage';
@@ -25,7 +25,7 @@ interface AppPropsType {
   store:any
 }
 
-class App extends React.Component<RouteComponentProps> {
+class App extends React.Component {
   private store:any;
   constructor(props:AppPropsType | any) {
     super(props);
@@ -37,10 +37,10 @@ class App extends React.Component<RouteComponentProps> {
   }
   async componentDidMount() {
     // should try to get authentication status
-    const {err, user} = await fetchDataWithAccessToken('/api/user/me', 'GET');
-    if (err) {
+    const {err, user} = await fetchDataWithAccessToken('/api/user/me', 'GET');
+    if (err) {
       this.store.dispatch(authActions.setUser(null));
-    } else {
+    } else {
       this.store.dispatch(authActions.setUser(user));
     }
     const host = window.location.host
@@ -51,20 +51,22 @@ class App extends React.Component<RouteComponentProps> {
 
   render() {
     return (
-      <div className="container-fluid" >
-        <Header />
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/home" component={HomePage} />
-          <Route path="/musicstaff" component={MusicAudioPage} />
-          <Route path="/musicEditor" component={MusicEditorPage} />
-          <Route path="/musicAnalytics" component={MusicAnalyticsPage} />
-          <Route path="/account" component={AccountPage} />
-          <Route path="/about" component={AboutPage} />
-        </Switch>
-      </div>
+      <BrowserRouter>
+        <div className="container-fluid" >
+          <Header />
+          <Routes>
+            <Route index element={<HomePage />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/musicstaff" element={<MusicAudioPage />} />
+            <Route path="/musicEditor" element={<MusicEditorPage />} />
+            <Route path="/musicAnalytics" element={<MusicAnalyticsPage />} />
+            <Route path="/account" element={<AccountPage />} />
+            <Route path="/about" element={<AboutPage />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
     );
   }
 }
 
-export default withRouter(App);
+export default App;

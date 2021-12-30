@@ -6,7 +6,7 @@ const {webpackBuildResult} = require('../../tools/utils')
 const compilerWeb = webpack(webConfig);
 const compilerWorklet = webpack(workletConfig);
 
-webpackBuildResult(compilerWeb)
-.then(() => {
-  return webpackBuildResult(compilerWorklet);
-});
+Promise.all([
+  webpackBuildResult(compilerWeb, 'web app'),
+  webpackBuildResult(compilerWorklet, 'web worker')
+]);
