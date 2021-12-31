@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import "regenerator-runtime";
 import configureStore from './store/configureStore';
 import {Provider} from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
 import App from './components/App';
 import './styles/styles.css';
 import './index.scss';
