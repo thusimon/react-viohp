@@ -1,6 +1,3 @@
-/**
- * Created by Lu on 8/4/2018.
- */
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
