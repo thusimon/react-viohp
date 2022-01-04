@@ -72,6 +72,9 @@
     "ws": "^7.4.6"
   },
   "devDependencies": {},
+  "resolutions": {
+    "node-sass/node-gyp/tar": "^6.1.11"
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
