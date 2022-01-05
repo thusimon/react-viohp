@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import "regenerator-runtime";
 import configureStore from './store/configureStore';
 import {Provider} from 'react-redux';
 import App from './components/App';
