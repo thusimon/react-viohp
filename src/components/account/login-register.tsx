@@ -5,14 +5,15 @@ import validator from 'validator';
 import Profile from './profile';
 
 import {fetchDataWithAccessToken} from '../../api/utils';
+
 const LoginRegister = (props) => {
   const [error, setError] = useState(null);
   const [formType, setFormType] = useState(0);
   const [user, setUser] = useState(null);
-  const emailRef = React.createRef();
-  const pwdRef = React.createRef();
-  const pwd2Ref = React.createRef();
-  const rememberRef = React.createRef();
+  const emailRef = React.createRef<HTMLInputElement>();
+  const pwdRef = React.createRef<HTMLInputElement>();
+  const pwd2Ref = React.createRef<HTMLInputElement>();
+  const rememberRef = React.createRef<HTMLInputElement>();
   const submitClick = (evt) => {
     evt.preventDefault();
     const email = emailRef.current.value;
@@ -92,7 +93,7 @@ const LoginRegister = (props) => {
       </div>
       <div className="form-group">
         <label htmlFor="inputPassword">Password</label>
-        <input type="password" className="password" className="form-control" id="inputPassword1" placeholder="Password" ref={pwdRef}/>
+        <input type="password" className="form-control" id="inputPassword1" placeholder="Password" ref={pwdRef}/>
       </div>
       {
         formType == 1 && 
