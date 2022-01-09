@@ -2,7 +2,7 @@ import {getAccessToken, storeAccessToken} from '../storage/utils';
 
 export const fetchDataWithAccessToken = async (url = '', method = 'GET', data = {}, contentType = 'application/json') => {
   // Default options are marked with *
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     method,
     mode: 'cors', // no-cors, *cors, same-origin
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -22,7 +22,8 @@ export const fetchDataWithAccessToken = async (url = '', method = 'GET', data = 
         break;
       case 'audio/vnd.wave':
         const fd = new FormData();
-        fd.append('upl', data, 'audio.wav');
+        const audioData = data as Blob;
+        fd.append('upl', audioData, 'audio.wav');
         fetchOptions.body = fd;
         break;
       default:

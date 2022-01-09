@@ -1,2 +1,0 @@
-import {fetchDataWithAccessToken} from './utils';
-

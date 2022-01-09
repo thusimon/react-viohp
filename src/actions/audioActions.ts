@@ -1,6 +1,3 @@
-/**
- * Created by Lu on 10/31/2018.
- */
 import * as types from './actionTypes';
 
 export const displayInfo = (peakEnergy, peakFreq, noteColor, noteName, noteFreq)=>{
