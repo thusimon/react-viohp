@@ -1,6 +1,3 @@
-/**
- * Created by Lu on 8/7/2018.
- */
 //score action types
 export const SET_SIGNA_SCALE = 'SET_SIGNA_SCALE';
 export const ADD_NOTE = 'ADD_NOTE';
