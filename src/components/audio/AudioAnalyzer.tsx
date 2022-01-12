@@ -23,7 +23,7 @@ const AudioAnalyzer = (props) => {
     noteFreq: defaultInfo.noteFreq
   });
   const initAnalyzeData = {
-    sampleRate: 44000,
+    sampleRate: 48000,
     scoreTitle: '',
     scoreId: '',
     analyzeFrames: [],
@@ -95,7 +95,7 @@ const AudioAnalyzer = (props) => {
     }
     props.displayInfo(peakEnergy, peakFreq, noteColor, noteName, noteFreq);
     setAudioState({
-      dataArray,
+      dataArray: rangedFreqData,
       peakEnergy,
       peakFreq,
       noteColor,
