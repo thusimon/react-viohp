@@ -37,43 +37,43 @@ export const getPeakFreq = (freqData, noiseThreshold)=>{
 };
 
 
-export const getBasePeakFreq = (freqData,noiseThreshold,consMinLen)=>{
-  // improved version of getPeakFreq
-  // my violin open string produces quite high energy harmonic components
-  // it is better only keep the base freq component
-  let groupedFreqComponents = [];
-  let freqComponent = {data:[],idx:0}, i=0;
-  while (i<freqData.length){
-    let curFreq = freqData[i];
-    if (curFreq<noiseThreshold){
-      // this frequency is too small
-      // find next consMinLen data
-      let nextNoiseDataIdx = freqData.slice(i, i+consMinLen).findIndex(d=>d>=noiseThreshold);
-      if (nextNoiseDataIdx == -1){
-        // next consMinLen data are all noise
-        i+=consMinLen;
-        // need to push new group;
-        if (freqComponent.data.length>0){
-          groupedFreqComponents.push(freqComponent);
-        }
-        // clear the freqComponent
-        freqComponent = {data:[],idx:0};
-      } else {
-        // next consMinLen data contains fft
-        i+=(nextNoiseDataIdx+1);
-      }
-    } else {
-      // this frequency is not noise
-      let nextNoiseData = freqData.slice(i, i+consMinLen);
-      freqComponent = freqComponent.concat(...nextNoiseData);
-      i+=consMinLen;
-    }
-  }
-  //now groupedFreqComponents includes base and harmonic components
-  let baseComponent = groupedFreqComponents[0];
-  let baseFreqRes = getPeakFreq(baseComponent, noiseThreshold);
-  return baseFreqRes;
-};
+// export const getBasePeakFreq = (freqData,noiseThreshold,consMinLen)=>{
+//   // improved version of getPeakFreq
+//   // my violin open string produces quite high energy harmonic components
+//   // it is better only keep the base freq component
+//   let groupedFreqComponents = [];
+//   let freqComponent = {data:[],idx:0}, i=0;
+//   while (i<freqData.length){
+//     let curFreq = freqData[i];
+//     if (curFreq<noiseThreshold){
+//       // this frequency is too small
+//       // find next consMinLen data
+//       let nextNoiseDataIdx = freqData.slice(i, i+consMinLen).findIndex(d=>d>=noiseThreshold);
+//       if (nextNoiseDataIdx == -1){
+//         // next consMinLen data are all noise
+//         i+=consMinLen;
+//         // need to push new group;
+//         if (freqComponent.data.length>0){
+//           groupedFreqComponents.push(freqComponent);
+//         }
+//         // clear the freqComponent
+//         freqComponent = {data:[],idx:0};
+//       } else {
+//         // next consMinLen data contains fft
+//         i+=(nextNoiseDataIdx+1);
+//       }
+//     } else {
+//       // this frequency is not noise
+//       let nextNoiseData = freqData.slice(i, i+consMinLen);
+//       freqComponent = freqComponent.concat(...nextNoiseData);
+//       i+=consMinLen;
+//     }
+//   }
+//   //now groupedFreqComponents includes base and harmonic components
+//   let baseComponent = groupedFreqComponents[0];
+//   let baseFreqRes = getPeakFreq(baseComponent, noiseThreshold);
+//   return baseFreqRes;
+// };
 
 export const getNoteByFreq = (curFreq, tolerance)=>{
   let res = {noteColor: "#00FF00", peakFreq: curFreq, noteName: "--", noteFreq: "--"};
@@ -99,7 +99,7 @@ export const getFreqFromIndex = (freqIndex, sampleRate, fftSize) => freqIndex*sa
 
 export const getFreqRange = (sampleRate, fftSize, range)=>{
   let [freqMin, freqMax] = range; // freqMin < freqMax
-  let [indexMin, indexMax] = [Math.round(freqMin*fftSize/sampleRate), Math.floor(freqMax*fftSize/sampleRate)];
+  let [indexMin, indexMax] = [Math.round(freqMin * fftSize / sampleRate), Math.floor(freqMax * fftSize / sampleRate)];
   indexMin = indexMin<0 ? 0: indexMin;
   return [indexMin, indexMax];
 };
