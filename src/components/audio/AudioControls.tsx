@@ -13,8 +13,8 @@ const AudioControls = ({threshold, tolerance, freqRange, dispatch}) => {
   });
 
   const settingChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    let tarName = evt.target.name;
-    let tarVal = evt.target.value;
+    const tarName = evt.target.name;
+    const tarVal = evt.target.value;
     switch (tarName){
       case "audioThreshold": {
         setAudioState({...audioState, threshold: tarVal});
@@ -100,7 +100,7 @@ const AudioControls = ({threshold, tolerance, freqRange, dispatch}) => {
 }
 
 function mapStateToProps(state){
-  let {threshold,tolerance,freqRange} = state.audio;
+  const {threshold, tolerance, freqRange} = state.audio;
   return {threshold,tolerance,freqRange};
 }
 

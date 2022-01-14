@@ -80,14 +80,14 @@ const AudioAnalyzer = (props) => {
       //multiply the two arrays
       rangedFreqData = multiplyVectors(rangedFreqData, props.appliedFilter);
     }
-    let [peakEnergy, peakFreqIndex] = audioUtils.getPeakFreq(rangedFreqData, props.threshold);
+    const [peakEnergy, peakFreqIndex] = audioUtils.getPeakFreq(rangedFreqData, props.threshold);
     toggleAudioAnalyze(peakFreqIndex)
-    //let [peakEnergy, peakFreqIndex] = audioUtils.getBasePeakFreq(rangedFreqData, props.threshold, 50);
+    //const [peakEnergy, peakFreqIndex] = audioUtils.getBasePeakFreq(rangedFreqData, props.threshold, 50);
     let {noteColor, peakFreq,noteName, noteFreq} = defaultInfo;
     if (peakEnergy > 0){
       let peakFreqRaw = audioUtils.getFreqFromIndex(peakFreqIndex, sampleRate, fftSize) + props.freqRange[0];
       peakFreqRaw = +peakFreqRaw.toFixed(2);
-      let freqDisplayInfo = audioUtils.getNoteByFreq(peakFreqRaw, props.tolerance);
+      const freqDisplayInfo = audioUtils.getNoteByFreq(peakFreqRaw, props.tolerance);
       peakFreq = freqDisplayInfo.peakFreq;
       noteColor = freqDisplayInfo.noteColor;
       noteName = freqDisplayInfo.noteName;
@@ -143,22 +143,22 @@ const AudioAnalyzer = (props) => {
     }
   }, []);
 
-  let canvasDom = canvasRef.current;
+  const canvasDom = canvasRef.current;
   if (canvasDom && audioState.dataArray && audioState.dataArray.length > 0) {
-    let canvasCtx = canvasDom.getContext('2d');
+    const canvasCtx = canvasDom.getContext('2d');
     canvasCtx.fillStyle = 'rgb(220, 220, 220)';
     canvasCtx.fillRect(0, 0, canvasDom.width, canvasDom.height);
-    let axisW = 25;
-    let chartW = canvasDom.width - axisW - 20;
-    let axisH = 25;
-    let chartH = canvasDom.height- axisH - 20;
-    let chartHTo255 = chartH / 255;
-    let dataArray = audioState.dataArray;
-    let dataLen = dataArray.length;
-    let barWidth = chartW / dataLen;
+    const axisW = 25;
+    const chartW = canvasDom.width - axisW - 20;
+    const axisH = 25;
+    const chartH = canvasDom.height- axisH - 20;
+    const chartHTo255 = chartH / 255;
+    const dataArray = audioState.dataArray;
+    const dataLen = dataArray.length;
+    const barWidth = chartW / dataLen;
     let x = axisW;
     for(let i = 0; i < dataLen; i++) {
-      let barHeight = dataArray[i] * chartHTo255; // [0,255]=>[0,chartH]
+      const barHeight = dataArray[i] * chartHTo255; // [0,255]=>[0,chartH]
       canvasCtx.fillStyle = `rgb(${dataArray[i]}, ${255 - dataArray[i]}, 50)`;
       canvasCtx.fillRect(x, chartH - barHeight + 20, barWidth, barHeight);
       x += barWidth;
@@ -183,17 +183,17 @@ const AudioAnalyzer = (props) => {
     canvasCtx.fillText('0', 4, 24 + chartH);
 
 
-    let xaxisDiv=8;
-    let xstep = chartW / xaxisDiv;
-    let xfreqStep=(props.freqRange[1] - props.freqRange[0]) / xaxisDiv;
+    const xaxisDiv=8;
+    const xstep = chartW / xaxisDiv;
+    const xfreqStep=(props.freqRange[1] - props.freqRange[0]) / xaxisDiv;
     for (let i = 0; i <= xaxisDiv; i++){
-      let curXaxis = axisW + i*xstep;
+      const curXaxis = axisW + i * xstep;
       canvasCtx.moveTo(curXaxis, 20 + chartH);
       canvasCtx.lineTo(curXaxis, 24 + chartH);
       canvasCtx.fillText(Math.round(props.freqRange[0] + i * xfreqStep), curXaxis - 12, 40 + chartH);
     }
     canvasCtx.fillStyle = 'rgb(0,0,255)';
-    let thresholdH = chartH - props.threshold * chartHTo255;
+    const thresholdH = chartH - props.threshold * chartHTo255;
     canvasCtx.moveTo(axisW - 4, 20 + thresholdH);
     canvasCtx.lineTo(axisW - 0, 20 + thresholdH);
     canvasCtx.fillText(props.threshold, 4, 24 + thresholdH);
