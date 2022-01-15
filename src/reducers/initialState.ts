@@ -1,6 +1,5 @@
-/**
- * Created by Lu on 8/9/2018.
- */
+import { AudioState } from './audioReducer';
+
 export const scoreInitState = {
   notes:[[],[],[]],
   originalNotes: [[],[],[]],
@@ -38,7 +37,8 @@ export const audioInitState = {
   freqRange: [180, 1000], //the frequency range to display the spectrum position 1, note frequency g3=196Hz, b5=988Hz
   filters_AJAXFlag: 0,
   filters:{},
-  analyzeState: false
+  filterPoints: [],
+  analyzeState: 0
 };
 
 export const playerInitState = {
@@ -60,4 +60,8 @@ export const authInitState = {
 export const wsInitState = {
   ws: null,
   updateTime: null
+}
+
+export interface RootState {
+  audio: AudioState,
 }

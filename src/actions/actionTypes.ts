@@ -15,6 +15,7 @@ export const RESET_SCORE = 'RESET_SCORE';
 
 //audio action types
 export const DISPLAY_INFO = 'DISPLAY_INFO';
+export const SPECTRUM_DATA = 'SPECTRUM_DATA';
 export const SAVE_SETTINGS = 'SAVE_SETTINGS';
 export const SET_AUDIO_PARAM = 'SET_AUDIO_PARAM';
 

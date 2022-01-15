@@ -1,6 +1,7 @@
 /*eslint no-console: 0 */
 import React, {useRef, useState, useEffect} from 'react';
-import {connect} from 'react-redux';
+import { RootState } from '../../reducers/initialState';
+import {connect, useSelector, useDispatch } from 'react-redux';
 import { AUDIO_ANALYSE_INTERVAL } from './constants';
 import * as audioUtils from './Utils';
 import AudioDisplay from './AudioDisplay';
@@ -8,20 +9,26 @@ import * as audioActions from '../../actions/audioActions';
 import {multiplyVectors} from '../../math/basicMatrix';
 import {fetchDataWithAccessToken} from '../../api/utils';
 import './audio-analyzer.scss';
+import { AudioState } from '../../reducers/audioReducer';
 
 const AudioAnalyzer = (props) => {
   const canvasRef = useRef(null);
+  const audioProps = useSelector((state: RootState) => state.audio);
+  const dispatch = useDispatch();
   let source=null;
   const defaultInfo = {noteColor: '#00FF00', peakFreq: 0, noteName: '--', noteFreq: '--'};
-  const [settingsState, setSettingsState] = useState({showSettings: false});
-  const [audioState, setAudioState] = useState({
-    dataArray: new Uint8Array(0),
-    peakEnergy: 0,
-    peakFreq: 0,
-    noteColor: defaultInfo.noteColor,
-    noteName: defaultInfo.noteName,
-    noteFreq: defaultInfo.noteFreq
-  });
+  const [settingsState, setSettingsState] = useState({ showSettings: false });
+  // const [audioState, setAudioState] = useState({
+  //   ...audioProps
+  // });
+  // const [audioState, setAudioState] = useState({
+  //   dataArray: new Uint8Array(0),
+  //   peakEnergy: 0,
+  //   peakFreq: 0,
+  //   noteColor: defaultInfo.noteColor,
+  //   noteName: defaultInfo.noteName,
+  //   noteFreq: defaultInfo.noteFreq
+  // });
   const initAnalyzeData = {
     sampleRate: 48000,
     scoreTitle: '',
@@ -31,11 +38,12 @@ const AudioAnalyzer = (props) => {
     analyzeIncTime: AUDIO_ANALYSE_INTERVAL
   };
   let analyzing = false;
+  let analyser;
   let analyzeData;
   let audioCtx;
-  let analyser;
   let timer;
   let dataArray;
+  let rangedFreqData;
   const fftSize = 32768;
   let sampleRate = 48000;
 
@@ -45,7 +53,7 @@ const AudioAnalyzer = (props) => {
   }
 
   const toggleAudioAnalyze = (peakFreqIndex) => {
-    if (props.analyzeState == 1){
+    if (audioProps.analyzeState == 1){
       if (analyzing) {
         analyzeData.analyzeFrames.push(peakFreqIndex);
       } else {
@@ -73,35 +81,102 @@ const AudioAnalyzer = (props) => {
     }
   };
 
-  const updateCanvas = () => {
-    analyser.getByteFrequencyData(dataArray);
-    let rangedFreqData = audioUtils.getRangedFreqData(dataArray, sampleRate, fftSize, props.freqRange);
-    if (props.appliedFilter && props.appliedFilter.length > 0){
-      //multiply the two arrays
-      rangedFreqData = multiplyVectors(rangedFreqData, props.appliedFilter);
+  const redrawCanvas = () => {
+    const dataArray = audioProps.spectrumData;
+    if (!dataArray || dataArray.length < 1) {
+      return;
     }
-    const [peakEnergy, peakFreqIndex] = audioUtils.getPeakFreq(rangedFreqData, props.threshold);
+    let rangedFreqData = audioUtils.getRangedFreqData(dataArray, sampleRate, fftSize, audioProps.freqRange);
+    if (audioProps.appliedFilter && audioProps.appliedFilter.length > 0){
+      //multiply the two arrays
+      rangedFreqData = multiplyVectors(rangedFreqData, audioProps.appliedFilter);
+    }
+    const [peakEnergy, peakFreqIndex] = audioUtils.getPeakFreq(rangedFreqData, audioProps.threshold);
     toggleAudioAnalyze(peakFreqIndex)
-    //const [peakEnergy, peakFreqIndex] = audioUtils.getBasePeakFreq(rangedFreqData, props.threshold, 50);
+    //const [peakEnergy, peakFreqIndex] = audioUtils.getBasePeakFreq(rangedFreqData, audioProps.threshold, 50);
     let {noteColor, peakFreq,noteName, noteFreq} = defaultInfo;
     if (peakEnergy > 0){
-      let peakFreqRaw = audioUtils.getFreqFromIndex(peakFreqIndex, sampleRate, fftSize) + props.freqRange[0];
+      let peakFreqRaw = audioUtils.getFreqFromIndex(peakFreqIndex, sampleRate, fftSize) + audioProps.freqRange[0];
       peakFreqRaw = +peakFreqRaw.toFixed(2);
-      const freqDisplayInfo = audioUtils.getNoteByFreq(peakFreqRaw, props.tolerance);
+      const freqDisplayInfo = audioUtils.getNoteByFreq(peakFreqRaw, audioProps.tolerance);
       peakFreq = freqDisplayInfo.peakFreq;
       noteColor = freqDisplayInfo.noteColor;
       noteName = freqDisplayInfo.noteName;
       noteFreq = freqDisplayInfo.noteFreq;
     }
-    props.displayInfo(peakEnergy, peakFreq, noteColor, noteName, noteFreq);
-    setAudioState({
-      dataArray: rangedFreqData,
-      peakEnergy,
-      peakFreq,
-      noteColor,
-      noteName,
-      noteFreq
-    });
+    //dispatch(audioActions.displayInfo(peakEnergy, peakFreq, noteColor, noteName, noteFreq));
+    //props.displayInfo(peakEnergy, peakFreq, noteColor, noteName, noteFreq);
+    // setAudioState({
+    //   dataArray: rangedFreqData,
+    //   peakEnergy,
+    //   peakFreq,
+    //   noteColor,
+    //   noteName,
+    //   noteFreq
+    // });
+    const canvasDom = canvasRef.current;
+    if (canvasDom) {
+      const canvasCtx = canvasDom.getContext('2d');
+      canvasCtx.clearRect(0, 0, canvasDom.width, canvasDom.height);
+      canvasCtx.fillStyle = 'rgb(220, 220, 220)';
+      canvasCtx.fillRect(0, 0, canvasDom.width, canvasDom.height);
+      const axisW = 25;
+      const chartW = canvasDom.width - axisW - 20;
+      const axisH = 25;
+      const chartH = canvasDom.height- axisH - 20;
+      const chartHTo255 = chartH / 255;
+      const dataLen = rangedFreqData.length;
+      const barWidth = chartW / dataLen;
+      let x = axisW;
+      for(let i = 0; i < dataLen; i++) {
+        const barHeight = rangedFreqData[i] * chartHTo255; // [0,255]=>[0,chartH]
+        canvasCtx.fillStyle = `rgb(${rangedFreqData[i]}, ${255 - rangedFreqData[i]}, 50)`;
+        canvasCtx.fillRect(x, chartH - barHeight + 20, barWidth, barHeight);
+        x += barWidth;
+      }
+      // plot the y axises
+      canvasCtx.strokeStyle = '#000000';
+      canvasCtx.fillStyle = 'rgb(0,0,0)';
+      canvasCtx.font = '10px Arial';
+      canvasCtx.beginPath();
+      canvasCtx.moveTo(axisW, 20);
+      canvasCtx.lineTo(axisW, chartH + 20);
+      canvasCtx.lineTo(axisW + chartW, chartH + 20);
+
+      canvasCtx.moveTo(axisW - 4, 20);
+      canvasCtx.lineTo(axisW - 0, 20);
+      canvasCtx.fillText('255', 4, 24);
+      canvasCtx.moveTo(axisW - 4, 20 + chartH / 2);
+      canvasCtx.lineTo(axisW - 0, 20 + chartH / 2);
+      canvasCtx.fillText('127', 2, 24 + chartH / 2);
+      canvasCtx.moveTo(axisW - 4, 20 + chartH);
+      canvasCtx.lineTo(axisW - 0, 20 + chartH);
+      canvasCtx.fillText('0', 4, 24 + chartH);
+
+
+      const xaxisDiv=8;
+      const xstep = chartW / xaxisDiv;
+      const xfreqStep=(audioProps.freqRange[1] - audioProps.freqRange[0]) / xaxisDiv;
+      for (let i = 0; i <= xaxisDiv; i++){
+        const curXaxis = axisW + i * xstep;
+        canvasCtx.moveTo(curXaxis, 20 + chartH);
+        canvasCtx.lineTo(curXaxis, 24 + chartH);
+        canvasCtx.fillText(Math.round(audioProps.freqRange[0] + i * xfreqStep), curXaxis - 12, 40 + chartH);
+      }
+      canvasCtx.fillStyle = 'rgb(0,0,255)';
+      const thresholdH = chartH - audioProps.threshold * chartHTo255;
+      canvasCtx.moveTo(axisW - 4, 20 + thresholdH);
+      canvasCtx.lineTo(axisW - 0, 20 + thresholdH);
+      canvasCtx.fillText(audioProps.threshold, 4, 24 + thresholdH);
+
+      canvasCtx.stroke();
+    }
+  }
+
+  const updateCanvas = () => {
+    analyser.getByteFrequencyData(dataArray);
+    
+    dispatch(audioActions.sendSpctrumData(dataArray));
   }
 
   useEffect(() => {
@@ -114,8 +189,9 @@ const AudioAnalyzer = (props) => {
         analyser = audioCtx.createAnalyser();
         source = audioCtx.createMediaStreamSource(stream);
         sampleRate = audioCtx.sampleRate;
-        props.setAudioParam(sampleRate, fftSize);
+        //props.setAudioParam(sampleRate, fftSize);
         analyser.fftSize = fftSize;
+        dispatch(audioActions.setAudioParam(sampleRate, fftSize));
         //analyser.smoothingTimeConstant = 0.5;
         const bufferLength = analyser.frequencyBinCount;
         dataArray = new Uint8Array(bufferLength);
@@ -143,64 +219,7 @@ const AudioAnalyzer = (props) => {
     }
   }, []);
 
-  const canvasDom = canvasRef.current;
-  if (canvasDom && audioState.dataArray && audioState.dataArray.length > 0) {
-    const canvasCtx = canvasDom.getContext('2d');
-    canvasCtx.fillStyle = 'rgb(220, 220, 220)';
-    canvasCtx.fillRect(0, 0, canvasDom.width, canvasDom.height);
-    const axisW = 25;
-    const chartW = canvasDom.width - axisW - 20;
-    const axisH = 25;
-    const chartH = canvasDom.height- axisH - 20;
-    const chartHTo255 = chartH / 255;
-    const dataArray = audioState.dataArray;
-    const dataLen = dataArray.length;
-    const barWidth = chartW / dataLen;
-    let x = axisW;
-    for(let i = 0; i < dataLen; i++) {
-      const barHeight = dataArray[i] * chartHTo255; // [0,255]=>[0,chartH]
-      canvasCtx.fillStyle = `rgb(${dataArray[i]}, ${255 - dataArray[i]}, 50)`;
-      canvasCtx.fillRect(x, chartH - barHeight + 20, barWidth, barHeight);
-      x += barWidth;
-    }
-    // plot the y axises
-    canvasCtx.strokeStyle = '#000000';
-    canvasCtx.fillStyle = 'rgb(0,0,0)';
-    canvasCtx.font = '10px Arial';
-    canvasCtx.beginPath();
-    canvasCtx.moveTo(axisW, 20);
-    canvasCtx.lineTo(axisW, chartH + 20);
-    canvasCtx.lineTo(axisW + chartW, chartH + 20);
-
-    canvasCtx.moveTo(axisW - 4, 20);
-    canvasCtx.lineTo(axisW - 0, 20);
-    canvasCtx.fillText('255', 4, 24);
-    canvasCtx.moveTo(axisW - 4, 20 + chartH / 2);
-    canvasCtx.lineTo(axisW - 0, 20 + chartH / 2);
-    canvasCtx.fillText('127', 2, 24 + chartH / 2);
-    canvasCtx.moveTo(axisW - 4, 20 + chartH);
-    canvasCtx.lineTo(axisW - 0, 20 + chartH);
-    canvasCtx.fillText('0', 4, 24 + chartH);
-
-
-    const xaxisDiv=8;
-    const xstep = chartW / xaxisDiv;
-    const xfreqStep=(props.freqRange[1] - props.freqRange[0]) / xaxisDiv;
-    for (let i = 0; i <= xaxisDiv; i++){
-      const curXaxis = axisW + i * xstep;
-      canvasCtx.moveTo(curXaxis, 20 + chartH);
-      canvasCtx.lineTo(curXaxis, 24 + chartH);
-      canvasCtx.fillText(Math.round(props.freqRange[0] + i * xfreqStep), curXaxis - 12, 40 + chartH);
-    }
-    canvasCtx.fillStyle = 'rgb(0,0,255)';
-    const thresholdH = chartH - props.threshold * chartHTo255;
-    canvasCtx.moveTo(axisW - 4, 20 + thresholdH);
-    canvasCtx.lineTo(axisW - 0, 20 + thresholdH);
-    canvasCtx.fillText(props.threshold, 4, 24 + thresholdH);
-
-    canvasCtx.stroke();
-  }
-  
+  redrawCanvas();
   return (
     <div className='audio-analyzer-container'>
       <div className='audio-spectrum-canvas-container'>
@@ -226,4 +245,4 @@ function mapDispatchToProps(dispatch){
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AudioAnalyzer);
+export default AudioAnalyzer;

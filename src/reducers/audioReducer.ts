@@ -1,10 +1,30 @@
-/**
- * Created by Lu on 10/31/2018.
- */
 import * as types from '../actions/actionTypes';
 import {audioInitState as initState} from './initialState';
 
-export default function audioReducer(state=initState, action={}){
+export interface AudioState {
+  type?: string;
+  peakEnergy?: number;
+  peakFreq?: number;
+  noteColor?: string;
+  noteName?: string;
+  noteFreq?: number;
+  sampleRate?: number;
+  fftSize?: number;
+  threshold?: number;
+  tolerance?: number;
+  freqRange?: number[];
+  filters?: [];
+  x?: number;
+  y?: number;
+  xpoints?: number[];
+  ypoints?: number[];
+  appliedFiltername?: string
+  appliedFilter?: [];
+  analyzeState?: number;
+  spectrumData?: [];
+};
+
+export default function audioReducer(state=initState, action: AudioState={}){
   switch (action.type){
     case types.DISPLAY_INFO:
     {
@@ -36,11 +56,15 @@ export default function audioReducer(state=initState, action={}){
     }
     case types.APPLY_FILTER: {
       let {appliedFiltername, appliedFilter} = action;
-      return Object.assign({}, state, {appliedFilter, appliedFiltername});
+      return Object.assign({...state}, {appliedFilter, appliedFiltername});
     }
     case types.ANALYZE_AUDIO: {
       const {analyzeState} = action;
       return Object.assign({}, state, {analyzeState});
+    }
+    case types.SPECTRUM_DATA: {
+      const { spectrumData } = action;
+      return Object.assign({...state}, { spectrumData });
     }
     default:
       return state;

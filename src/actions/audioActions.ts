@@ -4,6 +4,10 @@ export const displayInfo = (peakEnergy, peakFreq, noteColor, noteName, noteFreq)
   return {type:types.DISPLAY_INFO, peakEnergy, peakFreq, noteColor, noteName, noteFreq};
 };
 
+export const sendSpctrumData = (spectrumData) => {
+  return {type:types.SPECTRUM_DATA, spectrumData};
+}
+
 export const setAudioParam = (sampleRate,fftSize)=>{
   return {type:types.SET_AUDIO_PARAM, sampleRate,fftSize};
 };
