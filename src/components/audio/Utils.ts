@@ -1,6 +1,3 @@
-/**
- * Created by Lu on 10/30/2018.
- */
 import * as audioSettings from './AudioSettings';
 
 export const pow2Table = [256, 512, 1024, 2048, 4096, 8192, 16384];
@@ -76,13 +73,13 @@ export const getPeakFreq = (freqData, noiseThreshold)=>{
 // };
 
 export const getNoteByFreq = (curFreq, tolerance)=>{
-  let res = {noteColor: "#00FF00", peakFreq: curFreq, noteName: "--", noteFreq: "--"};
+  let res = {noteColor: '#00FF00', peakFreq: curFreq, noteName: '--', noteFreq: '--'};
   for(let noteKey in audioSettings.POS1_NOTE_FREQ){
     let noteFreq = audioSettings.POS1_NOTE_FREQ[noteKey];
     let freqDiff = curFreq-noteFreq;
     if (freqDiff>0 && freqDiff<=tolerance){
       // curFreq is higher than noteFreq
-      res.noteColor = "#FF0000";
+      res.noteColor = '#FF0000';
       res.noteName = noteKey;
       res.noteFreq = noteFreq;
       return res;

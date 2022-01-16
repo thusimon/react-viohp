@@ -16,7 +16,13 @@ const AudioAnalyzer = (props) => {
   const audioProps = useSelector((state: RootState) => state.audio);
   const dispatch = useDispatch();
   let source=null;
-  const defaultInfo = {noteColor: '#00FF00', peakFreq: 0, noteName: '--', noteFreq: '--'};
+  const defaultInfo = {
+    noteColor: '#00FF00',
+    peakFreq: 0,
+    peakEnergy: 0,
+    noteName: '--',
+    noteFreq: '--'
+  };
   const [settingsState, setSettingsState] = useState({ showSettings: false });
   // const [audioState, setAudioState] = useState({
   //   ...audioProps
@@ -43,7 +49,6 @@ const AudioAnalyzer = (props) => {
   let audioCtx;
   let timer;
   let dataArray;
-  let rangedFreqData;
   const fftSize = 32768;
   let sampleRate = 48000;
 
@@ -81,39 +86,33 @@ const AudioAnalyzer = (props) => {
     }
   };
 
+  const getAudioDisplayInfo = (rangedFreqData, sampleRate, fftSize, threshold, freqRange, tolerance) => {
+    //const [peakEnergy, peakFreqIndex] = audioUtils.getBasePeakFreq(rangedFreqData, threshold, 50);
+    const [peakEnergy, peakFreqIndex] = audioUtils.getPeakFreq(rangedFreqData, threshold);
+    toggleAudioAnalyze(peakFreqIndex);
+    let {noteColor, peakFreq, noteName, noteFreq} = defaultInfo;
+    if (peakEnergy > 0){
+      let peakFreqRaw = audioUtils.getFreqFromIndex(peakFreqIndex, sampleRate, fftSize) + freqRange[0];
+      peakFreqRaw = +peakFreqRaw.toFixed(2);
+      const freqDisplayInfo = audioUtils.getNoteByFreq(peakFreqRaw, tolerance);
+      peakFreq = freqDisplayInfo.peakFreq;
+      noteColor = freqDisplayInfo.noteColor;
+      noteName = freqDisplayInfo.noteName;
+      noteFreq = freqDisplayInfo.noteFreq;
+    }
+    return { noteColor, peakFreq, peakEnergy, noteName, noteFreq };
+  };
+
   const redrawCanvas = () => {
     const dataArray = audioProps.spectrumData;
     if (!dataArray || dataArray.length < 1) {
-      return;
+      return defaultInfo;
     }
     let rangedFreqData = audioUtils.getRangedFreqData(dataArray, sampleRate, fftSize, audioProps.freqRange);
     if (audioProps.appliedFilter && audioProps.appliedFilter.length > 0){
       //multiply the two arrays
       rangedFreqData = multiplyVectors(rangedFreqData, audioProps.appliedFilter);
     }
-    const [peakEnergy, peakFreqIndex] = audioUtils.getPeakFreq(rangedFreqData, audioProps.threshold);
-    toggleAudioAnalyze(peakFreqIndex)
-    //const [peakEnergy, peakFreqIndex] = audioUtils.getBasePeakFreq(rangedFreqData, audioProps.threshold, 50);
-    let {noteColor, peakFreq,noteName, noteFreq} = defaultInfo;
-    if (peakEnergy > 0){
-      let peakFreqRaw = audioUtils.getFreqFromIndex(peakFreqIndex, sampleRate, fftSize) + audioProps.freqRange[0];
-      peakFreqRaw = +peakFreqRaw.toFixed(2);
-      const freqDisplayInfo = audioUtils.getNoteByFreq(peakFreqRaw, audioProps.tolerance);
-      peakFreq = freqDisplayInfo.peakFreq;
-      noteColor = freqDisplayInfo.noteColor;
-      noteName = freqDisplayInfo.noteName;
-      noteFreq = freqDisplayInfo.noteFreq;
-    }
-    //dispatch(audioActions.displayInfo(peakEnergy, peakFreq, noteColor, noteName, noteFreq));
-    //props.displayInfo(peakEnergy, peakFreq, noteColor, noteName, noteFreq);
-    // setAudioState({
-    //   dataArray: rangedFreqData,
-    //   peakEnergy,
-    //   peakFreq,
-    //   noteColor,
-    //   noteName,
-    //   noteFreq
-    // });
     const canvasDom = canvasRef.current;
     if (canvasDom) {
       const canvasCtx = canvasDom.getContext('2d');
@@ -170,12 +169,13 @@ const AudioAnalyzer = (props) => {
       canvasCtx.fillText(audioProps.threshold, 4, 24 + thresholdH);
 
       canvasCtx.stroke();
+
+      return getAudioDisplayInfo(rangedFreqData, sampleRate, fftSize, audioProps.threshold, audioProps.freqRange, audioProps.tolerance);
     }
   }
 
   const updateCanvas = () => {
     analyser.getByteFrequencyData(dataArray);
-    
     dispatch(audioActions.sendSpctrumData(dataArray));
   }
 
@@ -219,30 +219,17 @@ const AudioAnalyzer = (props) => {
     }
   }, []);
 
-  redrawCanvas();
+  const audioDisplayInfo = redrawCanvas();
   return (
     <div className='audio-analyzer-container'>
       <div className='audio-spectrum-canvas-container'>
         <canvas id='audio-canvas' ref={canvasRef} width='400' height='150' />
       </div>
-      <AudioDisplay />
+      <AudioDisplay peakEnergy={audioDisplayInfo.peakEnergy} noteColor={audioProps.noteColor}
+        peakFreq={audioDisplayInfo.peakFreq} noteName={audioDisplayInfo.noteName}
+        noteFreq={audioDisplayInfo.noteFreq} />
     </div>
   );
-}
-
-function mapStateToProps(state){
-  return Object.assign({}, state.audio, {score:state.score}, {ws: state.ws});
-}
-
-function mapDispatchToProps(dispatch){
-  return {
-    displayInfo: (peakEnergy, peakFreq, noteColor, noteName, noteFreq)=>{
-      dispatch(audioActions.displayInfo(peakEnergy, peakFreq, noteColor, noteName, noteFreq));
-    },
-    setAudioParam: (sampleRate, fftSize)=>{
-      dispatch(audioActions.setAudioParam(sampleRate, fftSize));
-    }
-  };
 }
 
 export default AudioAnalyzer;

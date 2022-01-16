@@ -85,27 +85,27 @@ const AudioFilter = (props) => {
     value:f.name,
     title: f.desc
   }));
-  const listBoxstyle = {width: "200px", height: "200px", overflowX:"none", overflowY:"auto"};
+  const listBoxstyle = {width: '200px', height: '200px', overflowX:'none', overflowY:'auto'};
   return (
-    <div className="audioFilter">
-      <div style={{flex:0, width:"200px"}}>
+    <div className='audioFilter'>
+      <div style={{flex:0, width:'200px'}}>
         <p><strong>Filters:</strong></p>
         <ListBox status={listBoxStatus} data={filterData} style={listBoxstyle} clickEvt={listBoxClick} curName={selectedFilter.name}/>
         <div>
-          <div className="btn-group" role="group" aria-label="Basic example">
-            <button type="button" className="btn btn-success btn-sm" onClick={getFiltersOnClick}>Get</button>
-            <button type="button" className="btn btn-success btn-sm" onClick={clearFilterOnClick}>Clear</button>
-            {false && <button type="button" className="btn btn-success btn-sm" onClick={addFiltersOnClick}>Add</button>}
-            {false && <button type="button" className="btn btn-success btn-sm" disabled={editBtnDisable} onClick={editFilterOnClick}>Edit</button>}
-            {false && <button type="button" className="btn btn-success btn-sm" disabled={editBtnDisable} onClick={deleteFilterOnClick}>Delete</button>}
+          <div className='btn-group' role='group' aria-label='Basic example'>
+            <button type='button' className='btn btn-success btn-sm' onClick={getFiltersOnClick}>Get</button>
+            <button type='button' className='btn btn-success btn-sm' onClick={clearFilterOnClick}>Clear</button>
+            {false && <button type='button' className='btn btn-success btn-sm' onClick={addFiltersOnClick}>Add</button>}
+            {false && <button type='button' className='btn btn-success btn-sm' disabled={editBtnDisable} onClick={editFilterOnClick}>Edit</button>}
+            {false && <button type='button' className='btn btn-success btn-sm' disabled={editBtnDisable} onClick={deleteFilterOnClick}>Delete</button>}
           </div>
         </div>
       </div>
-      <div style={{flex:1, width:"250px", marginLeft:"10px"}}>
+      <div style={{flex:1, width:'250px', marginLeft:'10px'}}>
         <p><strong>Points:x - y (percentage)</strong></p>
-        {listBoxStatus==0 && <TwoDPDisp points={selectedFilter.data} editable={selectedFilter.edit} width="250px" height="200px" />}
-        {listBoxStatus==0 && selectedFilter.data.length>0 && <div className="btn-group" role="group" aria-label="Basic example">
-          <button type="button" className="btn btn-success btn-sm" onClick={applyFilterOnClick}>Apply</button>
+        {listBoxStatus==0 && <TwoDPDisp points={selectedFilter.data} editable={selectedFilter.edit} width='250px' height='200px' />}
+        {listBoxStatus==0 && selectedFilter.data.length>0 && <div className='btn-group' role='group' aria-label='Basic example'>
+          <button type='button' className='btn btn-success btn-sm' onClick={applyFilterOnClick}>Apply</button>
         </div>}
       </div>
   </div>); 

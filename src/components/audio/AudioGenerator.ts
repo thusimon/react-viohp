@@ -1,6 +1,14 @@
 class AudioGenerator {
+  private audioCtx: AudioContext;
+  private _temp: object;
+  private _sampleRate: number;
+  private _bitsPerSample: number;
+  private _channels: number;
+  private _volume: number;
+  private modulate: Function[];
+  private soundProfile: object;
   constructor(sampleRate=44100, channels=1, volume=0.1, bitsPerSample=16) {
-    this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    this.audioCtx = new window.AudioContext();
     this._temp = {};
     this._sampleRate = this.audioCtx.sampleRate || sampleRate;
     this._bitsPerSample = bitsPerSample;
@@ -26,7 +34,7 @@ class AudioGenerator {
           return Math.pow(0.5*Math.log((frequency*volume)/sampleRate),2);
         },
         wave: function(i, sampleRate, frequency, volume) {
-          var base = this.modulate[0];
+          const base = this.modulate[0];
           return this.modulate[1](
             i,
             sampleRate,
@@ -38,7 +46,6 @@ class AudioGenerator {
         }
       }
     };
-    //this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
 
   /**
@@ -63,30 +70,30 @@ class AudioGenerator {
    * @param {*} duration second
    */
   generate(sound, frequency, duration) {
-    var thisSound = this.soundProfile[sound];
+    const thisSound = this.soundProfile[sound];
     if(!thisSound) { throw new Error('Invalid sound: ' + sound); }
-    var t = (new Date).valueOf();
     this._temp = {};
-    var time = !duration?2:parseFloat(duration);
-    var sampleRate = this._sampleRate;
-    var volume = this._volume;
-    var channels = this._channels;
-    var bitsPerSample = this._bitsPerSample;
-    var attack = thisSound.attack(sampleRate, frequency, volume);
-    var dampen = thisSound.dampen(sampleRate, frequency, volume);
-    var waveFunc = thisSound.wave;
-    var waveBind = {modulate: this.modulate, vars: this._temp};
-    var val = 0;
+    const time = !duration?2:parseFloat(duration);
+    const sampleRate = this._sampleRate;
+    const volume = this._volume;
+    const channels = this._channels;
+    const bitsPerSample = this._bitsPerSample;
+    const attack = thisSound.attack(sampleRate, frequency, volume);
+    const dampen = thisSound.dampen(sampleRate, frequency, volume);
+    const waveFunc = thisSound.wave;
+    const waveBind = {modulate: this.modulate, vars: this._temp};
+    let val = 0;
 
-    var buffer = this.audioCtx.createBuffer(2, sampleRate * duration, sampleRate);
+    const buffer = this.audioCtx.createBuffer(2, sampleRate * duration, sampleRate);
     
-    var attackLen = (sampleRate * attack) | 0;
-    var decayLen = (sampleRate * time) | 0;
+    const attackLen = (sampleRate * attack) | 0;
+    const decayLen = (sampleRate * time) | 0;
 
-    for (var channel = 0; channel < buffer.numberOfChannels; channel++) {
+    for (let channel = 0; channel < buffer.numberOfChannels; channel++) {
       // This gives us the actual array that contains the data
-      var nowBuffering = buffer.getChannelData(channel);
-      for (var i = 0 | 0; i !== attackLen; i++) {
+      const nowBuffering = buffer.getChannelData(channel);
+      let i = 0;
+      for ( i = 0 | 0; i !== attackLen; i++) {
         val = volume * (i/(sampleRate*attack)) * waveFunc.call(waveBind, i, sampleRate, frequency, volume);
         nowBuffering[i] = val;
         //nowBuffering[(i << 1) + 1] = (val >> 8)/255;
@@ -103,13 +110,14 @@ class AudioGenerator {
   endHandler(e) {
     console.log('sound ended', e);
   }
+
   play(sound, frequency, duration) {
-    var buffer = this.generate(sound, frequency, duration);
+    const buffer = this.generate(sound, frequency, duration);
     // Create an empty three-second stereo buffer at the sample rate of the AudioContext
     
     // Get an AudioBufferSourceNode.
     // This is the AudioNode to use when we want to play an AudioBuffer
-    var source = this.audioCtx.createBufferSource();
+    const source = this.audioCtx.createBufferSource();
 
     source.addEventListener('ended', this.endHandler);
     // set the buffer in the AudioBufferSourceNode
