@@ -1,7 +1,7 @@
 /*eslint no-console: 0 */
 import React, {useRef, useState, useEffect} from 'react';
 import { RootState } from '../../reducers/initialState';
-import {connect, useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { AUDIO_ANALYSE_INTERVAL } from './constants';
 import * as audioUtils from './Utils';
 import AudioDisplay from './AudioDisplay';
@@ -9,7 +9,6 @@ import * as audioActions from '../../actions/audioActions';
 import {multiplyVectors} from '../../math/basicMatrix';
 import {fetchDataWithAccessToken} from '../../api/utils';
 import './audio-analyzer.scss';
-import { AudioState } from '../../reducers/audioReducer';
 
 const AudioAnalyzer = (props) => {
   const canvasRef = useRef(null);
@@ -24,17 +23,6 @@ const AudioAnalyzer = (props) => {
     noteFreq: '--'
   };
   const [settingsState, setSettingsState] = useState({ showSettings: false });
-  // const [audioState, setAudioState] = useState({
-  //   ...audioProps
-  // });
-  // const [audioState, setAudioState] = useState({
-  //   dataArray: new Uint8Array(0),
-  //   peakEnergy: 0,
-  //   peakFreq: 0,
-  //   noteColor: defaultInfo.noteColor,
-  //   noteName: defaultInfo.noteName,
-  //   noteFreq: defaultInfo.noteFreq
-  // });
   const initAnalyzeData = {
     sampleRate: 48000,
     scoreTitle: '',

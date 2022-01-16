@@ -11,9 +11,9 @@ const Slider = ({start, end, onSlide, initVal = 0}) => {
     setSliderState({val});
   };
   return (
-    <span className="slider-container">
-      <input type="range" min={start} max={end} defaultValue={sliderState.val} className="slider" onInput={sliderOnInput} />
-      <span className="slider-val">{sliderState.val}</span>
+    <span className='slider-container'>
+      <input type='range' min={start} max={end} defaultValue={sliderState.val} className='slider' onInput={sliderOnInput} />
+      <span className='slider-val'>{sliderState.val}</span>
     </span>
   );
 };

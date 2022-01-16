@@ -26,7 +26,7 @@ const SelfClearBtn = ({baseClass, activeClass, icon, clickCallBack, isClear}) =>
   };
 
   return (
-  <button type="button" className={className} onClick = {clickBtn}>
+  <button type='button' className={className} onClick = {clickBtn}>
     <FontAwesomeIcon icon={icon} />
   </button>);
 };
