@@ -1,3 +1,7 @@
+import {SymbolType} from './types';
+import {SHARP_SYM, FLAT_SYM, NATURAL_SYM, WHOLEREST_SYM
+  , HALFREST_SYM, QUARTERREST_SYM, EIGTHREST_SYM} from './symbols/symbol-unicode';
+
 // the scale and interval, this is fixed
 // since the notes are periodic, the position is not important
 /**
@@ -112,3 +116,15 @@ export const ViolinFinger_POS1 = [
 
 export const STAFF_SYM_START = 0.1;
 export const STAFF_SYM_END = 0.97;
+
+const {FLAT, SHARP, NATURAL, WHOLEREST, HALFREST, QUARTERREST, EIGTHREST} = SymbolType;
+
+export const SYM_MAP = {
+  [SHARP]: SHARP_SYM,
+  [FLAT]: FLAT_SYM,
+  [NATURAL]: NATURAL_SYM,
+  [WHOLEREST]: WHOLEREST_SYM,
+  [HALFREST]: HALFREST_SYM,
+  [QUARTERREST]: QUARTERREST_SYM,
+  [EIGTHREST]: EIGTHREST_SYM
+};

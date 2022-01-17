@@ -6,7 +6,7 @@ import * as modalActions from '../../actions/modalActions';
 import ScorePickerModal from '../modal/ScorePickerModal';
 import AudioPlayer from '../audio/AudioPlayer';
 import MusicTextEditor from '../musicEditor/MusicTextEditor';
-import MusicStaffPage from '../musicStaff/MusicStaffPage';
+import MusicStaff from '../musicStaff/MusicStaff';
 import {fetchDataWithAccessToken} from '../../api/utils';
 import './music-editor-page.scss';
 
@@ -79,7 +79,7 @@ class MusicEditorPage extends React.Component {
           </div>
         </div>
         <div className="score-section">
-          <MusicStaffPage />
+          <MusicStaff />
         </div>
       </div>
     );

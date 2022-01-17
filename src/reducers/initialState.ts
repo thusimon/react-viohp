@@ -1,5 +1,6 @@
 import { AudioState } from './audioReducer';
 import { ModalState } from './modalReducer';
+import { PlayerState } from './playerReducer';
 import { ScoreState } from './scoreReducer';
 
 export const scoreInitState = {
@@ -68,4 +69,5 @@ export interface RootState {
   audio: AudioState;
   modal: ModalState;
   score: ScoreState;
+  player: PlayerState;
 };

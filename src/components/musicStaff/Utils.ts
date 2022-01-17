@@ -1,9 +1,5 @@
-/**
- * Created by Lu on 8/15/2018.
- */
 import * as Constant from './Constants';
-import * as Symbols from './Symbols';
-import {SCALE_FULL} from '../../music-editor/staffData/staff-data';
+import {SCALE_FULL} from './staffData/staff-data';
 
 export const noteShift = () => {};
 
@@ -168,34 +164,4 @@ export const updateMarkNote = (currMarkNotes, markNote) => {
     });
   }
   return currMarkNotes;
-};
-
-export const getNoteClassByType = (noteType) => {
-  let noteClass = 'Full';
-  switch (noteType) {
-    case Symbols.NOTE_CIRCLE:
-      noteClass = 'Full';
-      break;
-    case Symbols.NOTE_HALF:
-      noteClass = 'Half';
-      break;
-    case Symbols.NOTE_HALF_REVERSE:
-      noteClass = 'HalfReverse';
-      break;
-    case Symbols.NOTE_QUARTER:
-      noteClass = 'Quarter';
-      break;
-    case Symbols.NOTE_QUARTER_REVERSE:
-      noteClass = 'QuarterReverse';
-      break;
-    case Symbols.NOTE_EIGHTH:
-      noteClass = 'Eighth';
-      break;
-    case Symbols.NOTE_EIGHTH_REVERSE:
-      noteClass = 'EighthReverse';
-      break;
-    default:
-      break;
-  }
-  return noteClass;
 };

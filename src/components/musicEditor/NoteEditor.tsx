@@ -6,7 +6,6 @@ import {javascript} from '@codemirror/lang-javascript';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../reducers/initialState';
 
-
 const NoteEditor = () => {
   const codemirrorContainerRef = useRef<HTMLDivElement>();
   const originalNotes = useSelector((state: RootState) => state.score.originalNotes);

@@ -1,4 +1,4 @@
-import {SymbolType as Sym} from '../../music-editor/types';
+import {SymbolType as Sym} from './types';
 
 export const getNoteIterator = function(notes) {
   this.notes = notes;

@@ -2,9 +2,18 @@ import * as types from '../actions/actionTypes';
 import {playerInitState as initState} from './initialState';
 import AudioGenerator from '../components/audio/AudioGenerator';
 
+export interface PlayerState {
+  type?: string;
+  playing?: number;
+  vol?: number;
+  sound?: string;
+  freq?: number;
+  time?: number;
+};
+
 const audioGenerator = new AudioGenerator();
 
-export default function playerReducer(state=initState, action={}){
+export default function playerReducer(state=initState, action: PlayerState = {}){
   switch (action.type){
     case types.PLAY:
     {

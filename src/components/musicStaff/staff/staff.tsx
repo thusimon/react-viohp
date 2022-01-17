@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import * as musicActions from '../../actions/musicActions';
+import * as musicActions from '../../../actions/musicActions';
 import {ScoreType, StaffType, PlayType, SymbolType, ScaleHead, ScoreSymbol, IteratorResponse, StaffOwnProps,
   AudioFreqData,
   NoteType} from '../types';
@@ -9,10 +9,10 @@ import {isSymbolNote, isSymbolNoteUp, isSymbolNoteReverse} from '../symbols/util
 import {getSymsInterval, getStaffNotesStartOffset, waitTime, getFreqLineXInc, getFreqLineYVal, generateStaffFreqLineD} from './utils';
 import {STAFF_SCALES_HEAD} from '../staffData/staff-data';
 import {getSetOfNoteFromSignatureScale} from '../staffData/staff-data-utils';
-import {AUDIO_ANALYSE_INTERVAL} from '../../components/audio/constants';
+import {AUDIO_ANALYSE_INTERVAL} from '../../../components/audio/constants';
 import SymbolSVG from '../symbols/symbol-svg';
 import SymbolIterator from '../symbols/symbol-iter';
-import * as playerActions from '../../actions/playerActions';
+import * as playerActions from '../../../actions/playerActions';
 import * as d3 from 'd3';
 
 const {ARROW} = SymbolType;

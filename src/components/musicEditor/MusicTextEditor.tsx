@@ -6,7 +6,6 @@ import {RootState} from '../../reducers/initialState';
 import * as musicActions from '../../actions/musicActions';
 import './music-text-editor.scss';
 
-
 const MusicTextEditor = () => {
   const scoreProps = useSelector((state: RootState) => state.score);
   const dispatch = useDispatch();

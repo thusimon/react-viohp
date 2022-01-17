@@ -1,13 +1,10 @@
-/**
- * Created by Lu on 11/7/2018.
- */
 import React from 'react';
 import {connect} from 'react-redux';
 import * as modalActions from '../../actions/modalActions';
 import {toggleAnalyzeAudio} from '../../actions/audioActions'
 import * as playerActions from '../../actions/playerActions'
-import MusicStaffPage from '../musicStaff/MusicStaffPage';
-import Violin from '../musicStaff/Violin';
+import MusicStaff from '../musicStaff/MusicStaff';
+import Violin from '../violinBoard/Violin';
 import AudioAnalyzer from '../audio/AudioAnalyzer';
 import AudioPlayer from '../audio/AudioPlayer';
 import PrepareTimerModal from '../modal/PrepareTimerModal';
@@ -163,7 +160,7 @@ class MusicAudioPage extends React.Component{
           </div>
         </div>
         <div className="score-section">
-          <MusicStaffPage />
+          <MusicStaff />
         </div>
         <div className="audio-section">
           <AudioAnalyzer />

@@ -1,9 +1,11 @@
 import React, {useState,useEffect} from 'react';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {fetchDataWithAccessToken} from '../../api/utils';
 import {getNoteIterator, getTimeoutFromNoteType} from '../musicStaff/NoteIterator';
-import MusicStaffPage from '../musicStaff/MusicStaffPage';
+import MusicStaff from '../musicStaff/MusicStaff';
 import * as musicActions from '../../actions/musicActions';
+import { RootState } from '../../reducers/initialState';
+
 import './music-analytics-page.scss';
 
 const forceDownload = (blob, filename) => {
@@ -37,9 +39,12 @@ const average = (arr) => {
   const avg = (sum / arr.length) || 0;
   return avg;
 }
+
 const MusicAnalyticsPage = ({score={}, setScore}) => {
   const [audioList, setAudioList] = useState([]);
   const [audioAnalyze, setAudioAnalyze] = useState({});
+  const scoreProps = useSelector((state: RootState) => state.score);
+  const dispatch = useDispatch();
   
   const analyze = (audioAnalyse, notes) => {
     const {analyzeFrames, analyzeIncTime, noteBaseTime, prepareTime} = audioAnalyse;
@@ -67,18 +72,18 @@ const MusicAnalyticsPage = ({score={}, setScore}) => {
     } while(!!note);
   }
 
-  useEffect(() => {
-    const fetchAudioAnalyses = async () => {
-      const {err, audioAnalyses} = await fetchDataWithAccessToken('/api/audioanalyses', 'GET');
-      if (err) {
+  useEffect(() => {
+    const fetchAudioAnalyses = async () => {
+      const {err, audioAnalyses} = await fetchDataWithAccessToken('/api/audioanalyses', 'GET');
+      if (err) {
         setAudioList([]);
-      } else {
+      } else {
         setAudioList(audioAnalyses);
       }
     }
     fetchAudioAnalyses();
-    analyze(audioAnalyze, score.notes);
-  }, [score]);
+    analyze(audioAnalyze, scoreProps.notes);
+  }, [score]);
 
   const clickScoreDownload = async (evt, id) => {
     const audioAnalyseRes = await fetchDataWithAccessToken(`/api/audioanalyse/${id}`, 'GET');
@@ -96,40 +101,27 @@ const MusicAnalyticsPage = ({score={}, setScore}) => {
       console.log('err:' + scoreRes.err)
       return;
     }
-    setScore(scoreRes.score);
+    dispatch(musicActions.setScoreRaw(scoreRes.score));
   }
   return (
-    <div className="music-analytics-page">
-      <div className="music-analytics-list">
+    <div className='music-analytics-page'>
+      <div className='music-analytics-list'>
         <ul>
           {audioList.map(audio => {
             return <li key={audio._id} onClick={(evt) => clickScoreDownload(evt, audio._id)}>
               <div>
-                <span className="score-title">{audio.scoreTitle}</span>
-                <span className="score-time">{new Date(audio.updatedAt).toISOString()}</span>
+                <span className='score-title'>{audio.scoreTitle}</span>
+                <span className='score-time'>{new Date(audio.updatedAt).toISOString()}</span>
               </div>
             </li>
           })}
         </ul>
       </div>
-      <div className="music-analytics-staff">
-        <MusicStaffPage />
+      <div className='music-analytics-staff'>
+        <MusicStaff />
       </div>
     </div>
   )
 }
 
-function mapStateToProps(state){
-  return {score: state.score};
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setScore: (score) => {
-      dispatch(musicActions.setScoreRaw(score));
-    }
-  };
-};
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(MusicAnalyticsPage);
+export default MusicAnalyticsPage;
