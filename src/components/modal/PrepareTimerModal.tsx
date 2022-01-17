@@ -1,13 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import * as playerActions from '../../actions/playerActions';
+import {useSelector, useDispatch} from 'react-redux';
 import * as modalActions from '../../actions/modalActions';
-import {connect} from 'react-redux';
+import {RootState} from '../../reducers/initialState';
 import Modal from 'react-bootstrap/Modal';
 import './prepare-timer-modal.scss';
 
 const TIME_OFF = 5;
 
-const PrepareTimerModal = ({display, startPlay, toggleDisplay, callback}) => {
+const PrepareTimerModal = ({callback}) => {
+  const modalProps = useSelector((state: RootState) => state.modal);
+  const display = modalProps.prepareTimerDisplay;
+  const dispatch = useDispatch();
   let [timeLeftover, setTimeLeftover] = useState(TIME_OFF);
   useEffect(() => {
     if (display) {
@@ -19,8 +22,9 @@ const PrepareTimerModal = ({display, startPlay, toggleDisplay, callback}) => {
       setTimeLeftover(currentTime);
       setTimeout(startCountDown, 1000, currentTime-1);
     } else {
-      startPlay(callback);
-      toggleDisplay();
+      // start display
+      dispatch(callback());
+      dispatch(modalActions.togglePrepareTimer());
     }
   }
   return (
@@ -34,21 +38,4 @@ const PrepareTimerModal = ({display, startPlay, toggleDisplay, callback}) => {
   );
 }
 
-const mapStateToProps = (state) => {
-  return { 
-    display: state.modal.prepareTimerDisplay
-  };
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    startPlay: (callback) => {
-      dispatch(callback());
-    },
-    toggleDisplay: () => {
-      dispatch(modalActions.togglePrepareTimer());
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(PrepareTimerModal);
+export default PrepareTimerModal;

@@ -1,34 +1,37 @@
 /* eslint-disable react/jsx-no-bind */
 import React from 'react';
 import NoteEditor from './NoteEditor';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {RootState} from '../../reducers/initialState';
 import * as musicActions from '../../actions/musicActions';
 import './music-text-editor.scss';
 
 
-const MusicTextEditor = (props) => {
+const MusicTextEditor = () => {
+  const scoreProps = useSelector((state: RootState) => state.score);
+  const dispatch = useDispatch();
   const infoChange = (evt) => {
     const target = evt.target;
     const infoName = target.id;
     const infoValue = target.value;
-    props.updateScoreInfo(infoName, infoValue);
+    dispatch(musicActions.updateScoreInfo(infoName, infoValue));
   };
 
-  const signautreValue = props.scoreInfo.signature ? props.scoreInfo.signature : 'Major';
-  const scaleValue = props.scoreInfo.scale ? props.scoreInfo.scale : 'C';
+  const signautreValue = scoreProps.scoreInfo.signature ? scoreProps.scoreInfo.signature : 'Major';
+  const scaleValue = scoreProps.scoreInfo.scale ? scoreProps.scoreInfo.scale : 'C';
   return (
   <div className="music-text-editor-main">
     <div className="input-group input-group-sm mb-3">
       <div className="input-group-prepend">
         <span className="input-group-text">Title</span>
       </div>
-      <input type="text" className="form-control" id="title" name="title" value={props.scoreInfo.title} onChange={infoChange}/>
+      <input type="text" className="form-control" id="title" name="title" value={scoreProps.scoreInfo.title} onChange={infoChange}/>
     </div>
     <div className="input-group input-group-sm mb-3">
       <div className="input-group-prepend">
         <span className="input-group-text">Author</span>
       </div>
-      <input type="text" className="form-control" id="author" name="author" value={props.scoreInfo.author} onChange={infoChange}/>
+      <input type="text" className="form-control" id="author" name="author" value={scoreProps.scoreInfo.author} onChange={infoChange}/>
     </div>
     <div className="input-group input-group-sm mb-3">
       <div className="input-group-prepend">
@@ -69,15 +72,4 @@ const MusicTextEditor = (props) => {
   </div>);
 };
 
-const mapStateToProps = (state) => {
-  const {id, scoreInfo} = state.score;
-  return {id, scoreInfo};
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updateScoreInfo: (name, value) => {
-      dispatch(musicActions.updateScoreInfo(name, value));
-    }
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(MusicTextEditor);
+export default MusicTextEditor;

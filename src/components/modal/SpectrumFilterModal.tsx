@@ -1,19 +1,21 @@
 import React from 'react';
 import * as modalActions from '../../actions/modalActions';
-import {connect} from 'react-redux';
+import {useSelector ,useDispatch} from 'react-redux';
+import {RootState} from '../../reducers/initialState';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import AudioFilter from '../audio/AudioFilter';
 
-const SepctrumFilterModal = ({display, toggleDisplay}) => {
-  
+const SepctrumFilterModal = () => {
+  const modalProps = useSelector((state: RootState) => state.modal);
+  const dispatch = useDispatch();
   const handleClose = () => {
-    toggleDisplay();
+    dispatch(modalActions.toggleSpectrumFilter());
   };
 
   return (
     <>
-      <Modal show={display} onHide={handleClose}>
+      <Modal show={modalProps.spectrumFilterDisplay} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Select your spectrum filter</Modal.Title>
         </Modal.Header>
@@ -30,18 +32,4 @@ const SepctrumFilterModal = ({display, toggleDisplay}) => {
   );
 }
 
-const mapStateToProps = (state) => {
-  return { 
-    display: state.modal.spectrumFilterDisplay
-  };
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    toggleDisplay: () => {
-      dispatch(modalActions.toggleSpectrumFilter());
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SepctrumFilterModal);
+export default SepctrumFilterModal;

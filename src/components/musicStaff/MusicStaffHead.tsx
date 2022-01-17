@@ -1,7 +1,5 @@
-/**
- * Created by Lu on 11/8/2018.
- */
 import React from 'react';
+
 const MusicStaffHead = ({scoreInfo})=>{
   return (
     <div className="music-staff-head-container">

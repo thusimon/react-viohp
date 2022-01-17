@@ -1,7 +1,15 @@
 import * as types from '../actions/actionTypes';
 import {modalInitState as initState} from './initialState';
 
-const modalReducer = (state=initState, action={}) => {
+export interface ModalState {
+  type?: string;
+  scorePickerDisplay?: boolean;
+  spectrumSettingDisplay?: boolean;
+  spectrumFilterDisplay?: boolean;
+  prepareTimerDisplay?: boolean;
+}
+
+const modalReducer = (state=initState, action: ModalState = {}) => {
   switch (action.type) {
     case types.SCORE_PICKER_TOGGLE: {
       const toggled = !state.scorePickerDisplay;

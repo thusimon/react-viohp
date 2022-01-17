@@ -1,10 +1,12 @@
 import { AudioState } from './audioReducer';
+import { ModalState } from './modalReducer';
+import { ScoreState } from './scoreReducer';
 
 export const scoreInitState = {
   notes:[[],[],[]],
   originalNotes: [[],[],[]],
   markNotes:[],
-  dragInfo: {dragStatus:-1, dragNoteName:"C", startOffSet:[0,0], noteShift:[0,0]},
+  dragInfo: {dragStatus:-1, dragNoteName:'C', startOffSet:[0,0], noteShift:[0,0]},
   freqLineVal:-1,
   scoreInfo:{
     signature : 'Major', 
@@ -12,8 +14,8 @@ export const scoreInitState = {
     title: 'Score Title',
     author: 'author'
   },
-  scoreId:"",
-  name:"",
+  scoreId:'',
+  name:'',
   scoreList:{}
 };
 
@@ -28,10 +30,10 @@ export const staffInitState = {
 export const audioInitState = {
   sampleRate: 48000,
   peakEnergy: 0,
-  noteColor: "#00FF00",
+  noteColor: '#00FF00',
   peakFreq: 0,
-  noteName: "--",
-  noteFreq: "--",
+  noteName: '--',
+  noteFreq: '--',
   threshold: 100, // if the spectrum power is less than threshold, consider as noise
   tolerance: 5, // the spectrum peak's freq is x, find the pitch between [x-5, x+5]
   freqRange: [180, 1000], //the frequency range to display the spectrum position 1, note frequency g3=196Hz, b5=988Hz
@@ -63,5 +65,7 @@ export const wsInitState = {
 }
 
 export interface RootState {
-  audio: AudioState,
-}
+  audio: AudioState;
+  modal: ModalState;
+  score: ScoreState;
+};

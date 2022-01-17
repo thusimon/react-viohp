@@ -79,7 +79,7 @@ export const SHARPFLATIDX = {
     B : [{name:'sharp', sfIdx:0},{name:'sharp', sfIdx:3},{name:'sharp', sfIdx:-1},{name:'sharp', sfIdx:2},{name:'sharp', sfIdx:5}]
   },
   Minor:{
-    C : [{name:"flat", sfIdx:4}, {name:"flat", sfIdx:1}, {name:"flat", sfIdx: 5}],
+    C : [{name:'flat', sfIdx:4}, {name:'flat', sfIdx:1}, {name:'flat', sfIdx: 5}],
     CS: [{name:'sharp', sfIdx:0},{name:'sharp', sfIdx:3},{name:'sharp', sfIdx:-1},{name:'sharp', sfIdx:2}],
     DF: [{name:'sharp', sfIdx:0},{name:'sharp', sfIdx:3},{name:'sharp', sfIdx:-1},{name:'sharp', sfIdx:2}],
     D : [{name:'flat', sfIdx:2}],
@@ -100,14 +100,14 @@ export const SHARPFLATIDX = {
 };
 
 export const ViolinFinger_POS1 = [
-  {finger: "0", notes: [Notes.G, Notes.D, Notes.A, Notes.E ]},
-  {finger: "1", notes: [Notes.AF,Notes.EF,Notes.BF,Notes.F ]},
-  {finger: "1", notes: [Notes.A, Notes.E, Notes.B, Notes.FS]},
-  {finger: "2", notes: [Notes.BF,Notes.F, Notes.C, Notes.G ]},
-  {finger: "2", notes: [Notes.B, Notes.FS,Notes.CS,Notes.GS]},
-  {finger: "3", notes: [Notes.C, Notes.G, Notes.D, Notes.A ]},
-  {finger:"3/4",notes: [Notes.CS,Notes.GS,Notes.EF,Notes.BF]},
-  {finger: "4", notes: [Notes.D, Notes.A, Notes.E, Notes.B]},
+  {finger: '0', notes: [Notes.G, Notes.D, Notes.A, Notes.E ]},
+  {finger: '1', notes: [Notes.AF,Notes.EF,Notes.BF,Notes.F ]},
+  {finger: '1', notes: [Notes.A, Notes.E, Notes.B, Notes.FS]},
+  {finger: '2', notes: [Notes.BF,Notes.F, Notes.C, Notes.G ]},
+  {finger: '2', notes: [Notes.B, Notes.FS,Notes.CS,Notes.GS]},
+  {finger: '3', notes: [Notes.C, Notes.G, Notes.D, Notes.A ]},
+  {finger:'3/4',notes: [Notes.CS,Notes.GS,Notes.EF,Notes.BF]},
+  {finger: '4', notes: [Notes.D, Notes.A, Notes.E, Notes.B]},
 ];
 
 export const STAFF_SYM_START = 0.1;

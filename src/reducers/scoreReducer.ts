@@ -1,13 +1,10 @@
-/**
- * Created by Lu on 8/19/2018.
- */
 import * as types from '../actions/actionTypes';
 import {scoreInitState as initState} from './initialState';
 import {updateMarkNote} from '../components/musicStaff/Utils';
 import Score from '../data/scores/Score';
 import {newScore} from '../data/scores/Score_template';
 
-interface ScoreAction {
+export interface ScoreState {
   type?: string;
   idx?: string;
   note?: string;
@@ -15,6 +12,7 @@ interface ScoreAction {
   signature?: string;
   scoreInfo?: any;
   notes?: any[];
+  originalNotes?: any[];
   markNote?: boolean;
   dragInfo?: any;
   freqLineVal?: number;
@@ -25,7 +23,8 @@ interface ScoreAction {
   name?: string;
   value?: string;
 }
-const scoreReducer = (state=initState, action: ScoreAction={}) => {
+
+const scoreReducer = (state=initState, action: ScoreState = {}) => {
   switch (action.type) {
     case types.ADD_NOTE:
     {

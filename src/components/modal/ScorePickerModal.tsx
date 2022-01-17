@@ -1,19 +1,21 @@
 import React from 'react';
 import * as modalActions from '../../actions/modalActions';
-import {connect} from 'react-redux';
+import {useSelector ,useDispatch} from 'react-redux';
+import {RootState} from '../../reducers/initialState';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import ScorePicker from '../Scores/ScorePicker';
 
-const ScorePickerModal = ({display, toggleDisplay}) => {
-  
+const ScorePickerModal = () => {
+  const modalProps = useSelector((state: RootState) => state.modal);
+  const dispatch = useDispatch();
   const handleClose = () => {
-    toggleDisplay();
+    dispatch(modalActions.toggleScorePicker());
   };
 
   return (
     <>
-      <Modal show={display} onHide={handleClose}>
+      <Modal show={modalProps.scorePickerDisplay} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Select your score</Modal.Title>
         </Modal.Header>
@@ -30,18 +32,4 @@ const ScorePickerModal = ({display, toggleDisplay}) => {
   );
 }
 
-const mapStateToProps = (state) => {
-  return { 
-    display: state.modal.scorePickerDisplay
-  };
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    toggleDisplay: () => {
-      dispatch(modalActions.toggleScorePicker());
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ScorePickerModal);
+export default ScorePickerModal;
