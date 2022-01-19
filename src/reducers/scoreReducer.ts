@@ -13,13 +13,15 @@ export interface ScoreState {
   scoreInfo?: any;
   notes?: any[];
   originalNotes?: any[];
-  markNote?: boolean;
+  notesToSave?: any[];
+  markNote?: object;
+  markNotes?: any[];
   dragInfo?: any;
   freqLineVal?: number;
   score?: any;
   id?: string;
   category?: string;
-  scoreList?: any[];
+  scoreList?: object;
   name?: string;
   value?: string;
 }

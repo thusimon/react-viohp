@@ -42,16 +42,16 @@ const App = () => {
   }, []);
   return (
     <BrowserRouter>
-      <div className="container-fluid" >
+      <div className='container-fluid' >
         <Header />
         <Routes>
           <Route index element={<HomePage />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/musicstaff" element={<MusicAudioPage />} />
-          <Route path="/musicEditor" element={<MusicEditorPage />} />
-          <Route path="/musicAnalytics" element={<MusicAnalyticsPage />} />
-          <Route path="/account" element={<AccountPage />} />
-          <Route path="/about" element={<AboutPage />} />
+          <Route path='/home' element={<HomePage />} />
+          <Route path='/musicstaff' element={<MusicAudioPage />} />
+          <Route path='/musicEditor' element={<MusicEditorPage />} />
+          <Route path='/musicAnalytics' element={<MusicAnalyticsPage />} />
+          <Route path='/account' element={<AccountPage />} />
+          <Route path='/about' element={<AboutPage />} />
         </Routes>
       </div>
     </BrowserRouter>

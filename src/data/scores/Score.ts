@@ -1,9 +1,6 @@
-/**
- * Created by Lu on 11/9/2018.
- */
 import {STAFF_SYM_START, STAFF_SYM_END} from '../../components/musicStaff/Constants';
-import {NotesFullMap} from '../../music-editor/staffData/staff-data';
-import {SymbolType as Sym} from '../../music-editor/types';
+import {NotesFullMap} from '../../components/musicStaff/staffData/staff-data';
+import {SymbolType as Sym} from '../../components/musicStaff/types';
 
 class Score {
   /**

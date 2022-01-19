@@ -6,7 +6,7 @@
  * ]
  *
 */
-import {SymbolType as Sym} from '../../music-editor/types'
+import {SymbolType as Sym} from '../musicStaff/types';
 
 export const ConvertNotesToText = (notes) => {
   const allNotesStr = notes.map(noteLine=>{

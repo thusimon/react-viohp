@@ -2,6 +2,8 @@ import { AudioState } from './audioReducer';
 import { ModalState } from './modalReducer';
 import { PlayerState } from './playerReducer';
 import { ScoreState } from './scoreReducer';
+import { AuthState } from './authReducer';
+import { WebSocketState } from './wsReducer';
 
 export const scoreInitState = {
   notes:[[],[],[]],
@@ -17,7 +19,7 @@ export const scoreInitState = {
   },
   scoreId:'',
   name:'',
-  scoreList:{}
+  scoreList: {}
 };
 
 export const staffInitState = {
@@ -70,4 +72,6 @@ export interface RootState {
   modal: ModalState;
   score: ScoreState;
   player: PlayerState;
+  auth: AuthState;
+  ws: WebSocketState;
 };

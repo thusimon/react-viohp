@@ -28,22 +28,23 @@ const ScoreList = ({category, reqPath}) => {
   useEffect(() => {
     loadScores();
   }, [])
-  let spinner = <span className="loading"><FontAwesomeIcon icon="spinner" size="4x" spin /></span>
+
+  let spinner = <span className='loading'><FontAwesomeIcon icon='spinner' size='4x' spin /></span>
     
-  let scoreList = scoreState.scores.length>0 ?
-    <div className="list-group score-list" onClick={scoreListClick}>
+  let scoreList = scoreState.scores.length > 0 ?
+    <div className='list-group score-list' onClick={scoreListClick}>
       {
         scoreState.scores.map(score=>{
           let {_id, title, author, notes} = score;
           let notesLineNum = notes ? notes.length : 0;
-          return <button key={_id} id={_id} type="button"
-            className="list-group-item list-group-item-action score-item"
+          return <button key={_id} id={_id} type='button'
+            className='list-group-item list-group-item-action score-item'
             title={`${title}-${author} (${notesLineNum} lines)`}
             >{title}</button>
         })
       }
     </div> :
-    <div className="score-list-empty">
+    <div className='score-list-empty'>
       <span>No scores at present</span>
     </div>;
   return (

@@ -2,7 +2,14 @@ import * as types from '../actions/actionTypes';
 import {wsInitState as initState} from './initialState';
 import {getWebSocket} from '../websockets/websocket';
 
-export default function wsReducer(state=initState, action={}){
+export interface WebSocketState {
+  type?: string;
+  url?: string;
+  ws?: WebSocket;
+  updateTime?: number;
+}
+
+export default function wsReducer(state=initState, action: WebSocketState = {}){
   switch (action.type){
     case types.GET_WEBSOCKET:
     {

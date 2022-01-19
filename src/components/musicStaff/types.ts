@@ -1,4 +1,3 @@
-import React from 'react';
 import SymbolSVG from './symbols/symbol-svg';
 
 export enum Signature {

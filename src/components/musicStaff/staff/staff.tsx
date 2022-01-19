@@ -9,7 +9,6 @@ import {isSymbolNote, isSymbolNoteUp, isSymbolNoteReverse} from '../symbols/util
 import {getSymsInterval, getStaffNotesStartOffset, waitTime, getFreqLineXInc, getFreqLineYVal, generateStaffFreqLineD} from './utils';
 import {STAFF_SCALES_HEAD} from '../staffData/staff-data';
 import {getSetOfNoteFromSignatureScale} from '../staffData/staff-data-utils';
-import {AUDIO_ANALYSE_INTERVAL} from '../../../components/audio/constants';
 import SymbolSVG from '../symbols/symbol-svg';
 import SymbolIterator from '../symbols/symbol-iter';
 import * as playerActions from '../../../actions/playerActions';

@@ -1,5 +1,4 @@
 import {Descriptor, SymbolType} from '../types';
-import SymbolSVG from './symbol-svg';
 
 export const isSymbolNote = (type: SymbolType): boolean => {
   return type <= SymbolType.NOTE_EIGHTH_REVERSE;

@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import {getAccessToken} from '../storage/utils';
 
-export const getWebSocket = (url, options) => {
+export const getWebSocket = (url, options?) => {
   const defaultReconnectTimeout = 20*1000; // 20 seconds
 
   let res = {

@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { Selection } from 'd3';
-import {SYM_MAP} from '../constants'
+import {SYM_MAP} from '../Constants'
 import {ellipse, noteStem, noteStemRev, stem, hook, bar, staffSegment, arrow} from '../svgs/base-paths';
 import {SymbolType, Descriptor} from '../types';
 import {isSymbolNote, getTimeoutFromSymbolType} from './utils';

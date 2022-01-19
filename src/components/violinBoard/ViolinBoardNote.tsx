@@ -1,16 +1,16 @@
 import React from 'react';
 import * as playerActions from '../../actions/playerActions';
-import {useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 const ViolinBoardNote = ({note, markNotes, noteName, noteColor}) => {
   const dispatch = useDispatch();
-  let labels = note.map(n=>n.label);
-  let label = labels.join("/");
+  let labels = note.map(n => n.label);
+  let label = labels.join('/');
   // we should decide whether this note is marked
   let marked = false;
-  for (let i=0; i<markNotes.length; i++){
+  for (let i = 0; i < markNotes.length; i++){
     const mn = markNotes[i];
-    if (note.findIndex(n=>(n.name==mn.name && n.sfIdx==mn.sfIdx)) > -1){
+    if (note.findIndex(n => (n.name == mn.name && n.sfIdx == mn.sfIdx)) > -1){
       marked = true;
       break;
     }
@@ -24,11 +24,11 @@ const ViolinBoardNote = ({note, markNotes, noteName, noteColor}) => {
       element.classList.remove('violinBoardNoteClick');
     }, 300)
   }
-  let boardNoteClassName = marked ? "violinBoardNote violinBoardNoteSelect" : "violinBoardNote";
+  let boardNoteClassName = marked ? 'violinBoardNote violinBoardNoteSelect' : 'violinBoardNote';
 
   // we should decide whether this note is detected by audio
   let audioClass = '';
-  if (noteName=='--'){
+  if (noteName == '--'){
     //show nothing
   } else if (labels.indexOf(noteName)<0){
     //show nothing
