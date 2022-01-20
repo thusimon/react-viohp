@@ -1,14 +1,14 @@
-const User = require('../models/user');
-const Score = require('../models/score');
-const GuestScores = require('./guest-scores');
+import User from '../models/user';
+import Score from '../models/score';
+import GuestScores from './guest-scores';
 
 // create a Guest user and its scores
-const createGuestAndScores = async () => {
-  let guest = await User.collection.findOne({ email: 'Guest' });
+export const createGuestAndScores = async () => {
+  const guest = await User.collection.findOne({ email: 'Guest' });
   let guestId;
   if (!guest) {
-    guest = await User.collection.insertOne({ email: 'Guest' });
-    guestId = guest.insertedId;
+    const newGuest = await User.collection.insertOne({ email: 'Guest' });
+    guestId = newGuest.insertedId;
   } else {
     guestId = guest._id;
   }
@@ -23,7 +23,3 @@ const createGuestAndScores = async () => {
   };
   await Promise.all(scoresTask);
 }
-
-module.exports = {
-  createGuestAndScores
-};

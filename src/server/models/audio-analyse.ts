@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import mongoose, { Schema } from 'mongoose';
 
 const audioAnalyseSchema = new Schema({
   sampleRate: {
@@ -34,4 +33,4 @@ const audioAnalyseSchema = new Schema({
 
 const AudioAnalyse = mongoose.model('AudioAnalyse', audioAnalyseSchema);
 
-module.exports = AudioAnalyse;
+export default AudioAnalyse;

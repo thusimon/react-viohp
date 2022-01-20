@@ -1,6 +1,3 @@
-/**
- * Created by Lu on 11/10/2018.
- */
 import * as scores from './Score_fav';
 import * as scoresTemplate from './Score_template';
 import Score from './Score';

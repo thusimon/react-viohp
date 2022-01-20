@@ -1,7 +1,13 @@
-const express = require('express');
-const router = new express.Router();
-const {userAuth} = require('./middleware/auth');
-const User = require('../models/user');
+import express, {Router, Request} from 'express';
+import { userAuth } from './middleware/auth';
+import Score from '../models/score';
+import Audio from '../models/audio';
+import AudioAnalyse from '../models/audio-analyse';
+import User from '../models/user';
+import mongoose, {} from 'mongoose';
+import { IUserRequest } from './types';
+
+const router = Router();
 
 // register user
 router.post('/api/user/register', async (req, res) => {
@@ -26,7 +32,7 @@ router.post('/api/user/login', async (req, res) => {
   }
 });
 
-router.get('/api/user/me', userAuth, async (req, res) => {
+router.get('/api/user/me', userAuth, async (req: IUserRequest, res) => {
   try {
     return res.status(200).send({
       user: req.user,
@@ -50,4 +56,4 @@ router.get('/api/users', async (req, res) => {
   }
 })
 
-module.exports = router;
+export default router;

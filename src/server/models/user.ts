@@ -1,18 +1,30 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const validator = require('validator');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import mongoose, { Schema, Document, Model, model } from 'mongoose';
+import validator from 'validator';
+import bcrypt from 'bcryptjs';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
-const accessTokenExp = 60*60*24*7; // 1 week
-const accessTokenExpLong = 60*60*24*30; //1 month
-const activeTokenExp = 60*60; // 1 hour
+const accessTokenExp = 60 * 60 * 24 * 7; // 1 week
+const accessTokenExpLong = 60 * 60 * 24 * 30; //1 month
+const activeTokenExp = 60 * 60; // 1 hour
+const activateTimeout = accessTokenExp * 12;
+const activateLongTimeout = activateTimeout * 12; //12 weeks, 3 month 
 const clientId = 'viohelper';
-//const activateLongTimeout = activateTimeout*12; //12 weeks, 3 month 
+
+interface IUser extends Document {
+  email: string;
+  password: string;
+  avatar: Buffer;
+  status: Number;
+  generateAuthToken: (remember: boolean) => object;
+}
+
+interface UserModel extends Model<IUser> {
+  findByCredentials(email: string, password: string): IUser;
+}
 
 // mongoose use model name, convert to lowercase and pluralize it
 // so User will go to collection users
-const userSchema = new Schema({
+const userSchema = new Schema<IUser, UserModel>({
   email: {
     type: String,
     required: true,
@@ -95,7 +107,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
 }
 
 userSchema.statics.activateUser = async (token) => {
-  const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
+  const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY) as JwtPayload;
   if (Date.now()/1000 > decoded.iat + activateTimeout) {
     throw new Error('activate timeout, please ask for new activation code');
   }
@@ -119,6 +131,6 @@ userSchema.pre('remove', async function(next) {
   next();
 })
 
-const User = mongoose.model('User', userSchema);
+const User = model<IUser, UserModel>('User', userSchema);
 
-module.exports = User;
+export default User;

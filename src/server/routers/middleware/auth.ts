@@ -1,18 +1,18 @@
-const jwt = require('jsonwebtoken');
-const User = require('../../models/user');
-const {AuthException} = require('./authException');
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import User from '../../models/user';
+import { AuthException } from './authException';
 
-const auth = async (req) => {
+export const auth = async (req) => {
   const authorizationHeader = req.header('Authorization') || '';
   const token = authorizationHeader.replace('Bearer', '').trim();
   return await authInternal(token);
-}
+};
 
-const authInternal = async (token) => {
+export const authInternal = async (token) => {
   if (!token) {
     throw new AuthException('no token in header, please authenticate');
   }
-  const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
+  const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY) as JwtPayload;
   const exp = decoded.exp * 1000 // decoded exp is in seconds
   if (exp < Date.now()) {
     throw new AuthException('token expired, please authenticate');
@@ -22,9 +22,9 @@ const authInternal = async (token) => {
     throw new AuthException('can not find user, please authenticate');
   }
   return {user, token};
-}
+};
 
-const userAuth = async (req, res, next) => {
+export const userAuth = async (req, res, next) => {
   try {
     const {user, token} = await auth(req);
     req.token = token;
@@ -33,9 +33,9 @@ const userAuth = async (req, res, next) => {
   } catch (err) {
     return res.status(401).send({err: err.message});
   }
-}
+};
 
-const guestAuth = async (req, res, next) => {
+export const guestAuth = async (req, res, next) => {
   try {
     const {user, token} = await auth(req);
     req.token = token;
@@ -50,11 +50,4 @@ const guestAuth = async (req, res, next) => {
     }
     return res.status(401).send({err: err.message});
   }
-}
-
-module.exports = {
-  auth,
-  authInternal,
-  userAuth,
-  guestAuth
 };

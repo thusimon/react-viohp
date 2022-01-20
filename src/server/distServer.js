@@ -1,6 +1,3 @@
-/**
- * Created by Lu on 8/12/2018.
- */
 const express = require('express');
 const path = require('path');
 const http = require('http');

@@ -1,4 +1,4 @@
-exports.BlackHeart={
+const BlackHeart={
   signature:'Major',
   scale:'F',
   title:'Black Heart',
@@ -773,7 +773,7 @@ exports.BlackHeart={
   order:1
 };
 
-exports.WarmupPracticePos1={
+const WarmupPracticePos1={
   signature:'Major',
   scale:'C',
   title:'Warmup practice position 1',
@@ -799,7 +799,7 @@ exports.WarmupPracticePos1={
   order: 0
 };
 
-exports.MajorCPractice={
+const MajorCPractice={
   signature:'Major',
   scale:'C',
   title:'C Major Practice',
@@ -836,7 +836,7 @@ exports.MajorCPractice={
   order:2
 };
 
-exports.MajorFPractice={
+const MajorFPractice={
   signature:'Major',
   scale:'F',
   title:'F Major Practice',
@@ -873,7 +873,7 @@ exports.MajorFPractice={
   order:3
 };
 
-exports.MajorBFPractice={
+const MajorBFPractice={
   signature:'Major',
   scale:'BF',
   title:'B Flat Major Practice',
@@ -908,4 +908,12 @@ exports.MajorBFPractice={
       {t:'q', n:'b3b'}]
   ],
   order:4
+};
+
+export default {
+  BlackHeart,
+  WarmupPracticePos1,
+  MajorCPractice,
+  MajorFPractice,
+  MajorBFPractice
 };

@@ -1,7 +1,3 @@
-/**
- * Created by Lu on 11/7/2018.
- */
-
 export const BlackHeart={
   id:'0000001',
   signature:'Major',

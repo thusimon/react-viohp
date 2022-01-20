@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import mongoose, { Schema } from 'mongoose';
 
 const scoreSchema = new Schema({
   title: {
@@ -33,4 +32,4 @@ const scoreSchema = new Schema({
 
 const Score = mongoose.model('Score', scoreSchema);
 
-module.exports = Score;
+export default Score;
