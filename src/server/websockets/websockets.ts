@@ -1,8 +1,14 @@
-const WebSocket = require('ws');
-const Audio = require('../models/audio');
-const AudioAnalyse = require('../models/audio-analyse');
-const webSocketCache = require('./websocketsCache').webSocketCache();
-const {authInternal} = require('../routers/middleware/auth');
+import WebSocket from 'ws';
+import Audio from '../models/audio';
+import AudioAnalyse from '../models/audio-analyse';
+import WebSocketCache from './websocketsCache';
+import { authInternal } from '../routers/middleware/auth';
+
+interface WSType extends WebSocket {
+  id: string;
+  userId: string;
+}
+const webSocketCache = WebSocketCache();
 
 const mergeBuffers = (channelBuffer, recordingLength) => {
   const result = new Float32Array(recordingLength);
@@ -153,10 +159,10 @@ setInterval(webSocketCache.cleanCache, 60*60*1000); // every one hour clean the 
 const webSocketConnectHandler = (ws, req) => {
   console.log('ws on connection');
   webSocketCache.setCache(ws.id, 'audio', {});
-  ws.on('message', function incomingMessage(data) {
+  ws.on('message', (data) => {
     webSocketIncomingDataHandler(ws.id, ws.userId, data);
   });
-  ws.on('close', function close(evt) {
+  ws.on('close', (evt) => {
     console.log('socket closed, should clean the cache');
     console.log(webSocketCache.getAllCache());
     webSocketCache.clearCache(ws.id);
@@ -164,12 +170,12 @@ const webSocketConnectHandler = (ws, req) => {
   });
 }
 
-const createWebSocket = (server) => {
+export const createWebSocket = (server) => {
   const wss = new WebSocket.Server({ noServer: true });
   wss.on('connection', webSocketConnectHandler);
 
-  server.on('upgrade', function upgrade(request, socket, head) {
-    wss.handleUpgrade(request, socket, head, async function done(ws) {
+  server.on('upgrade', (request, socket, head) => {
+    wss.handleUpgrade(request, socket, head, async (ws: WSType) => {
       // we can do authentication here
       const authTokenMatch = request.url.match(/accessToken=([^&]*)/);
       const wsIdMatch = request.url.match(/id=([0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12})/i);
@@ -191,8 +197,4 @@ const createWebSocket = (server) => {
     });
   });
   return wss;
-}
-
-module.exports = {
-  createWebSocket
 }

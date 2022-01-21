@@ -10,7 +10,7 @@ module.exports = {
     publicPath: '/',
     filename: '[name].js'
   },
-  mode: "development",
+  mode: 'development',
   devtool: 'inline-source-map',
   optimization: {
     emitOnErrors: true
@@ -29,6 +29,6 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx', ".ts", ".tsx"],
+    extensions: ['.ts'],
   }
 };

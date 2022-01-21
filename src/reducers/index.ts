@@ -1,6 +1,3 @@
-/**
- * Created by Lu on 8/7/2018.
- */
 import { combineReducers } from 'redux';
 import scoreReducer from './scoreReducer';
 import staffReducer from './staffReducer';

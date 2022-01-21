@@ -1,6 +1,3 @@
-/**
- * Created by Lu on 11/10/2018.
- */
 import React from 'react';
 import Tab from 'react-bootstrap/Tab';
 import Row from 'react-bootstrap/Row';

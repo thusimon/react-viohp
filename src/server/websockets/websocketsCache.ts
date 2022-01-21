@@ -1,5 +1,5 @@
-const webSocketCache = () => {
-  const cache = {};
+const WebSocketCache = () => {
+  let cache = {};
   const cacheExpireTimeout = 60*60*24*1000; // 1d;
   const clearAllCache = () => {
     cache = {};
@@ -46,6 +46,4 @@ const webSocketCache = () => {
   }
 }
 
-module.exports = {
-  webSocketCache
-}
+export default WebSocketCache;

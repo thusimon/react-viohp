@@ -46,7 +46,7 @@ module.exports = {
       },
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
       {
-        enforce: "pre",
+        enforce: 'pre',
         test: /\.js$/,
         use: [
           {
@@ -61,7 +61,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: ["@babel/preset-react"]
+              presets: ['@babel/preset-react']
             }
           }
         ]
