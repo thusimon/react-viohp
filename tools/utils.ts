@@ -1,5 +1,5 @@
-const webpackBuildResult = (compiler, name) => {
-  return new Promise((resolve, reject) => {
+export const webpackBuildResult = (compiler, name) => {
+  return new Promise<void>((resolve, reject) => {
     compiler.run((err, stats) => {
       if (err){
         console.log(err);
@@ -20,8 +20,4 @@ const webpackBuildResult = (compiler, name) => {
       resolve();
     });
   });
-}
-
-module.exports = {
-  webpackBuildResult
-}
+};

@@ -1,6 +1,6 @@
-const path = require('path');
+import path from 'path';
 
-module.exports = {
+export default {
   entry: {
     ['record-worklet']: path.resolve(__dirname, './src/components/audio/record-worklet')
   },

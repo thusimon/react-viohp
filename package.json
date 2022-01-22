@@ -8,12 +8,11 @@
     "node": ">=16.13.1"
   },
   "scripts": {
-    "start:prod": "npm run build && env-cmd -f ./src/server/config/prod.env ts-node-transpile-only src/server/distServer",
+    "start:prod": "npm run webpack:prod && env-cmd -f ./src/server/config/prod.env ts-node-transpile-only src/server/distServer",
     "start:dev": "concurrently --kill-others \"npm run webpack:dev\" \"npm run open:server\"",
-    "webpack:dev": "nodemon --watch src -e ts,tsx --ignore src/server",
-    "open:server": "env-cmd -f ./src/server/config/dev.env nodemon --watch src/server -e ts,js --exec ts-node src/server/devServer",
-    "postinstall": "npm run build",
-    "build": "node tools/build"
+    "webpack:dev": "nodemon --watch src --ignore src/server --ext ts,tsx tools/build dev",
+    "webpack:prod": "ts-node-transpile-only tools/build prod",
+    "open:server": "env-cmd -f ./src/server/config/dev.env nodemon --watch src/server --ext ts src/server/devServer"
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^0.19.6",

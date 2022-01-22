@@ -1,6 +1,6 @@
 const WebSocketCache = () => {
   let cache = {};
-  const cacheExpireTimeout = 60*60*24*1000; // 1d;
+  const cacheExpireTimeout = 60 * 60 * 24 * 1000; // 1d;
   const clearAllCache = () => {
     cache = {};
   }
