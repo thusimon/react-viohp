@@ -6,6 +6,7 @@ const CONNECTION_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/vio
 
 export default {
   connectToDb: (reInitDB) => {
+    mongoose.set("strictQuery", false);
     return mongoose.connect(CONNECTION_URI)
     .then(async () => {
       console.log(`Connected to mongoDB to ${CONNECTION_URI}`);
