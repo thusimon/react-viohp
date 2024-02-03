@@ -5,7 +5,7 @@
   "author": "Lu Xu",
   "license": "MIT",
   "engines": {
-    "node": ">=16.13.1"
+    "node": ">=20.10.0"
   },
   "scripts": {
     "start:prod": "npm run webpack:prod && env-cmd -f ./src/server/config/prod.env ts-node-transpile-only src/server/distServer",
