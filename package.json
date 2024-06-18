@@ -50,7 +50,7 @@
     "ts-node": "^10.4.0",
     "uuid": "^8.2.0",
     "validator": "^13.7.0",
-    "ws": "^8.4.2"
+    "ws": "^8.17.1"
   },
   "devDependencies": {
     "@babel/core": "^7.21.8",
